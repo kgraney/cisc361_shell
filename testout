@@ -1,0 +1,1362 @@
+which: too few arguments
+ /export/home/kgraney/shell>  /export/home/kgraney/shell>  /export/home/kgraney/shell> Executing builtin which
+ /export/home/kgraney/shell> Executing builtin which
+/bin/ls
+ /export/home/kgraney/shell> Executing /bin/ls
+Makefile
+alias.o
+builtins.o
+get_path.o
+kgsh
+kgsh.o
+src
+testout
+testscript
+util.o
+ /export/home/kgraney/shell> Executing /bin/ls
+total 302
+-rw-r--r--   1 kgraney  user         273 Jul 25 13:29 Makefile
+-rw-r--r--   1 kgraney  user       11464 Jul 25 16:51 alias.o
+-rw-r--r--   1 kgraney  user       27408 Jul 25 16:51 builtins.o
+-rw-r--r--   1 kgraney  user        7440 Jul 25 16:51 get_path.o
+-rwxr-xr-x   1 kgraney  user       68384 Jul 25 16:51 kgsh
+-rw-r--r--   1 kgraney  user       13328 Jul 25 16:51 kgsh.o
+drwxr-xr-x   2 kgraney  user         512 Jul 25 16:50 src
+-rw-r--r--   1 kgraney  user         372 Jul 25 17:10 testout
+-rw-r--r--   1 kgraney  user         473 Jul 25 17:07 testscript
+-rw-r--r--   1 kgraney  user       18936 Jul 25 16:51 util.o
+ /export/home/kgraney/shell> Executing /bin/ls
+/kernel/genunix: No such file or directory
+Exit 2
+ /export/home/kgraney/shell> Executing /bin/ls
+/kernel/genunix: No such file or directory
+where: too few arguments
+Exit 2
+ /export/home/kgraney/shell> Executing builtin where
+ /export/home/kgraney/shell> Executing builtin where
+/bin/ls
+/usr/bin/ls
+/usr/ucb/ls
+ /export/home/kgraney/shell> Executing /usr/ucb/ls
+total 152
+-rw-r--r--   1 kgraney  user          273 Jul 25 13:29 Makefile
+-rw-r--r--   1 kgraney  user        11464 Jul 25 16:51 alias.o
+-rw-r--r--   1 kgraney  user        27408 Jul 25 16:51 builtins.o
+-rw-r--r--   1 kgraney  user         7440 Jul 25 16:51 get_path.o
+-rwxr-xr-x   1 kgraney  user        68384 Jul 25 16:51 kgsh
+-rw-r--r--   1 kgraney  user        13328 Jul 25 16:51 kgsh.o
+drwxr-xr-x   2 kgraney  user          512 Jul 25 16:50 src
+-rw-r--r--   1 kgraney  user         1411 Jul 25 17:10 testout
+-rw-r--r--   1 kgraney  user          473 Jul 25 17:07 testscript
+-rw-r--r--   1 kgraney  user        18936 Jul 25 16:51 util.o
+ /export/home/kgraney/shell> Executing /usr/ucb/ls
+total 153
+-rw-r--r--   1 kgraney       273 Jul 25 13:29 Makefile
+-rw-r--r--   1 kgraney     11464 Jul 25 16:51 alias.o
+-rw-r--r--   1 kgraney     27408 Jul 25 16:51 builtins.o
+-rw-r--r--   1 kgraney      7440 Jul 25 16:51 get_path.o
+-rwxr-xr-x   1 kgraney     68384 Jul 25 16:51 kgsh
+-rw-r--r--   1 kgraney     13328 Jul 25 16:51 kgsh.o
+drwxr-xr-x   2 kgraney       512 Jul 25 16:50 src
+-rw-r--r--   1 kgraney      2103 Jul 25 17:10 testout
+-rw-r--r--   1 kgraney       473 Jul 25 17:07 testscript
+-rw-r--r--   1 kgraney     18936 Jul 25 16:51 util.o
+ /export/home/kgraney/shell> Executing /usr/bin/ls
+total 306
+-rw-r--r--   1 user         273 Jul 25 13:29 Makefile
+-rw-r--r--   1 user       11464 Jul 25 16:51 alias.o
+-rw-r--r--   1 user       27408 Jul 25 16:51 builtins.o
+-rw-r--r--   1 user        7440 Jul 25 16:51 get_path.o
+-rwxr-xr-x   1 user       68384 Jul 25 16:51 kgsh
+-rw-r--r--   1 user       13328 Jul 25 16:51 kgsh.o
+drwxr-xr-x   2 user         512 Jul 25 16:50 src
+-rw-r--r--   1 user        2705 Jul 25 17:10 testout
+-rw-r--r--   1 user         473 Jul 25 17:07 testscript
+-rw-r--r--   1 user       18936 Jul 25 16:51 util.o
+ /export/home/kgraney/shell> Executing /usr/bin/ls
+total 308
+-rw-r--r--   1 kgraney  user         273 Jul 25 13:29 Makefile
+-rw-r--r--   1 kgraney  user       11464 Jul 25 16:51 alias.o
+-rw-r--r--   1 kgraney  user       27408 Jul 25 16:51 builtins.o
+-rw-r--r--   1 kgraney  user        7440 Jul 25 16:51 get_path.o
+-rwxr-xr-x   1 kgraney  user       68384 Jul 25 16:51 kgsh
+-rw-r--r--   1 kgraney  user       13328 Jul 25 16:51 kgsh.o
+drwxr-xr-x   2 kgraney  user         512 Jul 25 16:50 src
+-rw-r--r--   1 kgraney  user        3297 Jul 25 17:10 testout
+-rw-r--r--   1 kgraney  user         473 Jul 25 17:07 testscript
+-rw-r--r--   1 kgraney  user       18936 Jul 25 16:51 util.o
+blah: Command not found.
+/blah: Command not found.
+ /export/home/kgraney/shell>  /export/home/kgraney/shell>  /export/home/kgraney/shell> Executing /bin/ls
+/blah: No such file or directory
+Exit 2
+ /export/home/kgraney/shell> Executing /usr/bin
+Error in exec: Permission denied
+ /export/home/kgraney/shell> Executing /bin/ls
+total 622
+drwxr-xr-x  30 root     root        1024 Jun 20 13:44 .
+drwxr-xr-x  30 root     root        1024 Jun 20 13:44 ..
+-rw-------   1 root     root         162 Jun 13 21:24 .Xauthority
+drwx------   2 root     root         512 Jun 20 13:15 .gconf
+drwx------   2 root     root         512 Jun 20 13:15 .gconfd
+drwxr-xr-x   3 root     root         512 Jun 20 11:27 .java
+drwxr-xr-x   3 root     root         512 Jun 20 11:31 .softwareupdate
+drwx------   2 root     root         512 Jun 19 15:16 .ssh
+drwx------   3 root     root         512 Jun 13 17:52 .sunw
+drwxr-xr-x   3 root     root         512 Jun 20 13:44 InstallShield
+drwxr-xr-x   2 root     other        512 Jun 13 17:53 TT_DB
+lrwxrwxrwx   1 root     root           9 Jun 13 17:31 bin -> ./usr/bin
+drwxr-xr-x   2 root     root         512 Jun 13 17:52 cdrom
+drwxr-xr-x  20 root     sys         4096 Jul 25 11:14 dev
+drwxr-xr-x   2 root     sys          512 Jul 25 10:35 devices
+drwxr-xr-x  85 root     sys         4608 Jul 25 10:36 etc
+drwxr-xr-x   3 root     sys          512 Jun 13 21:23 export
+dr-xr-xr-x   2 root     root         512 Jun 13 17:52 home
+drwxr-xr-x  15 root     sys          512 Jun 13 17:41 kernel
+drwxr-xr-x   7 root     bin         5632 Jun 13 21:03 lib
+drwx------   2 root     root        8192 Jun 13 17:30 lost+found
+drwxr-xr-x   2 root     sys          512 Jun 13 17:31 mnt
+dr-xr-xr-x   2 root     root         512 Jun 13 17:52 net
+-rw-r--r--   1 root     root           0 Jun 13 17:43 noautoshutdown
+drwxr-xr-x   8 root     sys          512 Jun 20 13:44 opt
+drwxr-xr-x  54 root     sys         2048 Jun 13 17:39 platform
+dr-xr-xr-x  72 root     root      259776 Jul 25 17:10 proc
+drwxr-xr-x   2 root     sys         1024 Jun 13 19:18 sbin
+drwxr-xr-x   4 root     root         512 Jun 13 17:31 system
+drwxrwxrwt   7 root     sys          864 Jul 25 17:05 tmp
+drwxr-xr-x  44 root     sys         1024 Jul  3 11:30 usr
+drwxr-xr-x  46 root     sys         1024 Jun 19 15:25 var
+dr-xr-xr-x   6 root     root         512 Jul 25 10:36 vol
+ /export/home/kgraney/shell> Executing /bin/file
+/bin/ls:	ELF 32-bit MSB executable SPARC Version 1, dynamically linked, stripped
+/bin/rm:	ELF 32-bit MSB executable SPARC Version 1, dynamically linked, stripped
+No such file or directory
+cd: Too many arguments.
+ /export/home/kgraney/shell> Executing builtin which
+/bin/ls
+ /export/home/kgraney/shell> Executing builtin where
+/bin/ls
+/usr/bin/ls
+/usr/ucb/ls
+ /export/home/kgraney/shell> Executing builtin list
+.
+..
+Makefile
+kgsh.o
+builtins.o
+src
+get_path.o
+util.o
+alias.o
+kgsh
+testout
+testscript
+ /export/home/kgraney/shell> Executing builtin list
+
+/:
+.
+..
+lost+found
+var
+usr
+bin
+dev
+etc
+lib
+mnt
+opt
+proc
+sbin
+system
+tmp
+platform
+kernel
+devices
+net
+noautoshutdown
+home
+.sunw
+cdrom
+TT_DB
+vol
+export
+.gconf
+.gconfd
+.ssh
+.java
+.softwareupdate
+InstallShield
+.Xauthority
+
+/usr/proc/bin:
+.
+..
+pcred
+pfiles
+pflags
+pldd
+pmap
+prun
+psig
+pstack
+pstop
+ptime
+ptree
+pwait
+pwdx
+ /export/home/kgraney/shell> Executing builtin cd
+ /export/home/kgraney> Executing builtin pwd
+/export/home/kgraney
+ /export/home/kgraney> Executing builtin cd
+ /export/home/kgraney> Executing builtin cd
+ /export/home/kgraney> Executing builtin cd
+ /export/home/kgraney/shell> Executing builtin pwd
+/export/home/kgraney/shell
+ /export/home/kgraney/shell> Executing builtin cd
+ /usr/bin> Executing builtin pwd
+/usr/bin
+ /usr/bin> Executing ./ls
+InstallShield
+TT_DB
+bin
+cdrom
+dev
+devices
+etc
+export
+home
+kernel
+lib
+lost+found
+mnt
+net
+noautoshutdown
+opt
+platform
+proc
+sbin
+system
+tmp
+usr
+var
+vol
+ /usr/bin> Executing ../bin/ls
+InstallShield
+TT_DB
+bin
+cdrom
+dev
+devices
+etc
+export
+home
+kernel
+lib
+lost+found
+mnt
+net
+noautoshutdown
+opt
+platform
+proc
+sbin
+system
+tmp
+usr
+var
+vol
+ /usr/bin> Executing builtin alias
+ /usr/bin> Executing /bin/ls
+total 108322
+-r-xr-xr-x   1 root     bin       410828 Feb 22  2008 7z
+-r-xr-xr-x   1 root     bin      1320752 Feb 22  2008 7za
+-r-xr-xr-x   1 root     bin       793776 Feb 22  2008 7zr
+lrwxrwxrwx   1 root     root          20 Jun 20 13:22 CC -> /opt/SUNWspro/bin/CC
+lrwxrwxrwx   1 root     root          25 Jun 20 13:22 CCadmin -> /opt/SUNWspro/bin/CCadmin
+lrwxrwxrwx   1 root     other         28 Jun 13 17:36 ControlPanel -> ../java/jre/bin/ControlPanel
+-r-xr-xr-x   1 root     bin        26140 Jan 15  2008 DBMirror.pl
+lrwxrwxrwx   1 root     other         25 Jun 13 19:09 HtmlConverter -> ../java/bin/HtmlConverter
+lrwxrwxrwx   1 root     root          10 Jun 13 20:54 X11 -> ../X11/bin
+-r-xr-xr-x   1 root     bin        28676 Jun  1  2006 acctcom
+lrwxrwxrwx   1 root     root          31 Jun 13 19:34 acroread -> ../lib/AdobeReader/bin/acroread
+-rwxr-xr-x   1 root     other      12672 Dec 15  2004 activation-client
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 adb
+-r-xr-xr-x   1 root     bin        11408 Jan 22  2005 addbib
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 alias
+-r-xr-xr-x   1 root     bin        18748 Jan 25  2008 aliasadm
+-r-xr-xr-x   1 root     bin          406 Jan 21  2005 amt
+lrwxrwxrwx   1 root     root          26 Jun 20 13:22 analyzer -> /opt/SUNWspro/bin/analyzer
+-rwxr-xr-x   1 root     bin        19508 Jan 22  2005 apm
+-rwxr-xr-x   1 root     other       1103 Feb  6  2006 apoc-config
+-r-xr-xr-x   1 root     bin        19218 Jan 21  2005 appcert
+lrwxrwxrwx   1 root     other         24 Jun 13 19:09 appletviewer -> ../java/bin/appletviewer
+-r-xr-xr-x   1 root     bin        10320 Jan 22  2005 apptrace
+-r-xr-xr-x   4 root     bin        35968 Jan 22  2005 apropos
+lrwxrwxrwx   1 root     other         15 Jun 13 19:11 apt -> ../java/bin/apt
+-r-xr-xr-x   1 root     bin          944 Jan 21  2005 arch
+-r-xr-xr-x   1 root     bin        10024 Jan 22  2005 asa
+-rwxr-xr-x   1 root     other     155412 Jan 22  2005 aspell
+-rwxr-xr-x   1 root     other       2044 Dec 15  2004 aspell-import
+-rwsr-xr-x   1 root     sys        41404 Sep 15  2005 at
+-rwxr-xr-x   1 root     other     556404 Dec 15  2004 at-poke
+-rwsr-xr-x   1 root     sys        19108 Jan 22  2005 atq
+-rwsr-xr-x   1 root     sys        19052 Jan 22  2005 atrm
+-r-xr-xr-x   1 root     bin       222348 Aug 16  2007 audioconvert
+-rwxr-xr-x   1 root     other       1029 Dec 15  2004 audiofile-config
+-r-xr-xr-x   1 root     bin       114892 Jan 22  2005 audioplay
+-r-xr-xr-x   1 root     bin        35364 Jan 22  2005 audiorecord
+-r-xr-xr-x   1 root     bin        10308 Jan 22  2005 auths
+-r-xr-xr-x   1 root     bin        10564 Jun 13  2007 auto_ef
+-r-xr-xr-x   2 root     bin        89108 Oct 10  2007 awk
+-r-xr-xr-x   1 root     bin        10844 Jan 22  2005 banner
+-r-xr-xr-x   1 root     bin        28888 Aug 16  2007 bart
+-r-xr-xr-x   1 root     bin        10064 Jun 29  2006 basename
+-r-xr-xr-x   1 root     bin       732556 May  2  2007 bash
+-r-xr-xr-x   1 root     bin          577 Sep 13  2005 batch
+-r-xr-xr-x   1 root     bin        27896 Jan 22  2005 bc
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 bcheck -> /opt/SUNWspro/bin/bcheck
+-rwxr-xr-x   1 root     bin        10448 Jan 22  2005 bdiff
+-r-xr-xr-x   1 root     bin        27316 Jan 22  2005 bfs
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 bg
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 bil2xd -> /opt/SUNWspro/bin/bil2xd
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 binopt -> /opt/SUNWspro/bin/binopt
+-rwxr-xr-x   1 root     other      14052 Nov  7  2007 bmp2tiff
+-rwxr-xr-x   1 root     other       9720 Dec 15  2004 bonobo-activation-run-query
+-rwxr-xr-x   1 root     other       5359 Dec 15  2004 bonobo-slay
+-r-xr-xr-x   3 root     bin        33660 Sep 17  2007 bunzip2
+-r-xr-xr-x   1 root     bin        18608 Jan 22  2005 busstat
+-r-xr-xr-x   3 root     bin        33660 Sep 17  2007 bzcat
+-r-xr-xr-x   2 root     bin         2128 Sep  3  2007 bzcmp
+-r-xr-xr-x   2 root     bin         2128 Sep  3  2007 bzdiff
+-r-xr-xr-x   3 root     bin         1678 Sep  3  2007 bzegrep
+-r-xr-xr-x   3 root     bin         1678 Sep  3  2007 bzfgrep
+-r-xr-xr-x   3 root     bin         1678 Sep  3  2007 bzgrep
+-r-xr-xr-x   3 root     bin        33660 Sep 17  2007 bzip2
+-r-xr-xr-x   1 root     bin         9528 Sep 17  2007 bzip2recover
+-r-xr-xr-x   2 root     bin         1259 Jan  8  2005 bzless
+-r-xr-xr-x   2 root     bin         1259 Jan  8  2005 bzmore
+lrwxrwxrwx   1 root     root          25 Jun 20 13:22 c++filt -> /opt/SUNWspro/bin/c++filt
+lrwxrwxrwx   1 root     root          21 Jun 20 13:22 c89 -> /opt/SUNWspro/bin/c89
+lrwxrwxrwx   1 root     root          21 Jun 20 13:22 c99 -> /opt/SUNWspro/bin/c99
+lrwxrwxrwx   1 root     root          29 Jun 13 17:31 cachefspack -> ../lib/fs/cachefs/cachefspack
+lrwxrwxrwx   1 root     root          29 Jun 13 17:31 cachefsstat -> ../lib/fs/cachefs/cachefsstat
+-r-xr-xr-x   1 root     bin        10312 Jan 22  2005 cal
+-r-xr-xr-x   1 root     bin         2110 Jan 21  2005 calendar
+-r-xr-xr-x   1 root     bin        19928 Mar 21  2008 cancel
+-r-xr-xr-x   1 root     bin        28160 Jan 22  2005 captoinfo
+-r-xr-xr-x   1 root     bin        10260 Jan 22  2005 cat
+-r-xr-xr-x   4 root     bin        35968 Jan 22  2005 catman
+lrwxrwxrwx   1 root     root          20 Jun 20 13:22 cb -> /opt/SUNWspro/bin/cb
+lrwxrwxrwx   1 root     root          20 Jun 20 13:22 cc -> /opt/SUNWspro/bin/cc
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 cc-5.0 -> /opt/SUNWspro/bin/cc-5.0
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 cd
+-r-xr-xr-x   1 root     bin       285008 Jan 18  2006 cdda2wav
+-rwxr-xr-x   1 root     other      51500 Jan 22  2005 cddb-slave2-properties
+-r-xr-xr-x   1 root     bin       361504 Jan 18  2006 cdrecord
+-rwsr-xr-x   1 root     bin        68632 Jan 24  2008 cdrw
+lrwxrwxrwx   1 root     root          23 Jun 20 13:22 cflow -> /opt/SUNWspro/bin/cflow
+lrwxrwxrwx   1 root     root           9 Jun 13 19:40 charmap -> gucharmap
+-r-xr-xr-x   1 root     bin        26944 Jan 22  2005 chat
+-r-xr-xr-x   1 root     bin         9976 Jan 22  2005 checkeq
+lrwxrwxrwx   1 root     root          27 Jun 20 13:22 checkjava -> /opt/SUNWspro/bin/checkjava
+-r-xr-xr-x   1 root     bin        14668 Jan 22  2005 checknr
+-r-xr-xr-x   1 root     bin        10168 Jan 22  2005 chgrp
+-r-sr-xr-x   1 root     sys        52932 Aug 16  2007 chkey
+-r-xr-xr-x   1 root     bin        18708 Sep 13  2007 chmod
+-r-xr-xr-x   1 root     bin        10248 Sep 13  2007 chown
+-r-xr-xr-x   2 root     bin        29392 Jan 22  2005 chrtbl
+-rwxr-xr-x   1 root     other      30548 Jan 22  2005 cjpeg
+-r-xr-xr-x   4 root     bin        10120 Jan 22  2005 ckdate
+-r-xr-xr-x   6 root     bin        10120 Jan 22  2005 ckgid
+-r-xr-xr-x   4 root     bin        10080 Jan 22  2005 ckint
+-r-xr-xr-x   3 root     bin        10252 Jan 22  2005 ckitem
+-r-xr-xr-x   1 root     bin        10068 Jan 22  2005 ckkeywd
+-r-xr-xr-x   4 root     bin        10296 Jan 22  2005 ckpath
+-r-xr-xr-x   4 root     bin        10292 Jan 22  2005 ckrange
+-r-xr-xr-x   4 root     bin        10320 Jan 22  2005 ckstr
+-r-xr-xr-x   1 root     bin        11068 Jan 22  2005 cksum
+-r-xr-xr-x   4 root     bin        10112 Jan 22  2005 cktime
+-r-xr-xr-x   6 root     bin        10120 Jan 22  2005 ckuid
+-r-xr-xr-x   4 root     bin        10096 Jan 22  2005 ckyorn
+-r-xr-xr-x   1 root     bin         3233 Jan 15  2008 clean_pending.pl
+-r-xr-xr-x   1 root     bin          647 Jan 21  2005 clear
+-r-xr-xr-x   1 root     bin        43892 Jan 17  2008 clusterdb
+-r-xr-xr-x   1 root     bin        10012 Jan 22  2005 cmp
+-r-xr-xr-x   1 root     bin        18320 Jan 22  2005 col
+lrwxrwxrwx   1 root     root          25 Jun 20 13:22 collect -> /opt/SUNWspro/bin/collect
+-r-xr-xr-x   1 root     bin        54928 Jan 22  2005 colltbl
+-r-xr-xr-x   1 root     bin        10020 Jan 22  2005 comm
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 command
+-r-xr-xr-x   3 root     bin        27248 Jan 24  2007 compress
+-r-xr-xr-x   1 root     bin        18816 Jan 22  2005 coreadm
+-r-xr-xr-x   3 root     bin        27340 Oct  8  2007 cp
+-r-xr-xr-x   1 root     bin        85856 Feb 22  2008 cpio
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 cputrack
+-r-xr-xr-x   1 root     bin        43860 Jan 17  2008 createdb
+-r-xr-xr-x   1 root     bin        51000 Jan 17  2008 createlang
+-r-xr-xr-x   1 root     bin        45404 Jan 17  2008 createuser
+-r-xr-xr-x   1 root     bin        44612 Mar 21  2008 crle
+-r-sr-xr-x   1 root     bin        20344 Jan 25  2008 crontab
+-r-xr-xr-x   1 root     bin        10148 Jan 22  2005 crypt
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 cscope -> /opt/SUNWspro/bin/cscope
+-r-xr-xr-x   2 root     bin       151456 Aug  8  2006 csh
+-r-xr-xr-x   1 root     bin        18924 Jan 22  2005 csplit
+-r-s--x--x   1 root     uucp       69540 Feb 20  2008 ct
+-r-xr-xr-x   1 root     bin        18984 Sep 13  2007 ctags
+lrwxrwxrwx   1 root     root          21 Jun 20 13:22 ctc -> /opt/SUNWspro/bin/ctc
+lrwxrwxrwx   1 root     root          22 Jun 20 13:22 ctcr -> /opt/SUNWspro/bin/ctcr
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 ctrace -> /opt/SUNWspro/bin/ctrace
+-r-xr-xr-x   1 root     bin        18976 Jan 22  2005 ctrun
+-r-xr-xr-x   1 root     bin        19032 Jan 22  2005 ctstat
+-r-xr-xr-x   1 root     bin        10476 Jan 22  2005 ctwatch
+-r-s--x--x   1 uucp     uucp       88936 Feb 20  2008 cu
+-r-xr-xr-x   1 root     bin        10140 Apr  4  2007 cut
+lrwxrwxrwx   1 root     root          23 Jun 20 13:22 cxref -> /opt/SUNWspro/bin/cxref
+-r-xr-xr-x   1 root     bin        38456 Jan 22  2005 daps
+-r-xr-xr-x   1 root     bin        11056 Jan 22  2005 date
+-r-xr-xr-x   1 root     bin        26980 Jan 17  2008 dbf2pg
+lrwxrwxrwx   1 root     root          21 Jun 20 13:22 dbx -> /opt/SUNWspro/bin/dbx
+-r-xr-xr-x   1 root     bin        43100 Jan 22  2005 dc
+-r-xr-xr-x   1 root     bin        20616 Jan 22  2005 dd
+-r-xr-xr-x   2 root     bin        19004 Jan 22  2005 decrypt
+lrwxrwxrwx   1 root     root          21 Jun 20 13:22 dem -> /opt/SUNWspro/bin/dem
+-r-xr-xr-x   1 root     bin        34676 Jan 22  2005 deroff
+-r-xr-xr-x   1 root     bin        10288 May 16  2007 des
+-r-xr-xr-x   1 root     bin        10136 Jan 22  2005 devattr
+-r-xr-xr-x   1 root     bin        10116 Jan 22  2005 devfree
+-r-xr-xr-x   1 root     bin        10236 Jan 22  2005 devreserv
+lrwxrwxrwx   1 root     root          10 Jun 13 17:31 df -> ../sbin/df
+-r-xr-xr-x   1 root     bin        35436 Jan 22  2005 diff
+-r-xr-xr-x   1 root     bin         2047 Jan 21  2005 diff3
+-r-xr-xr-x   1 root     bin          865 Jan 21  2005 diffmk
+-r-xr-xr-x   2 root     bin        19028 Aug 16  2007 digest
+lrwxrwxrwx   1 root     root           7 Jun 13 19:21 digestp -> ./mailp
+-r-xr-xr-x   1 root     bin         5858 Jan 21  2005 dircmp
+-r-xr-xr-x   1 root     bin         9992 Jun 29  2006 dirname
+-r-xr-xr-x   1 root     bin        19936 Mar 21  2008 disable
+-r-xr-xr-x   6 root     bin        10120 Jan 22  2005 dispgid
+-r-xr-xr-x   6 root     bin        10120 Jan 22  2005 dispuid
+-rwxr-xr-x   1 root     other      30044 Jan 22  2005 djpeg
+lrwxrwxrwx   1 root     root          23 Jun 20 13:22 dmake -> /opt/SUNWspro/bin/dmake
+lrwxrwxrwx   1 root     root          13 Jun 13 17:34 dmesg -> ../sbin/dmesg
+-r-xr-xr-x   1 root     bin         9912 Jan 22  2005 domainname
+-r-xr-xr-x   1 root     bin        11608 Jan 22  2005 dos2unix
+-r-xr-xr-x   1 root     bin        42520 Jan 17  2008 dropdb
+-r-xr-xr-x   1 root     bin        52644 Jan 17  2008 droplang
+-r-xr-xr-x   1 root     bin        42400 Jan 17  2008 dropuser
+-r-xr-xr-x   1 root     bin        10436 Oct 15  2007 du
+-r-xr-xr-x   1 root     bin        10088 Jan 22  2005 dumpcs
+-r-xr-xr-x   1 root     bin        10884 Jan 22  2005 dumpkeys
+lrwxrwxrwx   1 root     root          27 Jun 20 13:22 dumpstabs -> /opt/SUNWspro/bin/dumpstabs
+-r-xr-xr-x   1 root     bin        22388 Jan 12  2006 dvd+rw-booktype
+-r-xr-xr-x   1 root     bin        20600 Jan 12  2006 dvd+rw-format
+-r-xr-xr-x   1 root     bin        26748 Jan 12  2006 dvd+rw-mediainfo
+-r-xr-xr-x   1 root     bin        13452 Jan 12  2006 dvd-ram-control
+lrwxrwxrwx   1 root     root          27 Jun 20 13:22 dwarfdump -> /opt/SUNWspro/bin/dwarfdump
+-r-xr-xr-x   1 root     bin         9948 Jan 22  2005 echo
+-rwxr-xr-x   1 root     other       9616 Dec 15  2004 echo-client-2
+-r-xr-xr-x   1 root     bin       492088 Jan 17  2008 ecpg
+-r-xr-xr-x   2 root     bin        35912 Jan 22  2005 ed
+-r-xr-xr-x   5 root     bin       239828 Sep 13  2007 edit
+-r-xr-xr-x   1 root     bin        26688 Jan 22  2005 egrep
+-r-sr-xr-x   1 root     bin        19088 Jan 22  2005 eject
+-r-xr-xr-x   1 root     bin        27280 Aug 16  2007 elfsign
+-r-xr-xr-x   1 root     bin        19888 Mar 21  2008 enable
+-r-xr-xr-x   2 root     bin        19004 Jan 22  2005 encrypt
+-r-xr-xr-x   1 root     bin        10452 Jan 22  2005 enhance
+-r-xr-xr-x   1 root     bin        10024 Jan 22  2005 env
+-rwxr-xr-x   1 root     other     105072 Dec 15  2004 eog
+-r-xr-xr-x   1 root     bin        54428 Jan 22  2005 eqn
+lrwxrwxrwx   1 root     root          28 Jun 20 13:22 er_archive -> /opt/SUNWspro/bin/er_archive
+lrwxrwxrwx   1 root     root          23 Jun 20 13:22 er_cp -> /opt/SUNWspro/bin/er_cp
+lrwxrwxrwx   1 root     root          27 Jun 20 13:22 er_export -> /opt/SUNWspro/bin/er_export
+lrwxrwxrwx   1 root     root          27 Jun 20 13:22 er_kernel -> /opt/SUNWspro/bin/er_kernel
+lrwxrwxrwx   1 root     root          23 Jun 20 13:22 er_mv -> /opt/SUNWspro/bin/er_mv
+lrwxrwxrwx   1 root     root          26 Jun 20 13:22 er_print -> /opt/SUNWspro/bin/er_print
+lrwxrwxrwx   1 root     root          23 Jun 20 13:22 er_rm -> /opt/SUNWspro/bin/er_rm
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 er_src -> /opt/SUNWspro/bin/er_src
+-rwxr-xr-x   1 root     other       1582 Dec 15  2004 esd-config
+-rwxr-xr-x   1 root     other       6432 Dec 15  2004 esdcat
+-rwxr-xr-x   1 root     other      11772 Dec 15  2004 esdctl
+-rwxr-xr-x   1 root     other       6340 Dec 15  2004 esdmon
+-rwxr-xr-x   1 root     other       6408 Dec 15  2004 esdplay
+-rwxr-xr-x   1 root     other       6348 Dec 15  2004 esdrec
+-rwxr-xr-x   1 root     other       9028 Dec 15  2004 esdsample
+lrwxrwxrwx   1 root     root          13 Jun 13 19:38 evolution -> evolution-1.4
+-rwxr-xr-x   1 root     other        246 Dec 15  2004 evolution-1.4
+-rwxr-xr-x   1 root     other      21064 Dec 15  2004 evolution-addressbook-export
+-r-xr-xr-x   5 root     bin       239828 Sep 13  2007 ex
+-r-xr-xr-x   1 root     bin        10040 Jan 22  2005 expand
+-r-xr-xr-x   1 root     bin        18996 Jun  5  2006 expr
+-r-xr-xr-x   1 root     bin        10060 Jan 22  2005 exstr
+lrwxrwxrwx   1 root     other         20 Jun 13 19:09 extcheck -> ../java/bin/extcheck
+lrwxrwxrwx   1 root     root          21 Jun 20 13:22 f77 -> /opt/SUNWspro/bin/f77
+lrwxrwxrwx   1 root     root          21 Jun 20 13:22 f90 -> /opt/SUNWspro/bin/f90
+lrwxrwxrwx   1 root     root          21 Jun 20 13:22 f95 -> /opt/SUNWspro/bin/f95
+-r-xr-xr-x   1 root     bin        10400 Jan 22  2005 factor
+-r-xr-xr-x   1 root     bin         9784 Jan 22  2005 false
+-rwxr-xr-x   1 root     other      15332 Nov  7  2007 fax2ps
+-rwxr-xr-x   1 root     other      14460 Nov  7  2007 fax2tiff
+lrwxrwxrwx   1 root     root          21 Jun 20 13:22 fbe -> /opt/SUNWspro/bin/fbe
+lrwxrwxrwx   1 root     root          25 Jun 20 13:22 fbe-4.0 -> /opt/SUNWspro/bin/fbe-4.0
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 fc
+-rwxr-xr-x   1 root     bin        22848 Jan 22  2005 fc-cache
+-rwxr-xr-x   1 root     bin        14124 Jan 22  2005 fc-list
+-r-xr-xr-x   1 root     bin         9872 Jan 22  2005 fdetach
+-r-sr-xr-x   1 root     bin        27500 Jan 22  2005 fdformat
+lrwxrwxrwx   1 root     root          26 Jun 20 13:22 fdumpmod -> /opt/SUNWspro/bin/fdumpmod
+-rwxr-xr-x   1 root     other      17372 Dec 15  2004 festival-synthesis-driver
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 fg
+-r-xr-xr-x   1 root     bin        18376 Dec 16  2005 fgrep
+-r-xr-xr-x   1 root     bin        44268 Mar 21  2008 file
+-rwxr-xr-x   1 root     other     471548 Dec 15  2004 file-roller
+lrwxrwxrwx   1 root     root           7 Jun 13 19:21 filep -> ./mailp
+-r-xr-xr-x   1 root     bin        62392 Jan 22  2005 filesync
+lrwxrwxrwx   1 root     root           7 Jun 13 19:21 filofaxp -> ./mailp
+-r-xr-xr-x   1 root     bin        28116 Oct 14  2007 find
+-r-xr-xr-x   1 root     bin        27548 Jan 22  2005 finger
+lrwxrwxrwx   1 root     root          22 Jun 13 19:38 firefox -> ../lib/firefox/firefox
+-rwxr-xr-x   1 root     other       4091 Jan 23  2008 firefox-config
+-rwxr-xr-x   1 root     bin       313196 Jan 22  2005 fmli
+-r-xr-xr-x   1 root     bin        19448 Jan 22  2005 fmt
+-r-xr-xr-x   1 root     bin        10416 Jan 22  2005 fmtmsg
+-r-xr-xr-x   1 root     bin        10112 Jan 22  2005 fold
+lrwxrwxrwx   1 root     root          21 Jun 20 13:22 fpp -> /opt/SUNWspro/bin/fpp
+lrwxrwxrwx   1 root     root          21 Jun 20 13:22 fpr -> /opt/SUNWspro/bin/fpr
+lrwxrwxrwx   1 root     root          27 Jun 20 13:22 fpversion -> /opt/SUNWspro/bin/fpversion
+lrwxrwxrwx   1 root     root           5 Jun 13 19:21 franklinp -> mailp
+-rwxr-xr-x   1 root     other        812 Mar 21  2005 freetts-synthesis-driver
+-rwxr-xr-x   1 root     other     233544 Nov 21  2007 fsexam
+lrwxrwxrwx   1 root     root           6 Jun 13 19:38 fsexamc -> fsexam
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 fsplit -> /opt/SUNWspro/bin/fsplit
+-r-xr-xr-x   1 root     bin        35440 Jan 24  2007 fsstat
+-r-xr-xr-x   1 root     bin         4610 Jan 15  2008 fti.pl
+-r-xr-xr-x   1 root     bin       100684 Sep 25  2006 ftp
+-r-xr-xr-x   1 root     bin        24808 Aug 13  2008 funzip
+-rwxr-xr-x   1 root     other     139588 Dec 15  2004 gcalctool
+-rwxr-xr-x   1 root     other     657128 Dec 15  2004 gconf-editor
+-rwxr-xr-x   1 root     other      47452 Dec 15  2004 gconf-merge-tree
+-rwxr-xr-x   1 root     other      59328 Jan 30  2007 gconftool-2
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 gcore
+-rwxr-xr-x   1 root     other       9228 Dec 15  2004 gdialog
+-rwxr-xr-x   1 root     other      10564 Jan 22  2005 gdk-pixbuf-csource
+-rwxr-xr-x   1 root     other       9736 Jan 22  2005 gdk-pixbuf-query-loaders
+-rwxr-xr-x   1 root     other        807 May  2  2005 gdm
+-rwxr-xr-x   1 root     other     302524 Nov 15  2006 gdm-binary
+lrwxrwxrwx   1 root     root          15 Jun 13 19:42 gdmXnest -> gdmXnestchooser
+-rwxr-xr-x   1 root     other      56736 Dec 12  2006 gdmXnestchooser
+-rwxr-xr-x   1 root     other     106420 Dec 12  2006 gdmchooser
+-rwxr-xr-x   1 root     other      59080 Dec 12  2006 gdmflexiserver
+-rwxr-xr-x   1 root     other     188572 Dec 12  2006 gdmgreeter
+-rwxr-xr-x   1 root     other     149652 Dec 12  2006 gdmlogin
+-rwxr-xr-x   1 root     other      42212 Dec 12  2006 gdmphotosetup
+-rwxr-xr-x   1 root     other      97276 Dec 12  2006 gdmsetup
+-rwxr-xr-x   1 root     other       1664 May  2  2005 gdmthemetester
+-rwxr-xr-x   1 root     other     539708 Jan 21  2006 gedit
+-r-xr-xr-x   1 root     bin        18356 Jan 22  2005 gencat
+-r-xr-xr-x   1 root     bin       131500 Aug 16  2007 geniconvtbl
+-r-xr-xr-x   1 root     bin       125704 Jan 22  2005 genlayouttbl
+-r-xr-xr-x   1 root     bin        38376 Jan 22  2005 genmsg
+-r-xr-xr-x   1 root     bin        21356 Jan 22  2005 getconf
+-r-xr-xr-x   1 root     bin        10132 Jan 22  2005 getdev
+-r-xr-xr-x   1 root     bin        10160 Jan 22  2005 getdgrp
+-r-xr-xr-x   1 root     bin        19036 Sep 17  2007 getent
+-r-xr-xr-x   1 root     bin        10104 Jan 24  2007 getfacl
+-r-xr-xr-x   1 root     bin        10052 Mar 21  2008 getlabel
+-r-xr-xr-x   1 root     bin        10012 Jan 22  2005 getopt
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 getopts
+-r-xr-xr-x   1 root     bin        10012 Jan 22  2005 gettext
+-r-xr-xr-x   1 root     bin        10052 Jan 22  2005 gettxt
+-r-xr-xr-x   1 root     bin         9984 Jan 22  2005 getvol
+-r-xr-xr-x   1 root     bin        10028 Mar 21  2008 getzonepath
+-rwxr-xr-x   1 root     other     126228 Dec 15  2004 ggv
+-rwxr-xr-x   1 root     other     144040 Jan 22  2005 ghex2
+-rwxr-xr-x   1 root     other      15028 Nov  7  2007 gif2tiff
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 gil2xd -> /opt/SUNWspro/bin/gil2xd
+-rwxr-xr-x   1 root     other        244 Jul  4  2005 gkb_xmmap
+-rwxr-xr-x   1 root     other    1060772 Jan 22  2005 glade-2
+-rwxr-xr-x   1 root     other      23880 Jan 22  2005 glib-genmarshal
+-rwxr-xr-x   1 root     other       4660 Dec 15  2004 glib-gettextize
+-rwxr-xr-x   1 root     other      14122 Dec 15  2004 glib-mkenums
+-rwxr-xr-x   1 root     other     332124 Jun 29  2006 gnome-about
+-rwxr-xr-x   1 root     other      70400 Oct  4  2005 gnome-accessibility-keyboard-properties
+-rwxr-xr-x   1 root     other      62020 Oct  4  2005 gnome-at-properties
+-rwxr-xr-x   1 root     other       7716 Dec 15  2004 gnome-audio-profiles-properties
+-rwxr-xr-x   1 root     other        703 Dec 16  2004 gnome-autogen.sh
+-rwxr-xr-x   1 root     other      59868 Jan 21  2006 gnome-background-properties
+lrwxrwxrwx   1 root     root           9 Jun 13 19:40 gnome-calculator -> gcalctool
+-rwxr-xr-x   1 root     other     137356 Dec  5  2007 gnome-cd
+lrwxrwxrwx   1 root     root           9 Jun 13 19:40 gnome-character-map -> gucharmap
+-rwxr-xr-x   1 root     other       1574 Dec 15  2004 gnome-cleanup
+-rwxr-xr-x   1 root     other      41460 Dec 21  2004 gnome-control-center
+-rwxr-xr-x   1 root     other      69800 Oct  4  2005 gnome-default-applications-properties
+-rwxr-xr-x   1 root     other     550168 Aug 29  2005 gnome-desktop-item-edit
+-rwxr-xr-x   1 root     other      29376 Dec 21  2004 gnome-display-properties
+-rwxr-xr-x   1 root     other        937 Dec 16  2004 gnome-doc-common
+-rwxr-xr-x   1 root     other      90736 Dec 21  2004 gnome-file-types-properties
+-rwxr-xr-x   1 root     other      71668 Oct  4  2005 gnome-font-properties
+-rwxr-xr-x   1 root     other      24480 Dec 21  2004 gnome-font-viewer
+lrwxrwxrwx   1 root     root           4 Jun 13 19:33 gnome-help -> yelp
+-rwxr-xr-x   1 root     other      88804 Oct  4  2005 gnome-keybinding-properties
+-rwxr-xr-x   1 root     other     533096 Dec 15  2004 gnome-keyboard-layout
+-rwxr-xr-x   1 root     other     105328 Oct  4  2005 gnome-keyboard-properties
+-rwxr-xr-x   1 root     other      63244 Feb  6  2006 gnome-keyring-daemon
+-rwxr-xr-x   1 root     other      75988 Apr 17  2006 gnome-mouse-properties
+-rwxr-xr-x   1 root     other      58748 Dec 21  2004 gnome-network-preferences
+-rwxr-xr-x   1 root     other       6736 Dec 15  2004 gnome-open
+-rwxr-xr-x   1 root     other    2560852 Sep  5  2006 gnome-panel
+-rwxr-xr-x   1 root     other     300144 Mar  7  2005 gnome-panel-preferences
+-rwxr-xr-x   1 root     other     329388 Feb  6  2006 gnome-panel-screenshot
+-rwxr-xr-x   1 root     other     128008 Sep  6  2007 gnome-perfmeter
+-rwxr-xr-x   1 root     other       7788 Apr 20  2006 gnome-pilot-make-password
+-rwxr-xr-x   1 root     other     151908 Dec 15  2004 gnome-printinfo
+-rwxr-xr-x   1 root     other     112768 Sep 14  2005 gnome-search-tool
+-rwxr-xr-x   1 root     other     146368 Jan 22  2008 gnome-session
+-rwxr-xr-x   1 root     other      81548 Dec 21  2004 gnome-session-properties
+-rwxr-xr-x   1 root     other      30716 Dec 21  2004 gnome-session-remove
+-rwxr-xr-x   1 root     other      31440 Dec 21  2004 gnome-session-save
+-rwxr-xr-x   1 root     other      25688 Dec 21  2004 gnome-smproxy
+-rwxr-xr-x   1 root     other      86296 Oct  4  2005 gnome-sound-properties
+-rwxr-xr-x   1 root     other      50504 Jan 22  2005 gnome-sound-recorder
+-rwxr-xr-x   1 root     other      34168 Dec 15  2004 gnome-sys-suspend
+-rwxr-xr-x   1 root     other     317084 Dec 15  2004 gnome-terminal
+lrwxrwxrwx   1 root     root           5 Jun 13 19:45 gnome-text-editor -> gedit
+-rwxr-xr-x   1 root     other      95904 Oct  4  2005 gnome-theme-manager
+-rwxr-xr-x   1 root     other      42512 Dec 21  2004 gnome-theme-thumbnailer
+-rwxr-xr-x   1 root     other      16244 Dec 21  2004 gnome-thumbnail-font
+-rwxr-xr-x   1 root     other      53040 Dec 21  2004 gnome-typing-monitor
+-rwxr-xr-x   1 root     other      57512 Dec 21  2004 gnome-ui-properties
+-rwxr-xr-x   1 root     other      17424 Jan 22  2005 gnome-volcheck
+-rwxr-xr-x   1 root     other      24968 Dec 15  2004 gnome-volume-control
+-rwxr-xr-x   1 root     other      23480 Jan 21  2006 gnome-window-properties
+-rwxr-xr-x   1 root     other       1911 Dec 21  2004 gnome-wm
+-rwxr-xr-x   1 root     other       7508 Dec 15  2004 gnomevfs-cat
+-rwxr-xr-x   1 root     other       6912 Dec 15  2004 gnomevfs-copy
+-rwxr-xr-x   1 root     other       8544 Dec 15  2004 gnomevfs-info
+-rwxr-xr-x   1 root     other       7996 Dec 15  2004 gnomevfs-ls
+-rwxr-xr-x   1 root     other       7920 Dec 15  2004 gnomevfs-mkdir
+-rwxr-xr-x   1 root     other       9248 Jan 22  2005 gobject-query
+-r-xr-xr-x   1 root     bin        84632 Jan 22  2005 gpatch
+-rwxr-xr-x   1 root     other     113200 Dec 15  2004 gpdf
+-rwxr-xr-x   1 root     other      13120 Apr 20  2006 gpilot-install-file
+-rwxr-xr-x   1 root     other     102192 Apr 20  2006 gpilotd-control-applet
+-rwxr-xr-x   1 root     other       6636 Apr 20  2006 gpilotd-session-wrapper
+-r-xr-xr-x   1 root     bin        18568 Jan 22  2005 graph
+-r-xr-xr-x   1 root     bin        10212 Jan 22  2005 grep
+-r-xr-xr-x   1 root     bin         9992 Jan 22  2005 groups
+-r-xr-xr-x   1 root     bin        58980 Jan 12  2006 growisofs
+-rwxr-xr-x   1 root     other      12260 Dec 15  2004 gst-complete
+-rwxr-xr-x   1 root     other      11032 Dec 15  2004 gst-complete-0.8
+-rwxr-xr-x   1 root     other      12260 Dec 15  2004 gst-compprep
+-rwxr-xr-x   1 root     other      11988 Dec 15  2004 gst-compprep-0.8
+-rwxr-xr-x   1 root     other      12260 Dec 15  2004 gst-feedback
+-rwxr-xr-x   1 root     other       2249 Dec 15  2004 gst-feedback-0.8
+-rwxr-xr-x   1 root     other      12260 Dec 15  2004 gst-inspect
+-rwxr-xr-x   1 root     other      37904 Dec 15  2004 gst-inspect-0.8
+-rwxr-xr-x   1 root     other      12260 Dec 15  2004 gst-launch
+-rwxr-xr-x   1 root     other      22508 Dec 15  2004 gst-launch-0.8
+-rwxr-xr-x   1 root     other       5302 Dec 15  2004 gst-launch-ext-0.8
+-rwxr-xr-x   1 root     other      12260 Dec 15  2004 gst-md5sum
+-rwxr-xr-x   1 root     other      12204 Dec 15  2004 gst-md5sum-0.8
+-rwxr-xr-x   1 root     other      12260 Dec 15  2004 gst-register
+-rwxr-xr-x   1 root     other      11560 Dec 15  2004 gst-register-0.8
+-rwxr-xr-x   1 root     other       9380 Dec 15  2004 gst-thumbnail
+-rwxr-xr-x   1 root     other      12260 Dec 15  2004 gst-typefind
+-rwxr-xr-x   1 root     other      10208 Dec 15  2004 gst-typefind-0.8
+-rwxr-xr-x   1 root     other      12264 Dec 15  2004 gst-xmlinspect
+-rwxr-xr-x   1 root     other      37512 Dec 15  2004 gst-xmlinspect-0.8
+-rwxr-xr-x   1 root     other      12260 Dec 15  2004 gst-xmllaunch
+-rwxr-xr-x   1 root     other      22508 Dec 15  2004 gst-xmllaunch-0.8
+-rwxr-xr-x   1 root     other      21888 Dec 15  2004 gstreamer-properties
+-rwxr-xr-x   1 root     other     443012 Dec 15  2004 gswitchit-plugins-capplet
+-rwxr-xr-x   1 root     other     121244 Jan 22  2005 gtk-demo
+-rwxr-xr-x   1 root     other      10348 Jan 22  2005 gtk-query-immodules-2.0
+-rwxr-xr-x   1 root     other       3852 Dec 16  2004 gtkdoc-fixxref
+-rwxr-xr-x   1 root     other      93807 Dec 16  2004 gtkdoc-mkdb
+-rwxr-xr-x   1 root     other        985 Dec 16  2004 gtkdoc-mkhtml
+-rwxr-xr-x   1 root     other        274 Dec 16  2004 gtkdoc-mkman
+-rwxr-xr-x   1 root     other      42700 Dec 16  2004 gtkdoc-mktmpl
+-rwxr-xr-x   1 root     other      18407 Dec 16  2004 gtkdoc-scan
+-rwxr-xr-x   1 root     other      26898 Dec 16  2004 gtkdoc-scangobj
+-rwxr-xr-x   1 root     other      21871 Dec 16  2004 gtkdoc-scanobj
+-rwxr-xr-x   1 root     other       1308 Dec 16  2004 gtkdocize
+-rwxr-xr-x   1 root     other       9896 Dec 15  2004 gucharmap
+-r-xr-xr-x   3 root     bin        63704 Dec 18  2006 gunzip
+-r-xr-xr-x   3 root     bin        63704 Dec 18  2006 gzcat
+-r-xr-xr-x   2 root     bin         1983 Dec 15  2006 gzcmp
+-r-xr-xr-x   2 root     bin         1983 Dec 15  2006 gzdiff
+-r-xr-xr-x   3 root     bin         2953 Dec 15  2006 gzegrep
+-r-xr-xr-x   1 root     bin         4787 Dec 15  2006 gzexe
+-r-xr-xr-x   3 root     bin         2953 Dec 15  2006 gzfgrep
+-r-xr-xr-x   1 root     bin         1534 Dec 15  2006 gzforce
+-r-xr-xr-x   3 root     bin         2953 Dec 15  2006 gzgrep
+-r-xr-xr-x   3 root     bin        63704 Dec 18  2006 gzip
+-r-xr-xr-x   1 root     bin          112 Dec 15  2006 gzless
+-r-xr-xr-x   1 root     bin         1895 Dec 15  2006 gzmore
+-r-xr-xr-x   1 root     bin         3509 Dec 15  2006 gznew
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 hash
+-r-xr-xr-x   1 root     bin        10068 Jan 22  2005 head
+-r-xr-xr-x   1 root     bin         9916 Jan 22  2005 hostid
+-r-xr-xr-x   1 root     bin          561 Jan 21  2005 hostname
+-rwxr-xr-x   1 root     other     103256 Dec 18  2007 hydrogen
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 i286
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 i386
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 i486
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 i860
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 i86pc
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 iAPX286
+-r-xr-xr-x   1 root     bin        35288 Jan 22  2005 iconv
+-r-xr-xr-x   1 root     bin        10280 Jan 22  2005 id
+-rwxr-xr-x   1 root     bin           90 Jan  9  2007 idle
+lrwxrwxrwx   1 root     other         16 Jun 13 19:09 idlj -> ../java/bin/idlj
+-r-xr-xr-x   1 root     bin        15588 Jan 22  2005 idnconv
+-rwxr-xr-x   1 root     bin        57540 Feb 28  2008 iiim-panel
+-rwxr-xr-x   1 root     bin       133660 Feb 28  2008 iiim-properties
+-rwxr-xr-x   1 root     bin      3072148 Feb 28  2008 iiimd
+-rwxr-xr-x   1 root     bin        30156 Feb 28  2008 iiimx
+-r-xr-xr-x   1 root     bin         2493 Jun 19  2006 imqadmin
+-r-xr-xr-x   1 root     bin         5771 Jun 19  2006 imqbrokerd
+-r-xr-xr-x   1 root     bin         1550 Jun 19  2006 imqcmd
+-r-xr-xr-x   1 root     bin         2596 Jun 19  2006 imqdbmgr
+-r-xr-xr-x   1 root     bin         3728 Jun 19  2006 imqkeytool
+-r-xr-xr-x   1 root     bin         1766 Jun 19  2006 imqobjmgr
+-r-xr-xr-x   1 root     bin         1600 Jun 19  2006 imqusermgr
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 indent -> /opt/SUNWspro/bin/indent
+-r-xr-xr-x   1 root     bin          670 Jan 21  2005 indxbib
+-r-xr-xr-x   1 root     bin        27116 Jan 22  2005 infocmp
+-r-xr-xr-x   1 root     bin        60532 Jan 17  2008 initdb
+-rwxr-xr-x   1 root     other      12276 Dec 16  2004 intltool-extract
+-rwxr-xr-x   1 root     other      31368 Dec 16  2004 intltool-merge
+-rwxr-xr-x   1 root     other       8681 Dec 16  2004 intltool-prepare
+-rwxr-xr-x   1 root     other      26106 Aug 19  2005 intltool-update
+-rwxr-xr-x   1 root     other       8119 Dec 16  2004 intltoolize
+-rwxr-xr-x   1 root     other       8644 Dec 15  2004 ior-decode-2
+-r-xr-xr-x   1 root     bin        45084 Aug 16  2007 iostat
+-r-xr-xr-x   1 root     bin         3231 Jan 15  2008 ipcclean
+-r-xr-xr-x   1 root     bin        10412 Jan 22  2005 ipcrm
+-r-xr-xr-x   1 root     bin        18916 Jan 22  2005 ipcs
+-r-xr-xr-x   1 root     bin        10104 Mar 21  2008 isainfo
+-r-xr-xr-x   1 root     bin         9896 Jan 22  2005 isalist
+lrwxrwxrwx   1 root     other         15 Jun 13 19:09 jar -> ../java/bin/jar
+lrwxrwxrwx   1 root     other         21 Jun 13 19:09 jarsigner -> ../java/bin/jarsigner
+lrwxrwxrwx   1 root     other         16 Jun 13 17:36 java -> ../java/bin/java
+lrwxrwxrwx   1 root     other         17 Jun 13 19:09 javac -> ../java/bin/javac
+lrwxrwxrwx   1 root     other         19 Jun 13 19:09 javadoc -> ../java/bin/javadoc
+lrwxrwxrwx   1 root     other         17 Jun 13 19:09 javah -> ../java/bin/javah
+lrwxrwxrwx   1 root     other         17 Jun 13 19:09 javap -> ../java/bin/javap
+lrwxrwxrwx   1 root     other         18 Jun 13 17:36 javaws -> ../java/bin/javaws
+lrwxrwxrwx   1 root     other         15 Jun 13 19:09 jdb -> ../java/bin/jdb
+-rwxr-xr-x   1 root     other        186 Dec 15  2004 jds-help
+-rwxr-xr-x   1 root     other     283652 Dec 15  2004 jdshelp
+lrwxrwxrwx   1 root     root          30 Jun 13 19:17 jmplay -> ../jdk/packages/jmf/bin/jmplay
+lrwxrwxrwx   1 root     root          50 Jun 13 19:20 jnlp2pkg -> ../jdk/packages/org.jdesktop.jdic-0.8/bin/jnlp2pkg
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 jobs
+-r-xr-xr-x   1 root     bin        18552 Jan 22  2005 join
+-rwxr-xr-x   1 root     other      26884 Jan 22  2005 jpegtran
+lrwxrwxrwx   1 root     root          13 Jun 13 17:31 jsh -> ../../sbin/sh
+-r-xr-xr-x   1 root     bin        18732 Aug 16  2007 kbd
+-r-xr-xr-x   1 root     bin        26928 Jan 22  2005 kbdcomp
+-r-xr-xr-x   1 root     bin        10460 Mar 21  2008 kdestroy
+-r-xr-xr-x   1 root     bin        10464 Jan 22  2005 keylogin
+-r-xr-xr-x   1 root     bin        10032 Jan 22  2005 keylogout
+lrwxrwxrwx   1 root     other         19 Jun 13 17:36 keytool -> ../java/bin/keytool
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 kill
+-r-xr-xr-x   1 root     bin        27620 Mar 21  2008 kinit
+-r-xr-xr-x   1 root     bin        18788 Mar 21  2008 klist
+-r-xr-xr-x   1 root     bin        37736 Oct 10  2007 kmfcfg
+-r-xr-xr-x   1 root     bin        10432 Mar 21  2008 kpasswd
+-r-xr-xr-x   1 root     bin         5288 Mar 12  2008 krb5-config
+-r-xr-xr-x   3 root     bin       209288 Jan 25  2008 ksh
+-r-xr-xr-x   1 root     bin         5543 Jan 21  2005 kstat
+-r-xr-xr-x   1 root     bin        19256 Mar 21  2008 ktutil
+-r-xr-xr-x   1 root     bin        10296 Jan 22  2005 last
+-r-xr-xr-x   1 root     bin        18660 Jun  1  2006 lastcomm
+-r-xr-xr-x   2 root     bin        53176 Aug 16  2007 ldapadd
+-r-xr-xr-x   1 root     bin        36372 Aug 16  2007 ldapdelete
+-r-xr-xr-x   1 root     bin        19904 Aug 16  2007 ldaplist
+-r-xr-xr-x   2 root     bin        53176 Aug 16  2007 ldapmodify
+-r-xr-xr-x   1 root     bin        36408 Aug 16  2007 ldapmodrdn
+-r-xr-xr-x   1 root     bin        53768 Aug 16  2007 ldapsearch
+-r-xr-xr-x   1 root     bin        19172 Mar 21  2008 ldd
+-r-xr-xr-x   1 root     bin       117760 Jan 22  2005 less
+-r-xr-xr-x   1 root     bin         5800 Jan 22  2005 lessecho
+-r-xr-xr-x   1 root     bin        11668 Jan 22  2005 lesskey
+-rwxr-xr-x   1 root     other       1945 Dec 15  2004 libIDL-config-2
+-rwxr-xr-x   1 root     other        973 Dec 15  2004 libart2-config
+-rwxr-xr-x   1 root     other       2120 Dec 15  2004 libgcrypt-config
+-rwxr-xr-x   1 root     other     403772 Dec 15  2004 libgnomeprint-2.0-font-install
+lrwxrwxrwx   1 root     root          15 Jun 13 19:12 libpng-config -> libpng12-config
+-rwxr-xr-x   1 root     other       2226 Jan 23  2008 libpng10-config
+-rwxr-xr-x   1 root     other       2226 Jan 23  2008 libpng12-config
+lrwxrwxrwx   1 root     root          34 Jun 20 13:22 libsunperf_check -> /opt/SUNWspro/bin/libsunperf_check
+-rwxr-xr-x   1 root     other       9528 Nov 14  2007 linc-cleanup-sockets
+-r-xr-xr-x   1 root     bin         9808 Jan 22  2005 line
+lrwxrwxrwx   1 root     root          22 Jun 20 13:22 lint -> /opt/SUNWspro/bin/lint
+-r-xr-xr-x   1 root     bin        10108 Jan 22  2005 listdgrp
+-r-xr-xr-x   1 root     bin        10384 Jan 22  2005 listusers
+-r-xr-xr-x   3 root     bin        27340 Oct  8  2007 ln
+-r-xr-xr-x   1 root     bin        20764 Jan 22  2005 loadkeys
+-r-xr-xr-x   1 root     bin        20960 Jan 22  2005 locale
+-rwxr-xr-x   1 root     bin         1358 Nov 14  2007 localectr
+-r-xr-xr-x   1 root     bin       197300 Sep 19  2005 localedef
+lrwxrwxrwx   1 root     root          27 Jun 20 13:22 lock_lint -> /opt/SUNWspro/bin/lock_lint
+-r-xr-xr-x   1 root     bin        10784 Jan 22  2005 logger
+-r-sr-xr-x   1 root     bin        31408 Jan 22  2005 login
+-rwxr-x---   1 root     bin        18548 Sep 13  2007 logins
+-r-xr-xr-x   1 root     bin         9880 Jan 22  2005 logname
+-rwxr-xr-x   1 root     bin        10048 Jan 22  2005 look
+-r-xr-xr-x   1 root     bin        10108 Jan 22  2005 lookbib
+-r-xr-xr-x   1 root     bin        20500 Mar 21  2008 lp
+-rwxr-xr-x   1 root     bin          172 Feb 17  2000 lp_1251
+-r-xr-xr-x   1 root     bin        20988 Mar 21  2008 lpc
+-r-x--x--x   1 root     lp         10060 Aug 16  2007 lpget
+-r-xr-xr-x   1 root     bin        19964 Mar 21  2008 lpq
+-r-xr-xr-x   1 root     bin        20676 Mar 21  2008 lpr
+-r-xr-xr-x   1 root     bin        19900 Mar 21  2008 lprm
+-r-s--x--x   1 root     lp         10316 Mar 21  2008 lpset
+-r-xr-xr-x   1 root     bin        30096 Mar 21  2008 lpstat
+-r-xr-xr-x   1 root     lp          9884 Mar 21  2008 lptest
+-r-xr-xr-x   1 root     bin        27400 Jan 24  2007 ls
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 m68k
+-r-xr-xr-x   2 root     bin        19028 Aug 16  2007 mac
+-r-xr-xr-x   1 root     bin          145 Jan 21  2005 mach
+-rwxr-xr-x   1 root     other     164612 Sep 29  2006 magnifier
+-r-x--s--x   1 root     mail       67932 Jan 25  2008 mail
+-r-xr-xr-x   1 root     bin        10556 Jan 25  2008 mailcompat
+-r-xr-xr-x   1 root     bin         2751 Dec  8  2004 mailp
+-r-sr-xr-x   1 root     bin        10052 Jan 25  2008 mailq
+-r-xr-xr-x   1 root     bin        71560 Jan 25  2008 mailstats
+-r-x--s--x   1 root     mail      130520 Oct 10  2007 mailx
+-r-xr-xr-x   1 root     bin        10340 Jan 22  2005 makedev
+-r-xr-xr-x   1 root     root       25584 Jan 22  2005 makeuuid
+-r-xr-xr-x   4 root     bin        35968 Jan 22  2005 man
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 mc68000
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 mc68010
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 mc68020
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 mc68030
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 mc68040
+-r-xr-xr-x   1 root     bin        10288 Jan 25  2008 mconnect
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 mdb
+-r-xr-xr-x   1 root     bin         9988 Jan 22  2005 mesg
+-rwxr-xr-x   1 root     other     889792 Dec 18  2007 metacity
+-rwxr-xr-x   1 root     other       8152 Dec 15  2004 metacity-message
+-rwxr-xr-x   1 root     other      31140 Jan 30  2007 metacity-theme-viewer
+-rwxr-xr-x   1 root     other      26628 Dec 15  2004 metacity-window-demo
+-r-xr-xr-x   1 root     bin        10176 Jan 22  2005 mkdir
+-r-xr-xr-x   1 root     bin        10040 Jan 22  2005 mkfifo
+-r-xr-xr-x   1 root     bin       478452 Jan 22  2005 mkisofs
+-r-xr-xr-x   1 root     root       10164 Jan 22  2005 mkmsgs
+-r-xr-xr-x   1 root     bin        18932 Jan 22  2005 mkpwdict
+-r-xr-xr-x   1 root     bin        10168 Jan 22  2005 mktemp
+-r-xr-xr-x   1 root     bin        10400 Mar 21  2008 moe
+-r-xr-xr-x   1 root     bin        10048 Jan 22  2005 montbl
+-r-xr-xr-x   2 root     bin        35236 Jan 22  2005 more
+-r-xr-xr-x   1 root     bin       147408 Jan 22  2005 mp
+-r-xr-xr-x   1 root     bin        36536 Aug 16  2007 mpstat
+-r-xr-xr-x   1 root     bin        18556 Jan 22  2005 msgfmt
+-r-xr-xr-x   1 root     bin        11720 Jan 24  2007 mt
+-r-xr-xr-x   3 root     bin        27340 Oct  8  2007 mv
+lrwxrwxrwx   1 root     other         24 Jun 13 19:09 native2ascii -> ../java/bin/native2ascii
+-rwxr-xr-x   1 root     other     802396 Feb 19  2008 nautilus
+-rwxr-xr-x   1 root     other      27752 Aug 19  2006 nautilus-add-network-place-main
+-rwxr-xr-x   1 root     other      68264 Dec 19  2005 nautilus-cd-burner
+-rwxr-xr-x   1 root     other      23676 Aug 19  2006 nautilus-file-management-properties
+-r-xr-xr-x   1 root     bin       126944 Oct 10  2007 nawk
+-r-xr-xr-x   1 root     bin        18564 Jan 22  2005 ncab2clf
+-r-xr-xr-x   1 root     bin        46136 Jan 22  2005 neqn
+-r-xr-xr-x   1 root     bin        83456 Aug 16  2007 netstat
+-r-xr-xr-x   1 root     bin        20508 Jan 22  2005 newform
+-rwsr-xr-x   1 root     sys        10596 Jan 22  2005 newgrp
+-r-xr-xr-x   1 root     bin        10452 Jan 22  2005 news
+lrwxrwxrwx   1 root     root           7 Jun 13 19:21 newsp -> ./mailp
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 newtask
+-r-xr-xr-x   1 root     bin        28492 Jan 24  2007 nfsstat
+-r-xr-xr-x   1 root     bin         9996 Jan 22  2005 nice
+-r-xr-xr-x   1 root     bin        35956 Jan 22  2005 nisaddcred
+-r-xr-xr-x   1 root     bin        10112 Jan 22  2005 niscat
+-r-xr-xr-x   4 root     bin        18612 Jan 22  2005 nischgrp
+-r-xr-xr-x   4 root     bin        18612 Jan 22  2005 nischmod
+-r-xr-xr-x   4 root     bin        18612 Jan 22  2005 nischown
+-r-xr-xr-x   4 root     bin        18612 Jan 22  2005 nischttl
+-r-xr-xr-x   1 root     bin        18480 Jan 22  2005 nisdefaults
+-r-xr-xr-x   1 root     bin         9932 Jan 22  2005 niserror
+-r-xr-xr-x   1 root     bin        18592 Jan 22  2005 nisgrep
+-r-xr-xr-x   1 root     bin        18640 Jan 22  2005 nisgrpadm
+-r-xr-xr-x   1 root     bin        18492 Jan 22  2005 nisln
+-r-xr-xr-x   1 root     bin        10188 Jan 22  2005 nisls
+-r-xr-xr-x   1 root     bin        18536 Jan 22  2005 nismatch
+-r-xr-xr-x   1 root     bin        18760 Jan 22  2005 nismkdir
+-r-xr-xr-x   1 root     bin        10120 Jan 22  2005 nispasswd
+-r-xr-xr-x   1 root     bin         9932 Jan 22  2005 nispath
+-r-xr-xr-x   1 root     bin        36144 Jan 22  2005 nisprefadm
+-r-xr-xr-x   1 root     bin        10044 Jan 22  2005 nisrm
+-r-xr-xr-x   1 root     bin        10284 Jan 22  2005 nisrmdir
+-r-xr-xr-x   1 root     bin        27008 Jan 22  2005 nistbladm
+-r-xr-xr-x   1 root     bin        18736 Jan 22  2005 nistest
+-r-xr-xr-x   1 root     bin        18324 Jan 22  2005 nl
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 nohup
+-r-xr-xr-x   1 root     bin       109720 Jan 22  2005 nroff
+-r-xr-xr-x   2 root     bin        89108 Oct 10  2007 oawk
+-r-xr-xr-x   1 root     bin        27736 Jan 22  2005 od
+-r-xr-xr-x   1 root     bin        14672 Jan 17  2008 oid2name
+-r-xr-xr-x   1 root     bin        27328 Jan 22  2005 on
+-r-xr-xr-x   1 root     bin          447 Jan 21  2005 optisa
+lrwxrwxrwx   1 root     other         16 Jun 13 17:36 orbd -> ../java/bin/orbd
+-rwxr-xr-x   1 root     other     115792 Jan 22  2005 orbit-idl-2
+-rwxr-xr-x   1 root     other       2656 Dec 15  2004 orbit2-config
+-r-xr-xr-x   1 root     bin         2517 Feb 19  2008 p7zip
+-r-xr-xr-x   1 root     bin        18492 Jan 24  2007 pack
+-r-xr-xr-x   2 root     bin        35236 Jan 22  2005 page
+-r-xr-xr-x   1 root     bin         9996 Jan 22  2005 pagesize
+-rwxr-xr-x   1 root     other      12172 Nov  7  2007 pal2rgb
+-rwxr-xr-x   1 root     other     282712 Feb 27  2008 panel-test-applets
+-rwxr-xr-x   1 root     other      10204 Jan 21  2006 pango-querymodules
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 pargs
+lrwxrwxrwx   1 root     root          16 Jun 13 17:31 passmgmt -> ../sbin/passmgmt
+-r-sr-sr-x   1 root     sys        27228 Aug 16  2007 passwd
+-r-xr-xr-x   1 root     bin        10148 Jan 22  2005 paste
+-r-xr-xr-x   1 root     bin        39204 Jan 22  2005 patch
+-r-xr-xr-x   1 root     bin        10448 Jan 22  2005 pathchk
+-r-xr-xr-x   1 root     bin       152932 Nov 29  2007 pax
+lrwxrwxrwx   1 root     root           8 Jun 13 17:34 pcat -> ./unpack
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 pcred
+-rwxr-xr-x   1 root     other       7864 Dec 15  2004 pdflaunch
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 pdp11
+lrwxrwxrwx   1 root     root          23 Jun 13 17:33 perl -> ../perl5/5.8.4/bin/perl
+-r-xr-xr-x   2 root     bin       151456 Aug  8  2006 pfcsh
+-r-sr-xr-x   1 root     bin        18860 Jan 22  2005 pfexec
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 pfiles
+-r-xr-xr-x   3 root     bin       209288 Jan 25  2008 pfksh
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 pflags
+lrwxrwxrwx   1 root     root          13 Jun 13 17:31 pfsh -> ../../sbin/sh
+-r-xr-xr-x   1 root     bin        27808 Jan 22  2005 pg
+-r-xr-xr-x   1 root     bin        28556 Jan 17  2008 pg_config
+-r-xr-xr-x   1 root     bin        25248 Jan 17  2008 pg_controldata
+-r-xr-xr-x   1 root     bin        36696 Jan 17  2008 pg_ctl
+-r-xr-xr-x   1 root     bin       216576 Jan 17  2008 pg_dump
+-r-xr-xr-x   1 root     bin        58084 Jan 17  2008 pg_dumpall
+-r-xr-xr-x   1 root     bin        33408 Jan 17  2008 pg_resetxlog
+-r-xr-xr-x   1 root     bin       105424 Jan 17  2008 pg_restore
+lrwxrwxrwx   1 root     root          24 Jun 13 19:41 pgadmin3 -> ../pgadmin3/bin/pgadmin3
+lrwxrwxrwx   1 root     root          23 Jun 13 19:41 pgagent -> ../pgadmin3/bin/pgagent
+-r-xr-xr-x   1 root     bin        29188 Jan 17  2008 pgbench
+-r-xr-xr-x   2 root     bin        19488 Jan 22  2005 pgrep
+-rwxr-xr-x   1 root     other     781768 Sep 21  2007 pidgin
+-rwxr-xr-x   1 root     other     127920 Jan 22  2005 pkg-config
+-r-xr-xr-x   1 root     bin        62712 Aug 13  2008 pkgadm
+-r-xr-xr-x   1 root     sys       179220 Aug 13  2008 pkgcond
+-r-xr-xr-x   1 root     sys       142860 Aug 13  2008 pkginfo
+-r-xr-xr-x   1 root     bin       202768 Aug 13  2008 pkgmk
+-r-xr-xr-x   1 root     sys       134364 Aug 13  2008 pkgparam
+-r-xr-xr-x   1 root     bin        10324 Aug 13  2008 pkgproto
+-r-xr-xr-x   1 root     bin         8944 Aug 13  2008 pkgtrans
+-r-xr-xr-x   2 root     bin        19488 Jan 22  2005 pkill
+-r-xr-xr-x   1 root     bin        78356 Oct 10  2007 pktool
+-r-xr-xr-x   1 root     bin        10204 Mar 21  2008 plabel
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 pldd
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 plimit
+-r-xr-xr-x   1 root     bin         2160 Jan 15  2008 pltcl_delmod
+-r-xr-xr-x   1 root     bin         2317 Jan 15  2008 pltcl_listmod
+-r-xr-xr-x   1 root     bin        11435 Jan 15  2008 pltcl_loadmod
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 pmap
+lrwxrwxrwx   1 root     other         22 Jun 13 17:36 policytool -> ../java/bin/policytool
+-r-xr-xr-x   1 root     bin        27600 Jan 22  2005 poolstat
+-r-xr-xr-x   1 root     bin      3341732 Jan 17  2008 postgres
+lrwxrwxrwx   1 root     root           8 Jun 13 19:27 postmaster -> postgres
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 ppgsz
+-rwxr-xr-x   1 root     other      11452 Nov  7  2007 ppm2tiff
+-r-sr-xr-x   1 root     bin       233304 Aug 16  2007 pppd
+-r-xr-xr-x   1 root     bin        54004 Jan 22  2005 pppdump
+-r-xr-xr-x   1 root     bin        18516 Jan 22  2005 pppstats
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 ppriv
+-r-xr-xr-x   1 root     bin        26956 Jan 22  2005 pr
+-r-xr-xr-x   1 root     bin       360968 Jan 25  2008 praliases
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 prctl
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 preap
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 prex
+-r-xr-xr-x   1 root     bin        18456 Jan 22  2005 printf
+-r-xr-xr-x   1 root     bin        20796 Jan 22  2005 priocntl
+-r-xr-xr-x   1 root     root       90528 Jan 22  2005 prodreg
+-r-xr-xr-x   1 root     bin        10296 Jan 22  2005 profiles
+-r-xr-xr-x   1 root     bin        10172 Jan 22  2005 projects
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 prstat
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 prun
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 ps
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 psig
+-rwxr-xr-x   1 root     other        367 Dec 15  2004 pspell-config
+-r-xr-xr-x   1 root     bin       399684 Jan 17  2008 psql
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 pstack
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 pstop
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 ptime
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 ptree
+-r-xr-xr-x   1 root     bin        10200 Jan 22  2005 putdev
+-r-xr-xr-x   1 root     bin        10136 Jan 22  2005 putdgrp
+-r-xr-xr-x   1 root     bin        18864 Aug 16  2007 pvs
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 pwait
+lrwxrwxrwx   1 root     root          14 Jun 13 17:31 pwconv -> ../sbin/pwconv
+-r-xr-xr-x   1 root     bin         9964 Jan 22  2005 pwd
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 pwdx
+-rwxr-xr-x   1 root     bin           75 Jan  9  2007 pydoc
+lrwxrwxrwx   1 root     root           9 Jun 13 19:33 python -> python2.4
+-rwxr-xr-x   1 root     bin         4872 Jan 31  2007 python2.4
+-rwxr-xr-x   1 root     other      10680 Nov  7  2007 ras2tiff
+-rwxr-xr-x   1 root     other      16952 Nov  7  2007 raw2tiff
+-r-xr-xr-x   1 root     bin        33176 Aug 16  2007 rcapstat
+-r-sr-xr-x   1 root     bin        46048 Mar 21  2008 rcp
+-r-xr-xr-x   1 root     bin        10076 Jan 22  2005 rdate
+-r-sr-xr-x   1 root     bin        72824 Mar 21  2008 rdist
+-rwxr-xr-x   1 root     other      11212 Jan 22  2005 rdjpgcom
+lrwxrwxrwx   1 root     root          25 Jun 20 13:22 rdtimgr -> /opt/SUNWspro/bin/rdtimgr
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 read
+-r-xr-xr-x   1 root     bin       158240 Jan 18  2006 readcd
+lrwxrwxrwx   1 root     root          24 Jun 13 19:43 realplay -> ../lib/RealPlay/realplay
+-r-xr-xr-x   2 root     bin        35912 Jan 22  2005 red
+-r-xr-xr-x   1 root     bin        44760 Jan 22  2005 refer
+-r-xr-xr-x   1 root     bin        45780 Jan 17  2008 reindexdb
+lrwxrwxrwx   1 root     root           5 Jun 13 17:37 remsh -> ./rsh
+-r-xr-xr-x   1 root     bin        10416 Aug 16  2007 renice
+-rwxr-xr-x   1 root     other      12560 Nov  7  2007 rgb2ycbcr
+-r-xr-xr-x   3 root     bin       209288 Jan 25  2008 rksh
+-r-sr-xr-x   1 root     bin        36684 Mar 21  2008 rlogin
+-r-xr-xr-x   1 root     bin        18608 May  1  2007 rm
+lrwxrwxrwx   1 root     root           6 Jun 13 17:31 rmail -> ./mail
+-r-xr-xr-x   1 root     bin        10092 Jan 22  2005 rmdir
+-r-sr-xr-x   1 root     bin        53152 Jan 24  2007 rmformat
+lrwxrwxrwx   1 root     other         16 Jun 13 19:09 rmic -> ../java/bin/rmic
+lrwxrwxrwx   1 root     other         16 Jun 13 17:36 rmid -> ../java/bin/rmid
+lrwxrwxrwx   1 root     other         23 Jun 13 17:36 rmiregistry -> ../java/bin/rmiregistry
+-r-xr-xr-x   1 root     bin          951 Jan 21  2005 roffbib
+-r-xr-xr-x   1 root     bin        10084 Jan 22  2005 roles
+-r-xr-xr-x   1 root     bin        89276 Jan 22  2005 rpcgen
+-r-xr-xr-x   1 root     bin        27476 Jan 22  2005 rpcinfo
+-r-xr-xr-x   1 root     bin         2697 Jan  8  2005 rpm2cpio
+-r-sr-xr-x   1 root     bin        27832 Mar 21  2008 rsh
+-rwxr-xr-x   1 root     bin         1371 Dec 16  2004 rstartd
+-rwxr-xr-x   1 root     other       9428 Dec 15  2004 rsvg
+lrwxrwxrwx   1 root     root          32 Jun 20 13:22 rtc_patch_area -> /opt/SUNWspro/bin/rtc_patch_area
+-rwxr-xr-x   1 root     other         59 Dec 15  2004 run-with-aspell
+-r-xr-xr-x   1 root     bin        10112 Jan 22  2005 runat
+-r-xr-xr-x   1 root     bin        10236 Jan 22  2005 rup
+-r-xr-xr-x   1 root     bin        10172 Jan 22  2005 ruptime
+-r-xr-xr-x   1 root     bin        18464 Jan 22  2005 rusers
+-r-xr-xr-x   1 root     bin        10096 Jan 22  2005 rwho
+lrwxrwxrwx   1 root     root          21 Jun 20 13:22 rxm -> /opt/SUNWspro/bin/rxm
+lrwxrwxrwx   1 root     root          21 Jun 20 13:22 rxs -> /opt/SUNWspro/bin/rxs
+lrwxrwxrwx   1 root     root          11 Jun 13 20:51 sag -> ../sbin/sag
+lrwxrwxrwx   1 root     root          11 Jun 13 20:51 sar -> ../sbin/sar
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 savecore
+lrwxrwxrwx   1 root     root          27 Jun 20 13:22 sbcleanup -> /opt/SUNWspro/bin/sbcleanup
+lrwxrwxrwx   1 root     root          25 Jun 20 13:22 sbenter -> /opt/SUNWspro/bin/sbenter
+lrwxrwxrwx   1 root     root          25 Jun 20 13:22 sbquery -> /opt/SUNWspro/bin/sbquery
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 sbtags -> /opt/SUNWspro/bin/sbtags
+-r-xr-xr-x   1 root     bin        45264 Aug 16  2007 scp
+-rwxr-xr-x   1 root     bin          988 Dec 16  2004 screensaver-properties-capplet
+-r-xr-xr-x   1 root     bin        10404 Jan 22  2005 script
+-rwxr-xr-x   1 root     other       1381 Dec 15  2004 scrollkeeper-config
+-rwxr-xr-x   1 root     other       6988 Jan 22  2005 scrollkeeper-extract
+-rwxr-xr-x   1 root     other       9784 Jan 22  2005 scrollkeeper-gen-seriesid
+-rwxr-xr-x   1 root     other       9428 Dec 15  2004 scrollkeeper-get-cl
+-rwxr-xr-x   1 root     other        193 Dec 15  2004 scrollkeeper-get-content-list
+-rwxr-xr-x   1 root     other        211 Dec 15  2004 scrollkeeper-get-extended-content-list
+-rwxr-xr-x   1 root     other        642 Dec 15  2004 scrollkeeper-get-index-from-docpath
+-rwxr-xr-x   1 root     other        651 Dec 15  2004 scrollkeeper-get-toc-from-docpath
+-rwxr-xr-x   1 root     other        365 Dec 15  2004 scrollkeeper-get-toc-from-id
+-rwxr-xr-x   1 root     other       7608 Dec 15  2004 scrollkeeper-install
+-rwxr-xr-x   1 root     other       7336 Dec 15  2004 scrollkeeper-preinstall
+-rwxr-xr-x   1 root     other       1439 Dec 15  2004 scrollkeeper-rebuilddb
+-rwxr-xr-x   1 root     other       6704 Dec 15  2004 scrollkeeper-uninstall
+-rwxr-xr-x   1 root     other      13932 Dec 15  2004 scrollkeeper-update
+-r-xr-xr-x   1 root     bin        18484 Jan 22  2005 sdiff
+-r-xr-xr-x   1 root     bin        35052 Jan 22  2005 sed
+lrwxrwxrwx   1 root     other         21 Jun 13 19:09 serialver -> ../java/bin/serialver
+lrwxrwxrwx   1 root     other         22 Jun 13 17:36 servertool -> ../java/bin/servertool
+-r-xr-xr-x   1 root     bin        18420 Feb  7  2008 setfacl
+-r-xr-xr-x   1 root     bin        10056 Mar 21  2008 setlabel
+-r-xr-xr-x   1 root     sys         9924 Jan 22  2005 setpgrp
+-r-xr-xr-x   1 root     bin        20840 Jan 22  2005 setterm
+-r-xr-xr-x   2 root     bin        10116 Jan 22  2005 settime
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 setuname
+-r-xr-xr-x   1 root     bin        69144 Aug 16  2007 sftp
+lrwxrwxrwx   1 root     root          13 Jun 13 17:31 sh -> ../../sbin/sh
+-rwxr-xr-x   1 root     sys        29992 Jan 30  2008 showrev
+-r-xr-xr-x   1 root     bin         9964 Jan 22  2005 sleep
+lrwxrwxrwx   1 root     root          25 Jun 20 13:22 smallxd -> /opt/SUNWspro/bin/smallxd
+-r-xr-xr-x   1 root     bin          570 Jan 21  2005 smartcard
+lrwxrwxrwx   1 root     root          23 Jun 20 13:22 smctl -> /opt/SUNWspro/bin/smctl
+-r-xr-xr-x   1 root     bin        10016 Jan 22  2005 soelim
+lrwxrwxrwx   1 root     root          37 Jun 13 20:42 soffice -> ../../opt/staroffice8/program/soffice
+-r-xr-xr-x   1 root     bin       102384 Jan 22  2005 solstice
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 sort
+-r-xr-xr-x   1 root     bin        10344 Jan 22  2005 sortbib
+-rwxr-xr-x   1 root     bin         1803 Aug  8  2007 sotruss
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 sparc
+drwxr-xr-x   2 root     bin          512 Jun 13 20:48 sparcv7
+drwxr-xr-x   2 root     bin         1536 Jun 13 21:09 sparcv9
+-r-xr-xr-x   1 root     bin         3306 Jan 21  2005 spell
+-r-xr-xr-x   1 root     bin         9972 Jan 22  2005 spline
+-r-xr-xr-x   1 root     bin        10232 Jan 22  2005 split
+-r-xr-xr-x   1 root     bin        10148 Jan 22  2005 srchtxt
+lrwxrwxrwx   1 root     root          27 Jun 20 13:22 ss_attach -> /opt/SUNWspro/bin/ss_attach
+-r-xr-xr-x   1 root     bin       257280 Oct 29  2007 ssh
+-r-xr-xr-x   1 root     bin        87724 Aug 16  2007 ssh-add
+-r-xr-xr-x   1 root     bin        70912 Jan 22  2005 ssh-agent
+-r-xr-xr-x   1 root     bin        87856 Nov 16  2007 ssh-keygen
+-r-xr-xr-x   1 root     bin       156072 Aug 16  2007 ssh-keyscan
+-rwxr-xr-x   1 root     bin          237 Apr 20  2005 staroffice
+-rwxr-xr-x   1 root     bin          233 Jul 18  2005 staroffice-printeradmin
+-rwsr-xr-x   1 svctag   daemon     73660 Dec 19  2007 stclient
+lrwxrwxrwx   1 root     root          14 Jun 13 17:34 strace -> ../sbin/strace
+-r-xr-xr-x   1 root     root       10084 Jan 22  2005 strchg
+lrwxrwxrwx   1 root     root          16 Jun 13 17:31 strclean -> ../sbin/strclean
+-r-xr-xr-x   1 root     root        9972 Jan 22  2005 strconf
+lrwxrwxrwx   1 root     root          14 Jun 13 17:31 strerr -> ../sbin/strerr
+-r-xr-xr-x   1 root     bin        10320 Jan 22  2005 strings
+-r-xr-xr-x   2 root     bin        35988 Jan 22  2005 stty
+-r-sr-xr-x   1 root     sys        25748 May 24  2005 su
+-r-xr-xr-x   1 root     bin        10100 Jan 24  2007 sum
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 sun
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 sun2
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 sun3
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 sun3x
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 sun4
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 sun4c
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 sun4d
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 sun4e
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 sun4m
+lrwxrwxrwx   1 root     root          23 Jun 20 13:22 sunCC -> /opt/SUNWspro/bin/sunCC
+lrwxrwxrwx   1 root     root          23 Jun 20 13:22 sunas -> /opt/SUNWspro/bin/sunas
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 sunc89 -> /opt/SUNWspro/bin/sunc89
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 sunc99 -> /opt/SUNWspro/bin/sunc99
+lrwxrwxrwx   1 root     root          23 Jun 20 13:22 suncc -> /opt/SUNWspro/bin/suncc
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 sunf77 -> /opt/SUNWspro/bin/sunf77
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 sunf90 -> /opt/SUNWspro/bin/sunf90
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 sunf95 -> /opt/SUNWspro/bin/sunf95
+lrwxrwxrwx   1 root     root          27 Jun 20 13:22 sunstudio -> /opt/SUNWspro/bin/sunstudio
+-r-xr-xr-x   1 root     bin        28520 Sep 26  2006 svcprop
+-r-xr-xr-x   1 root     bin        98680 Aug 16  2007 svcs
+-rwxr-xr-x   1 root     sys         2659 Apr 20  2006 swup_boots
+-r-xr-xr-x   1 root     bin        10991 Dec  9  2008 swupnot
+lrwxrwxrwx   1 root     root          15 Jun 13 17:31 sync -> ../../sbin/sync
+-r-xr-xr-x   1 root     bin        27104 Jan 22  2005 ta
+-r-xr-xr-x   1 root     bin        18900 Jan 22  2005 tabs
+-r-xr-xr-x   1 root     bin        18376 Jun  9  2006 tail
+-r-xr-xr-x   1 root     bin        19040 Jan 22  2005 talk
+lrwxrwxrwx   1 root     root          11 Jun 13 17:31 tar -> ../sbin/tar
+-r-xr-xr-x   1 root     bin        52852 Jan 22  2005 tbl
+-r-xr-xr-x   1 root     bin        10032 Jan 22  2005 tcopy
+lrwxrwxrwx   1 root     root          22 Jun 20 13:22 tcov -> /opt/SUNWspro/bin/tcov
+-r-xr-xr-x   1 root     bin       364208 Nov 21  2007 tcsh
+-r-xr-xr-x   1 root     bin        10104 Jan 22  2005 tee
+-r-xr-xr-x   1 root     bin       142200 Mar 21  2008 telnet
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 test
+-rwxr-xr-x   1 root     other      16420 Jan 22  2005 test-moniker
+-rwxr-xr-x   1 root     other      17856 Dec 15  2004 test-speech
+-r-xr-xr-x   1 root     bin        28548 Jun 29  2006 tftp
+lrwxrwxrwx   1 root     root          21 Jun 20 13:22 tha -> /opt/SUNWspro/bin/tha
+-rwxr-xr-x   1 root     other      30720 Dec 21  2004 themus-theme-applier
+-rwxr-xr-x   1 root     other      15744 Nov  7  2007 thumbnail
+lrwxrwxrwx   1 root     root          30 Jun 13 19:46 thunderbird -> ../lib/thunderbird/thunderbird
+-r-xr-xr-x   1 root     bin        28208 Jan 22  2005 tic
+-rwxr-xr-x   1 root     other      12876 Nov  7  2007 tiff2bw
+-rwxr-xr-x   1 root     other      59004 Nov  7  2007 tiff2pdf
+-rwxr-xr-x   1 root     other      48008 Nov  7  2007 tiff2ps
+-rwxr-xr-x   1 root     other      11728 Nov  7  2007 tiff2rgba
+-rwxr-xr-x   1 root     other      16352 Nov  7  2007 tiffcmp
+-rwxr-xr-x   1 root     other      29860 Nov  7  2007 tiffcp
+-rwxr-xr-x   1 root     other      11424 Nov  7  2007 tiffdither
+-rwxr-xr-x   1 root     other      17396 Nov  7  2007 tiffdump
+-rwxr-xr-x   1 root     other      14460 Nov  7  2007 tiffinfo
+-rwxr-xr-x   1 root     other      17884 Nov  7  2007 tiffmedian
+-rwxr-xr-x   1 root     other       9264 Nov  7  2007 tiffset
+-rwxr-xr-x   1 root     other      10800 Nov  7  2007 tiffsplit
+-r-xr-xr-x   1 root     bin        10196 Jan 22  2005 time
+lrwxrwxrwx   1 root     root           7 Jun 13 19:21 timemanp -> ./mailp
+lrwxrwxrwx   1 root     root           7 Jun 13 19:21 timesysp -> ./mailp
+-r-xr-xr-x   1 root     sys        10496 Jun 15  2007 timex
+-r-s--x--x   1 uucp     bin        56172 Jan  5  2007 tip
+lrwxrwxrwx   1 root     other         21 Jun 13 17:36 tnameserv -> ../java/bin/tnameserv
+-r-xr-xr-x   1 root     bin        19256 Jan 22  2005 tnfdump
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 tnfxtract
+-r-xr-xr-x   2 root     bin        10116 Jan 22  2005 touch
+-r-xr-xr-x   1 root     bin          574 Jan 21  2005 tplot
+-r-xr-xr-x   1 root     bin        10660 Jan 22  2005 tput
+-r-xr-xr-x   1 root     bin        19400 Jan 22  2005 tr
+-r-xr-xr-x   1 root     bin       109836 Jan 22  2005 troff
+-r-xr-xr-x   1 root     bin         9784 Jan 22  2005 true
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 truss
+-rwxr-xr-x   1 root     other     304536 Jan 24  2008 tsoljds-setssheight
+-rwxr-xr-x   1 root     other     722328 Jan 24  2008 tsoljds-tstripe
+-rwxr-xr-x   1 root     other     129964 Jan 24  2008 tsoljds-xagent
+-rwxr-xr-x   1 root     other     222616 Jan 24  2008 tsoljds-xagent-proxy
+-rwxr-xr-x   1 root     other     583064 Jan 24  2008 tsoljdsdevmgr
+-rwsr-xr-x   1 root     other     198000 Nov  8  2006 tsoljdslabel
+-rwxr-xr-x   1 root     other     329112 Jan 24  2008 tsoljdslabel-ui
+-rwxr-xr-x   1 root     other     419224 Jan 24  2008 tsoljdsselmgr
+-r-xr-xr-x   1 root     bin         9920 Jan 22  2005 tty
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 type
+-rwxr-xr-x   1 root     other       8380 Dec 15  2004 typelib-dump
+-r-xr-xr-x   1 root     bin        10416 Jan 30  2008 tzselect
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 u370
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 u3b
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 u3b15
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 u3b2
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 u3b5
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 uil2xd -> /opt/SUNWspro/bin/uil2xd
+-r-xr-xr-x   1 root     bin        18500 Jan 22  2005 ul
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 ulimit
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 umask
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 unalias
+lrwxrwxrwx   1 root     root          16 Jun 13 17:31 uname -> ../../sbin/uname
+-r-xr-xr-x   3 root     bin        27248 Jan 24  2007 uncompress
+-r-xr-xr-x   1 root     bin        10016 Jan 22  2005 unexpand
+-r-xr-xr-x   1 root     bin        10260 Jan 22  2005 uniq
+-r-xr-xr-x   1 root     bin        10724 Jan 22  2005 units
+-r-xr-xr-x   1 root     bin        11616 Jan 22  2005 unix2dos
+lrwxrwxrwx   1 root     root          36 Jun 13 20:42 unopkg -> ../../opt/staroffice8/program/unopkg
+-r-xr-xr-x   1 root     bin        18496 Jan 24  2007 unpack
+-r-xr-xr-x   2 root     bin       145272 Aug 13  2008 unzip
+-r-xr-xr-x   1 root     bin        65908 Aug 13  2008 unzipsfx
+-rwxr-xr-x   1 root     other      23024 Dec 15  2004 update-mime-database
+-r-xr-xr-x   1 root     bin        18648 Mar 21  2008 updatehome
+-r-xr-xr-x   1 root     bin         2096 Dec  9  2008 updatemanager
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 uptime
+-r-s--x--x   1 uucp     uucp       73448 Jan 22  2005 uucp
+-r-xr-xr-x   1 root     uucp       18572 Jan 22  2005 uudecode
+-r-xr-xr-x   1 root     uucp       10172 Jan 22  2005 uuencode
+-r-s--x--x   1 uucp     uucp       28456 Jan 22  2005 uuglist
+-r-xr-xr-x   1 root     uucp        1340 Jan 21  2005 uulog
+-r-s--x--x   1 uucp     uucp       21348 Jan 22  2005 uuname
+-r-xr-xr-x   1 root     uucp        3536 Jan 21  2005 uupick
+-r-s--x--x   1 uucp     uucp       64292 Jan 22  2005 uustat
+-r-xr-xr-x   1 root     uucp        1927 Jan 21  2005 uuto
+-r-s--x--x   1 uucp     uucp       73544 Jan 22  2005 uux
+-r-xr-xr-x   1 root     bin        81276 Jan 25  2008 vacation
+-r-xr-xr-x   1 root     bin        29768 Jan 17  2008 vacuumdb
+-r-xr-xr-x   1 root     bin        14116 Jan 17  2008 vacuumlo
+-r-xr-xr-x  29 root     bin         9904 Jan 22  2005 vax
+-r-xr-xr-x   5 root     bin       239828 Sep 13  2007 vedit
+lrwxrwxrwx   1 root     root          25 Jun 20 13:22 version -> /opt/SUNWspro/bin/version
+lrwxrwxrwx   1 root     root          29 Jun 20 13:22 version-5.0 -> /opt/SUNWspro/bin/version-5.0
+-r-xr-xr-x   1 root     bin         5447 Jan 21  2005 vgrind
+-r-xr-xr-x   5 root     bin       239828 Sep 13  2007 vi
+-r-xr-xr-x   5 root     bin       239828 Sep 13  2007 view
+lrwxrwxrwx   1 root     root          22 Jun 20 13:22 visu -> /opt/SUNWspro/bin/visu
+lrwxrwxrwx   1 root     root          26 Jun 20 13:22 visuroot -> /opt/SUNWspro/bin/visuroot
+-r-xr-xr-x   1 root     bin        44984 Aug 16  2007 vmstat
+-r-xr-xr-x   1 root     bin       187496 Feb 27  2008 vncconfig
+-r-xr-xr-x   1 root     bin        32284 Feb 27  2008 vncpasswd
+-r-xr-xr-x   1 root     bin        14058 Feb 15  2008 vncserver
+-r-xr-xr-x   1 root     bin       708036 Dec  5  2007 vncviewer
+-r-xr-xr-x   1 root     bin        10000 Jan 22  2005 volcheck
+-r-sr-xr-x   1 root     bin        18712 Jan 22  2005 volrmmount
+-rwxr-xr-x   1 root     bin        10992 Jan 22  2005 vsig
+-rwxr-xr-x   1 root     other      25936 Jun 14  2005 vte
+-rwxr-xr-x   1 root     other      24312 Jan 22  2005 vumeter
+-r-xr-xr-x  64 root     bin        10044 Jan 22  2005 w
+-r-xr-xr-x  17 root     bin          134 Jan 21  2005 wait
+-r-xr-xr-x   1 root     bin        10140 Jan 22  2005 wc
+-r-xr-xr-x   2 root     bin        29392 Jan 22  2005 wchrtbl
+lrwxrwxrwx   1 root     root          25 Jun 20 13:22 whatdir -> /opt/SUNWspro/bin/whatdir
+-r-xr-xr-x   4 root     bin        35968 Jan 22  2005 whatis
+-r-xr-xr-x   1 root     bin         1288 Jan 21  2005 which
+-r-xr-xr-x   1 root     bin        18556 Jan 22  2005 who
+-rwxr-xr-x   1 root     bin         1038 Aug  8  2007 whocalls
+-r-xr-xr-x   1 root     bin        10132 Jan 22  2005 whois
+-rwxr-xr-x   1 root     other       6668 Jan 22  2005 word-list-compress
+-r-xr-xr-x   1 root     bin        10096 Jan 22  2005 wracct
+-r-xr-sr-x   1 root     tty        18740 Jan 22  2005 write
+-rwxr-xr-x   1 root     other      12620 Jan 22  2005 wrjpgcom
+-r-xr-xr-x   1 root     bin        18688 Oct 11  2007 xargs
+lrwxrwxrwx   1 root     root          27 Jun 20 13:22 xdcapture -> /opt/SUNWspro/bin/xdcapture
+lrwxrwxrwx   1 root     root          26 Jun 20 13:22 xdconfig -> /opt/SUNWspro/bin/xdconfig
+lrwxrwxrwx   1 root     root          27 Jun 20 13:22 xdesigner -> /opt/SUNWspro/bin/xdesigner
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 xdhelp -> /opt/SUNWspro/bin/xdhelp
+lrwxrwxrwx   1 root     root          26 Jun 20 13:22 xdrecord -> /opt/SUNWspro/bin/xdrecord
+lrwxrwxrwx   1 root     root          26 Jun 20 13:22 xdreplay -> /opt/SUNWspro/bin/xdreplay
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 xdroot -> /opt/SUNWspro/bin/xdroot
+lrwxrwxrwx   1 root     root          24 Jun 20 13:22 xdtosj -> /opt/SUNWspro/bin/xdtosj
+-r-xr-xr-x   1 root     bin        28832 Jan 22  2005 xgettext
+-rwxr-xr-x   1 root     other     143316 Dec 15  2004 ximian-connector-setup
+-rwxr-xr-x   1 root     other       7099 Dec 16  2004 xml-i18n-toolize
+-r-xr-xr-x   1 root     bin         1681 Jan  8  2008 xml2-config
+-r-xr-xr-x   1 root     bin        13196 Jan  9  2008 xmlcatalog
+-r-xr-xr-x   1 root     bin        49916 Jan  9  2008 xmllint
+-r-xr-xr-x   1 root     bin         2278 Jan  8  2008 xslt-config
+-r-xr-xr-x   1 root     bin        17924 Jan  9  2008 xsltproc
+-r-xr-xr-x   1 root     bin        10240 Jan 22  2005 xstr
+-rwxr-xr-x   1 root     other     119988 Nov 28  2007 yelp
+-r-xr-xr-x   1 root     bin         9852 Jan 22  2005 yes
+-r-xr-xr-x   1 root     other      10632 Jan 22  2005 ypcat
+-r-xr-xr-x   1 root     other      10508 Jan 22  2005 ypmatch
+-r-xr-xr-x   1 root     bin        10016 Jan 22  2005 yppasswd
+-r-xr-xr-x   1 root     other      19152 Jan 22  2005 ypwhich
+-r-xr-xr-x   3 root     bin        27248 Jan 24  2007 zcat
+-rwxr-xr-x   1 root     other      69216 Dec 15  2004 zenity
+-r-xr-xr-x   1 root     bin        77376 Jan 22  2005 zip
+-r-xr-xr-x   1 root     bin        27016 Jan 22  2005 zipcloak
+-r-xr-xr-x   1 root     bin         1188 Aug  8  2008 zipgrep
+-r-xr-xr-x   2 root     bin       145272 Aug 13  2008 zipinfo
+-r-xr-xr-x   1 root     bin        30972 Jan 22  2005 zipnote
+-r-xr-xr-x   1 root     bin        33460 Jan 22  2005 zipsplit
+lrwxrwxrwx   1 root     root          19 Jun 13 17:39 zonename -> ../../sbin/zonename
+lrwxrwxrwx   1 root     root          14 Jun 13 21:00 zsh -> ../sfw/bin/zsh
+ /usr/bin> Executing builtin history
+27: cd -
+28: pwd
+29: cd /usr/bin
+30: pwd
+31: ./ls /
+32: ../bin/ls /
+33: alias blah /bin/ls -l
+34: blah /
+35: /bin/ls -l
+36: history
+ /usr/bin> Executing builtin history
+23: cd
+24: pwd
+25: cd /blah
+26: cd /usr/bin /usr/ucb
+27: cd -
+28: pwd
+29: cd /usr/bin
+30: pwd
+31: ./ls /
+32: ../bin/ls /
+33: alias blah /bin/ls -l
+34: blah /
+35: /bin/ls -l
+36: history
+37: history 15
+ /usr/bin> Executing builtin history
+29: cd /usr/bin
+30: pwd
+31: ./ls /
+32: ../bin/ls /
+33: alias blah /bin/ls -l
+34: blah /
+35: /bin/ls -l
+36: history
+37: history 15
+38: history
+ /usr/bin> Executing builtin history
+35: /bin/ls -l
+36: history
+37: history 15
+38: history
+39: history 5
+ /usr/bin> Executing builtin history
+31: ./ls /
+32: ../bin/ls /
+33: alias blah /bin/ls -l
+34: blah /
+35: /bin/ls -l
+36: history
+37: history 15
+38: history
+39: history 5
+40: history
+ /usr/bin> Executing builtin pid
+3069
+ /usr/bin> Executing builtin prompt
+New prompt prefix: TeSt PrOmPt /usr/bin> Executing builtin prompt
+361shell /usr/bin> Executing builtin exit

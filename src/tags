@@ -1,0 +1,31 @@
+Mkgsh	kgsh.c	/^int main(int argc, char* argv[]){$/
+_db_history	builtins.c	/^void _db_history(kgenv* env, int argc, char* argv[/
+_db_kgenv	builtins.c	/^void _db_kgenv(kgenv* env, int argc, char* argv[])/
+_db_path	builtins.c	/^void _db_path(kgenv* env, int argc, char* argv[]){/
+_db_tokenizer	builtins.c	/^void _db_tokenizer(kgenv* env, int argc, char* arg/
+add_alias	alias.c	/^void add_alias(kgenv* env, char* name, int cmd_arg/
+add_to_history	util.c	/^void add_to_history(char* command, kgenv* env){$/
+bic_alias	builtins.c	/^void bic_alias(kgenv* env, int argc, char* argv[])/
+bic_cd	builtins.c	/^void bic_cd(kgenv* env, int argc, char* argv[]){$/
+bic_exit	builtins.c	/^void bic_exit(kgenv* env, int argc, char* argv[]){/
+bic_history	builtins.c	/^void bic_history(kgenv* env, int argc, char* argv[/
+bic_kill	builtins.c	/^void bic_kill(kgenv* env, int argc, char* argv[]){/
+bic_list	builtins.c	/^void bic_list(kgenv* env, int argc, char* argv[]){/
+bic_pid	builtins.c	/^void bic_pid(kgenv* env, int argc, char* argv[]){$/
+bic_printenv	builtins.c	/^void bic_printenv(kgenv* env, int argc, char* argv/
+bic_prompt	builtins.c	/^void bic_prompt(kgenv* env, int argc, char* argv[]/
+bic_pwd	builtins.c	/^void bic_pwd(kgenv* env, int argc, char* argv[]){$/
+bic_setenv	builtins.c	/^void bic_setenv(kgenv* env, int argc, char* argv[]/
+bic_unalias	builtins.c	/^void bic_unalias(kgenv* env, int argc, char* argv[/
+bic_where	builtins.c	/^void bic_where(kgenv* env, int argc, char* argv[])/
+bic_which	builtins.c	/^void bic_which(kgenv* env, int argc, char* argv[])/
+detokenize	util.c	/^void detokenize(char* str, int length){$/
+exec_cmd	util.c	/^int exec_cmd(char* cmd, char** argv){$/
+get_path	get_path.c	/^struct pathelement *get_path()$/
+initialize_environment	kgsh.c	/^void initialize_environment(kgenv* env){$/
+is_alias	alias.c	/^aliasList* is_alias(kgenv* env, char* name){$/
+is_builtin	builtins.c	/^short int is_builtin(char* command){$/
+parse_line	util.c	/^int parse_line(int* argc, char*** argv, char* line/
+process_command_in	util.c	/^int process_command_in(char* line_in, kgenv* globa/
+remove_alias	alias.c	/^void remove_alias(kgenv* env, char* name){$/
+which	util.c	/^char* which(const char* command, pathList* pathlis/
