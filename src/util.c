@@ -129,14 +129,16 @@ int process_command_in(char* line_in, kgenv* global_env){
     
 
     //## Expand wildcards
-    //char* line_in_unexpanded = line_in;
-    //line_in = expand_wildcards(line_in, global_env);
-    //free(line_in_unexpanded);
+    if(contains_wildcards(line_in)){
+	char* line_in_original = line_in;
+	line_in = expand_wildcards(line_in, global_env);
+	free(line_in_original);
+    }
 
 
     //## Tokenize the line
     //TODO: free in_argv
-    in_argv = (char**)calloc(MAX_TOKENS_PER_LINE, sizeof(char));
+    in_argv = (char**)calloc(MAX_TOKENS_PER_LINE, sizeof(char*));
     if(!in_argv){
 	perror("Not enough heap");
 	exit(1);
@@ -224,31 +226,31 @@ void detokenize(char* str, int length){
 
 void set_environment(kgenv* env, char* name, char* value){
 
-	//TODO: check for possible memory leaks here
-	char* str = malloc(strlen(name) + strlen(value) + 2);
-	sprintf(str, "%s=%s", name, value);
-	putenv(str);
+    //TODO: check for possible memory leaks here
+    char* str = malloc(strlen(name) + strlen(value) + 2);
+    sprintf(str, "%s=%s", name, value);
+    putenv(str);
 
-	// Handle a change to HOME
-	if(strcmp(name, "HOME") == 0){
-	    //TODO: improve?
-	    env->homedir = str + 5;
+    // Handle a change to HOME
+    if(strcmp(name, "HOME") == 0){
+	//TODO: improve?
+	env->homedir = str + 5;
+    }
+
+    // Handle a change to PATH
+    else if(strcmp(name, "PATH") == 0){
+	//TODO: check for memory leaks here
+	pathList* p = env->path;
+	pathList* old;
+
+	// Only free the first one since they are malloced together.
+	free(p->element);
+	while(p != NULL){
+	    old = p;
+	    p = p->next;
+	    free(old);
 	}
 
-	// Handle a change to PATH
-	else if(strcmp(name, "PATH") == 0){
-	    //TODO: check for memory leaks here
-	    pathList* p = env->path;
-	    pathList* old;
-
-	    // Only free the first one since they are malloced together.
-	    free(p->element);
-	    while(p != NULL){
-		old = p;
-		p = p->next;
-		free(old);
-	    }
-
-	    env->path = get_path();
-	}
+	env->path = get_path();
+    }
 }
