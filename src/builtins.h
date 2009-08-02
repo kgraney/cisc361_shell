@@ -15,7 +15,7 @@
 
 //-- Constants to define how many builtins we have
 #ifdef DEBUG
-#define NUM_BUILTINS 18		// Total number of commands, including debug
+#define NUM_BUILTINS 20		// Total number of commands, including debug
 #else
 #define NUM_BUILTINS 14		// Total number of commands, excluding debug
 #endif //DEBUG
@@ -70,6 +70,10 @@ void _db_kgenv(kgenv* env, int argc, char* argv[]);
 void _db_path(kgenv* env, int argc, char* argv[]);
 
 void _db_history(kgenv* env, int argc, char* argv[]);
+
+void _db_wc_contains(kgenv* env, int argc, char* argv[]);
+
+void _db_wc_expand(kgenv* env, int argc, char* argv[]);
 #endif //DEBUG
 
 #endif //_BUILTINS_INC

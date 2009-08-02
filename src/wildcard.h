@@ -1,4 +1,3 @@
-
 #ifndef _WILDCARD_H
 #define _WILDCARD_H
 
@@ -6,22 +5,13 @@
 #include <glob.h>
 #include "types.h"
 
-#define WILDCARD_CHARACTER	"*"
 #define MAX_WILDCARDS		512
+#define WILDCARD_CHARS 		"*?"
 
-bool check_wildcard(char* pattern, char* string);
+bool contains_wildcards(char* line);
 
 char* expand_wildcards(char* line, kgenv* env);
 
-typedef struct {
-    char* substring;
-    int   type;
-} wildcard_element;
-
-enum {
-    SINGLE,
-    ALL
-};
-
+char* expand_argument(char* argument);
 
 #endif //_WILDCARD_H

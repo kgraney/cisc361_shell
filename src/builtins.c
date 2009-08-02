@@ -1,6 +1,7 @@
 #include "builtins.h"
 #include "get_path.h"
 #include "alias.h"
+#include "wildcard.h"
 
 //------------------------------------------------------------------------------
 //-- The following constants define the built-in commands.  The commands are
@@ -28,7 +29,9 @@ const char* BUILT_IN_COMMANDS[] = {
     "_db_tokenizer",
     "_db_kgenv",
     "_db_path",
-    "_db_history"
+    "_db_history",
+    "_db_wc_contains",
+    "_db_wc_expand"
 #endif //DEBUG
 };
 
@@ -54,7 +57,9 @@ void (*BUILT_IN_FUNCS[])(kgenv*, int, char**) = {
     _db_tokenizer,
     _db_kgenv,
     _db_path,
-    _db_history
+    _db_history,
+    _db_wc_contains,
+    _db_wc_expand
 #endif //DEBUG
 };
 
@@ -435,6 +440,14 @@ void _db_history(kgenv* env, int argc, char* argv[]){
 	printf("%d: %s\n", h->num, h->command);
 	h = h->next;
     }
+}
+
+void _db_wc_contains(kgenv* env, int argc, char* argv[]){
+    printf("%s\n", contains_wildcards(argv[1]) ? "true":"false");
+}
+
+void _db_wc_expand(kgenv* env, int argc, char* argv[]){
+    printf("%s\n", expand_argument(argv[1]));
 }
 
 #endif //DEBUG
