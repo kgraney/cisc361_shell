@@ -37,8 +37,9 @@ char* expand_wildcards(char* line, kgenv* env){
     for(int i=0; i < argc; i++){
 	strcat(expanded, " ");
 	strcat(expanded, expanded_argv[i]);
-	// TODO: free
+	free(expanded_argv[i]);
     }
+    free(expanded_argv);
 
     //char* expanded = malloc(strlen(line) + 1);
     //strcpy(expanded, line);
@@ -49,8 +50,6 @@ char* expand_argument(char* argument){
 
     glob_t pglob;
 
-
-    printf("globbing %s\n", argument);
     if(glob(argument, 0, NULL, &pglob) == 0){
 
 	// If no wildcard in the argument return itself
@@ -72,12 +71,15 @@ char* expand_argument(char* argument){
 	    strcat(expanded_arg, " ");
 	    strcat(expanded_arg, pglob.gl_pathv[i]);
 	} 
-	printf("expanded = %s\n", expanded_arg);
 
 	// Free glob space
 	globfree(&pglob);
 
 	return expanded_arg;
 
+    } else {
+	char* argument_copy = malloc(strlen(argument) + 1);
+	strcpy(argument_copy, argument);
+	return argument_copy;
     }
 }
