@@ -1,3 +1,10 @@
+/** 
+ * @file util.h
+ * @brief Definitions of utility functions.
+ * @author Kevin Graney
+ * @version v0.1
+ * @date 2009-08-02
+ */
 #ifndef _UTIL_INC
 #define _UTIL_INC
 

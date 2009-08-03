@@ -1,3 +1,10 @@
+/** 
+ * @file wildcard.h
+ * @brief Declarations of wildcard functions and constant members.
+ * @author Kevin Graney
+ * @version v0.1
+ * @date 2009-08-02
+ */
 #ifndef _WILDCARD_H
 #define _WILDCARD_H
 
@@ -10,7 +17,7 @@
 
 bool contains_wildcards(char* line);
 
-char* expand_wildcards(char* line, kgenv* env);
+char* expand_wildcards(char* line);
 
 char* expand_argument(char* argument);
 

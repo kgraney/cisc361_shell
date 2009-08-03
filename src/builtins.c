@@ -1,3 +1,10 @@
+/** 
+ * @file builtins.c
+ * @brief Definitions of builtin functions.
+ * @author Kevin Graney
+ * @version v0.1
+ * @date 2009-08-02
+ */
 #include "builtins.h"
 #include "get_path.h"
 #include "alias.h"
@@ -63,11 +70,19 @@ void (*BUILT_IN_FUNCS[])(kgenv*, int, char**) = {
 #endif //DEBUG
 };
 
-/* short int is_builtin(char* command)
+
+/** 
+ * @brief Checks if a command is a built-in command.
+ * 
+ * Loops through ::BUILT_IN_COMMANDS comparing the command parameter to each
+ * string of ::BUILT_IN_COMMANDS.  When a match is found the index plus one is
+ * returned.
  *
- * returns 0 if the given command is not built in
- * returns a positive value that is 1 greater than the index of the function in
- * the builtin definition arrays (BUILT_IN_COMMANDS and BUILT_IN_FUNCS)
+ * @param command The command to check.
+ * 
+ * @return Returns 0 if the command is not built-in, and a positive value that
+ * is one greather than the index of the function in the built-in definitions
+ * arrays (::BUILT_IN_COMMANDS and ::BUILT_IN_FUNCS) if the command is built-in.
  */
 short int is_builtin(char* command){
     for(int i=0; i < NUM_BUILTINS; i++){
@@ -83,10 +98,31 @@ short int is_builtin(char* command){
 //-- Definitions of the various built in functions.
 //------------------------------------------------------------------------------
 
+/** 
+ * @brief Built-in exit command.
+ *
+ * Exits with status 0;
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void bic_exit(kgenv* env, int argc, char* argv[]){
     exit(0);
 }
 
+/** 
+ * @brief Built-in which command.
+ *
+ * Displays the full path to the executable that will be executed for each
+ * command that is given as an argument.  The path printed is the first one that
+ * occurs in the PATH environment variable that contains a file of the correct
+ * name with execute permissions.
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void bic_which(kgenv* env, int argc, char* argv[]){
     if(argc == 1){
 	fprintf(stderr, "which: too few arguments\n");
@@ -104,6 +140,17 @@ void bic_which(kgenv* env, int argc, char* argv[]){
     }
 }
 
+/** 
+ * @brief Built-in where command.
+ *
+ * Same as the which command, but displays all of the possible paths where a
+ * file of the correct name with executable permissions exist within the PATH
+ * envrionment variable list of paths.
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void bic_where(kgenv* env, int argc, char* argv[]){
     if(argc == 1){
 	fprintf(stderr, "where: Too few arguments.\n");
@@ -135,6 +182,21 @@ void bic_where(kgenv* env, int argc, char* argv[]){
     }
 }
 
+/** 
+ * @brief Built-in cd command.
+ *
+ * Changes the current working directory using the chdir library function.  When
+ * called with no arguments, changes to the user's home directory.  When called
+ * as "cd -", changes to the previous directory. 
+ *
+ * Before switching, the previous directory and the current directory are set in
+ * the global ::kgenv environment object.  The user's home directory is also
+ * retrievable from this object.
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void bic_cd(kgenv* env, int argc, char* argv[]){
     //** Does nothing if executed with more than one argument 
     if(argc > 2){
@@ -196,6 +258,15 @@ void bic_cd(kgenv* env, int argc, char* argv[]){
     }
 }
 
+/** 
+ * @brief Built-in pwd command.
+ *
+ * Prints the current working directory to stdout.
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void bic_pwd(kgenv* env, int argc, char* argv[]){
 
     // Print the current working directory
@@ -203,6 +274,15 @@ void bic_pwd(kgenv* env, int argc, char* argv[]){
 
 }
 
+/** 
+ * @brief Built-in list command.
+ *
+ * Lists files in the directores specified as arguments.
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 // TODO: reverse order of printout
 void bic_list(kgenv* env, int argc, char* argv[]){
     DIR* dirp;			// directory pointer
@@ -242,11 +322,32 @@ void bic_list(kgenv* env, int argc, char* argv[]){
     }
 }
 
+
+/** 
+ * @brief Built-in pid command.
+ *
+ * Prints the process id (pid) of the shell.
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void bic_pid(kgenv* env, int argc, char* argv[]){
     //TODO: add error handling for getpid
     printf("%d\n", getpid());
 }
 
+
+/** 
+ * @brief Built-in kill command.
+ * 
+ * Sends a SIGTERM signal to the pid specified in the arguments.  If a -n is
+ * passed, the signal number n is passed to the specified process.
+ *
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void bic_kill(kgenv* env, int argc, char* argv[]){
     //TODO: bic_kill
 
@@ -262,9 +363,19 @@ void bic_kill(kgenv* env, int argc, char* argv[]){
 	}
     }
 
-
 }
 
+
+/** 
+ * @brief Built-in prompt command.
+ *
+ * Changes the prompt prefix to the specified argument.  If no argument is
+ * passed, prompts the user for a prefix.
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void bic_prompt(kgenv* env, int argc, char* argv[]){
     char* new_prompt;		// the new prompt string
 
@@ -292,6 +403,16 @@ void bic_prompt(kgenv* env, int argc, char* argv[]){
     free(prompt_in);
 }
 
+
+/** 
+ * @brief Built-in printenv command.
+ *
+ * Prints out a list of environment variables and their values.
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void bic_printenv(kgenv* env, int argc, char* argv[]){
 
     // Called with no arguments, print entire environment
@@ -319,6 +440,18 @@ void bic_printenv(kgenv* env, int argc, char* argv[]){
 
 }
 
+
+/** 
+ * @brief Built-in alias command.
+ *
+ * When run with no arguments prints a list of aliases currently in the alias
+ * list.  When ran with arguments sets the alias name in the first argument to
+ * the command specified in subsequent arguments.
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void bic_alias(kgenv* env, int argc, char* argv[]){
 
     // If no arguments are passed print the alias list
@@ -337,12 +470,33 @@ void bic_alias(kgenv* env, int argc, char* argv[]){
     add_alias(env, argv[1], argc - 2, &argv[2]);
 }
 
+
+/** 
+ * @brief Built-in unalias command.
+ *
+ * Removes an alias from the alias list. 
+ *
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void bic_unalias(kgenv* env, int argc, char* argv[]){
     //TODO: support multiple arguments
     if(argc == 2)
 	remove_alias(env, argv[1]);
 }
 
+
+/** 
+ * @brief Built-in history command.
+ * 
+ * When run with no arguments, prints out the last 10 commands run.  When an
+ * argument is passed, that number of commands is printed.
+ *
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 //TODO: fix history
 void bic_history(kgenv* env, int argc, char* argv[]){
     int num_items = 0;	// Number of commands to print
@@ -375,6 +529,18 @@ void bic_history(kgenv* env, int argc, char* argv[]){
     }
 }
 
+
+/** 
+ * @brief Built-in setenv command.
+ *
+ * When run with no arguments prints a list of environment variables and values.
+ * When run with two arguments, sets the variable in the first argument equal to
+ * the value in the second argument.
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void bic_setenv(kgenv* env, int argc, char* argv[]){
     //TODO: bic_setenv
 
@@ -408,6 +574,14 @@ void bic_setenv(kgenv* env, int argc, char* argv[]){
 //------------------------------------------------------------------------------
 
 #ifdef DEBUG
+
+/** 
+ * @brief 
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void _db_tokenizer(kgenv* env, int argc, char* argv[]){
     printf("argc = %d\n", argc);
     for(int i=0; i<argc; i++){
@@ -415,6 +589,14 @@ void _db_tokenizer(kgenv* env, int argc, char* argv[]){
     }
 }
 
+
+/** 
+ * @brief 
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void _db_kgenv(kgenv* env, int argc, char* argv[]){
 
     printf("uid=%d\n", env->uid);
@@ -426,6 +608,14 @@ void _db_kgenv(kgenv* env, int argc, char* argv[]){
     printf("prompt=%s\n", env->prompt);
 }
 
+
+/** 
+ * @brief 
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void _db_path(kgenv* env, int argc, char* argv[]){
     pathList* p = env->path;
     while (p != NULL){
@@ -434,6 +624,14 @@ void _db_path(kgenv* env, int argc, char* argv[]){
     }
 }
 
+
+/** 
+ * @brief 
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void _db_history(kgenv* env, int argc, char* argv[]){
     histList* h = env->hist;
     while (h != NULL){
@@ -442,10 +640,26 @@ void _db_history(kgenv* env, int argc, char* argv[]){
     }
 }
 
+
+/** 
+ * @brief 
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void _db_wc_contains(kgenv* env, int argc, char* argv[]){
     printf("%s\n", contains_wildcards(argv[1]) ? "true":"false");
 }
 
+
+/** 
+ * @brief 
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void _db_wc_expand(kgenv* env, int argc, char* argv[]){
     printf("%s\n", expand_argument(argv[1]));
 }

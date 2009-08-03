@@ -1,3 +1,10 @@
+/** 
+ * @file kgsh.c
+ * @brief kgsh main file
+ * @author Kevin Graney
+ * @version v0.1
+ * @date 2009-08-02
+ */
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -11,14 +18,11 @@
 #include <dirent.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <errno.h>	// for extern errno
+#include <errno.h>
 
 #include "builtins.h"
 #include "util.h"
 #include "get_path.h"
-
-
-extern int errno;	// From errno.h 
 
 void initialize_environment(kgenv* env);
 
@@ -26,8 +30,7 @@ void sig_interrupt(int signal);
 
 int main(int argc, char* argv[]){
 
-    // The global environment structure
-    kgenv global_env;
+    kgenv global_env; // The global environment structure
     
     // Populate the global environment for the first time
     initialize_environment(&global_env);
@@ -68,6 +71,14 @@ int main(int argc, char* argv[]){
     }
 }
 
+/** 
+ * @brief Initializes the kgenv global environment.
+ *
+ * This function is only called once at startup to populate the singleton
+ * instance of the kgenv stuct.
+ * 
+ * @param env A pointer to the global environment instance.
+ */
 void initialize_environment(kgenv* env){
 
     char* cwd;
@@ -90,6 +101,11 @@ void initialize_environment(kgenv* env){
 
 }
 
+/** 
+ * @brief Function executed when SIGINT (Ctrl-C) is caught. 
+ * 
+ * @param signal Signal passed in.  Currently it's always SIGINT.
+ */
 void sig_interrupt(int signal){
     printf("\n");
     // TODO: determine if anything special needs to be done to forward SIGINT to

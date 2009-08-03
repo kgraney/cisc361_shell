@@ -1,3 +1,10 @@
+/** 
+ * @file util.c
+ * @brief Definitions of utility functions.
+ * @author Kevin Graney
+ * @version v0.1
+ * @date 2009-08-02
+ */
 #include "util.h"
 #include "alias.h"
 #include "builtins.h"
@@ -46,6 +53,13 @@ char* which(const char* command, pathList* pathlist){
 }
 
 
+/** 
+ * @brief Adds a command to the history list.
+ * 
+ * @param command The command to be added to the list.
+ * @param env The global ::kgenv environment object.  Needed to access the
+ * global history list.
+ */
 void add_to_history(char* command, kgenv* env){
     histList* new_item;
     new_item = malloc(sizeof(histList));
@@ -131,7 +145,7 @@ int process_command_in(char* line_in, kgenv* global_env){
     //## Expand wildcards
     if(contains_wildcards(line_in)){
 	char* line_in_original = line_in;
-	line_in = expand_wildcards(line_in, global_env);
+	line_in = expand_wildcards(line_in);
 	free(line_in_original);
     }
 

@@ -14,5 +14,9 @@ kgsh: $(OBJ)
 %.o: src/%.c
 	$(CC) $(CFLAGS) -c $<  -o $@
 
+doc:
+	doxygen
+	make -f docs/latex/Makefile
+
 clean: 
 	rm -f kgsh *.o

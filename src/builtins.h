@@ -1,3 +1,10 @@
+/** 
+ * @file builtins.h
+ * @brief Declarations of builtin functions and constant members.
+ * @author Kevin Graney
+ * @version v0.1
+ * @date 2009-08-02
+ */
 #ifndef _BUILTINS_INC
 #define _BUILTINS_INC
 

@@ -1,3 +1,10 @@
+/** 
+ * @file alias.h
+ * @brief Definition of alias functions.
+ * @author Kevin Graney
+ * @version v0.1
+ * @date 2009-08-02
+ */
 #ifndef _ALIAS_INC
 #define _ALIAS_INC
 
@@ -5,7 +12,7 @@
 
 void add_alias(kgenv* env, char* name, int cmd_argc, char* cmd_argv[]);
 
-void remove_alias(kgenv* env, char* name);
+bool remove_alias(kgenv* env, char* name);
 
 aliasList* is_alias(kgenv* env, char* name);
 
