@@ -11,6 +11,19 @@
 #include "get_path.h"
 #include "wildcard.h"
 
+/** 
+ * @brief Returns the location of an executable in the PATH.
+ *
+ * Loops through the path linked list and returns the location of the first
+ * file named command in the path directories with execute permissions.  Does
+ * not go into sub-directories in search of an executable.
+ * 
+ * @param command Name of the executable to search for.
+ * @param pathlist The path list to search.  Usually the one stored in the
+ * global ::kgenv environment structure.
+ * 
+ * @return 
+ */
 char* which(const char* command, pathList* pathlist){
     pathList* pl = pathlist;
 
@@ -78,6 +91,17 @@ void add_to_history(char* command, kgenv* env){
 }
 
 
+/** 
+ * @brief Executes a command.
+ *
+ * Forks the shell process and executes the given command in the child process.
+ * Passes all environment variables. 
+ * 
+ * @param cmd The command to be exectued.
+ * @param argv Argument array for the command.
+ * 
+ * @return The exit status of the command.
+ */
 int exec_cmd(char* cmd, char** argv){
 
     //TODO: Print absolute path even if relative is passed?
@@ -91,7 +115,8 @@ int exec_cmd(char* cmd, char** argv){
 
     if(child_pid == 0){			//** Executed in child process
 
-	execve(cmd, argv, environ);
+	execve(cmd, argv, environ);	//TODO: switch to using kgenv
+					//environment list
 	
 	// Exec commands only return if there's an error
 	perror("Error in exec");	
@@ -118,6 +143,21 @@ int exec_cmd(char* cmd, char** argv){
 }
 
 
+/** 
+ * @brief Processes an input command line.
+ * 
+ * Processes an input command line entered at the shell prompt from tokenizing
+ * through execution.  Handles wildcards, aliases, built-in commands, relative
+ * and absolute paths, and any other command line syntax.
+ *
+ * This function is called primarily through the closed prompt loop in ::main.
+ * Memory allocation and deallocation of line_in is handled by ::main. 
+ *
+ * @param line_in The command line entered at the shell prompt.
+ * @param global_env The ::kgenv global environment structure.
+ * 
+ * @return The length of the line processed.
+ */
 int process_command_in(char* line_in, kgenv* global_env){
 
     int    in_argc;		// argc for the command being processed
@@ -182,7 +222,7 @@ int process_command_in(char* line_in, kgenv* global_env){
 	return line_length;
     }
 
-    //## process absolute and relative paths
+    //## Process absolute and relative paths
     // TODO: cleanup this logic
     if( (in_argv[0][0] == '/') ||
 	((in_argv[0][0] == '.') && ((in_argv[0][1] == '/') ||
@@ -196,7 +236,7 @@ int process_command_in(char* line_in, kgenv* global_env){
     }
 
 
-    //## process commands in the path
+    //## Process commands in the path
     char* exe_path = which(in_argv[0], global_env->path);
     if(exe_path != NULL){
 
@@ -205,11 +245,23 @@ int process_command_in(char* line_in, kgenv* global_env){
 
     }
 
-    //## command not found
+    //## Command not found
     fprintf(stderr, "%s: Command not found.\n", in_argv[0]);
 
 }
 
+/** 
+ * @brief Parses a command line into an argument (argv) array.
+ * 
+ * @param argc Will be set to the number of arguments in the command string.
+ * @param argv Will be set to point to the array of arguments in the command 
+ * string.  This argument should be preallocated to be an array of pointers.
+ * The returned array will point to memory locations inside of line, so it's
+ * important that line is not deleted before appropriate action is taken.
+ * @param line The input line to parse.
+ * 
+ * @return 1 if the command was successfully parsed, and 0 if the line is blank.
+ */
 int parse_line(int* argc, char*** argv, char* line){
     char* strtok_ptr = NULL;
     char* token = strtok_r(line, " \n", &strtok_ptr);
@@ -230,6 +282,17 @@ int parse_line(int* argc, char*** argv, char* line){
 }
 
 
+/** 
+ * @brief Detokenizes a string that was tokenized using ::strtok.
+ *
+ * Used primarily by alias functions to detokenize the alias string before 
+ * storing it in the alias linked list.  For this function to work, all tokens
+ * must still be stored sequentially in memory as they are after a call to
+ * ::strtok.
+ * 
+ * @param str Pointer to the start of the string.
+ * @param length The length of the string in characters.
+ */
 void detokenize(char* str, int length){
     for(int i=0; i < length - 1; i++){
 	if(str[i] == '\0'){
@@ -238,6 +301,18 @@ void detokenize(char* str, int length){
     }
 }
 
+/** 
+ * @brief Sets an environment variable.
+ * 
+ * Sets an environment variable in the ::kgenv global environment structure's
+ * internal environment string.  Special action is taken if either the HOME or
+ * PATH environment variables change since other data structres need to be
+ * updated.
+ *
+ * @param env The global ::kgenv environment structure.
+ * @param name The name of the environment variable to set.
+ * @param value The value (string) to set the environment variable to.
+ */
 void set_environment(kgenv* env, char* name, char* value){
 
     //TODO: check for possible memory leaks here

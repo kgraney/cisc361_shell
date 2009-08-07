@@ -90,7 +90,7 @@ typedef struct {
 //------------------------------------------------------------------------------
 
 /**
- * @basis This is the generic function type for a built in function.  It's used 
+ * @brief This is the generic function type for a built in function.  It's used 
  * to setup the function pointer arrays.
  */
 typedef void (*bicfunc)(kgenv*, int, char*);

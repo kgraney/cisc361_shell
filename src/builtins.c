@@ -15,7 +15,12 @@
 //-- matched to the function pointers with a one-to-one matching done in order.
 //------------------------------------------------------------------------------
 
-// defines the built in commands
+/** 
+ * @brief Stores the commands that map to the built-in functions.
+ *
+ * These strings are what, if entered as the zeroth argument (argv[0]) in a
+ * command will execute a built-in function.
+ */
 const char* BUILT_IN_COMMANDS[] = {
     "exit",
     "which",
@@ -27,11 +32,11 @@ const char* BUILT_IN_COMMANDS[] = {
     "kill", 
     "prompt",
     "printenv",
-    "alias", 		// Not required, but useful.
-    "unalias",
+    "alias",
+    "unalias", 		// Not a requirement, but easy to add. 
     "history", 
     "setenv"
-#ifdef DEBUG		// Various built ins defined for debugging purposes
+#ifdef DEBUG		// Various built ins defined for debugging purposes.
 	,
     "_db_tokenizer",
     "_db_kgenv",
@@ -42,9 +47,24 @@ const char* BUILT_IN_COMMANDS[] = {
 #endif //DEBUG
 };
 
-// Defines a function pointer to the function to execute for the built-in
-// command
-void (*BUILT_IN_FUNCS[])(kgenv*, int, char**) = {
+
+/** 
+ * @brief An array of function pointers for built-in commands.
+ 
+ * These function pointers map one-to-one in order with the command strings in 
+ * ::BUILT_IN_COMMANDS.  Each built-in command function has the same prototype.
+ * Setting the prototypes up in this way allows us to write each built-in as if
+ * it were a "main" functions of a seperate program with access to the ::kgenv
+ * structure.  Adding new built-ins is very easy.
+ * 
+ * @param env The global ::kgenv structure is the first argument to every 
+ * built-in command.
+ * @param argc The second argument is always the argument count of the command 
+ * being proccessed. 
+ * @param argv The third argument is always the argument value array of the 
+ * command being processed.
+ */
+void (*BUILT_IN_FUNCS[])(kgenv* env, int argc, char** argv) = {
     bic_exit, 
     bic_which, 
     bic_where, 

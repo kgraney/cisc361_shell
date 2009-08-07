@@ -12,6 +12,15 @@ where ls
 /usr/ucb/ls -l
 /usr/bin/ls -l -g
 /usr/bin/ls -l
+file *
+ls *
+ls *.c
+ls -l sh.*
+ls -l s*.c
+ls -l s*h.c
+ls sh.?
+ls ?h.c
+ls *.?
 blah
 /blah
 ls -l /blah

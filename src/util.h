@@ -27,16 +27,15 @@
 #define HISTORY_SIZE 		1024
 
 
-// Envrionment variables
+/** 
+ * @brief The external environment variable list from the calling shell.
+ */
 extern char** environ;
 
-// Returns the full path to an executable by searching the path directories.
 char* which(const char *command, pathList* pathlist);
 
-// Adds a command to the history stack
 void add_to_history(char* command, kgenv* env);
 
-// Executes a command as a child process
 int exec_cmd(char* cmd, char** argv);
 
 int process_command_in(char* line_in, kgenv* global_env);
@@ -47,8 +46,5 @@ void detokenize(char* str, int length);
 
 void set_environment(kgenv* env, char* name, char* value);
 
-
-#pragma returns_new_memory(malloc)
-#pragma returns_new_memory(calloc)
 
 #endif //_UTIL_INC
