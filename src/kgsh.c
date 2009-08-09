@@ -45,11 +45,9 @@ int main(int argc, char* argv[]){
     // The main loop that is executed once for each command prompt.
     while(1){
 
-	// Free up memory from the previous iteration.  Done here since we have
-	// various continues throughout the loop.
+	// Free up memory from the previous iteration.
 	if(line_in != NULL)
 	    free(line_in);
-
 
 	//## Print the shell prompt
 	printf("%s %s> ", global_env.prompt, global_env.cwd);
@@ -68,7 +66,6 @@ int main(int argc, char* argv[]){
 
 	//## Parse the command and execute the appropriate action
 	process_command_in(line_in, &global_env);
-	free(line_in);
     }
 }
 

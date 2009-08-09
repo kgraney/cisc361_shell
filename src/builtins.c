@@ -596,7 +596,8 @@ void bic_setenv(kgenv* env, int argc, char* argv[]){
 #ifdef DEBUG
 
 /** 
- * @brief 
+ * @brief Debugs the tokenizer by showing argument count and argument values for
+ * the arguments passed to ::_db_tokenizer.
  * 
  * @param env A pointer to the global ::kgenv environment object.
  * @param argc The argument count for the command entered.	
@@ -611,7 +612,8 @@ void _db_tokenizer(kgenv* env, int argc, char* argv[]){
 
 
 /** 
- * @brief 
+ * @brief Prints out some of the variables in the global ::kgenv environment
+ * object for debugging purposes.
  * 
  * @param env A pointer to the global ::kgenv environment object.
  * @param argc The argument count for the command entered.	
@@ -630,7 +632,7 @@ void _db_kgenv(kgenv* env, int argc, char* argv[]){
 
 
 /** 
- * @brief 
+ * @brief Prints out path list for debugging purposes.
  * 
  * @param env A pointer to the global ::kgenv environment object.
  * @param argc The argument count for the command entered.	
@@ -646,7 +648,7 @@ void _db_path(kgenv* env, int argc, char* argv[]){
 
 
 /** 
- * @brief 
+ * @brief Prints out entire history list for debugging purposes.
  * 
  * @param env A pointer to the global ::kgenv environment object.
  * @param argc The argument count for the command entered.	
@@ -662,7 +664,8 @@ void _db_history(kgenv* env, int argc, char* argv[]){
 
 
 /** 
- * @brief 
+ * @brief Prints "true" if the first argument contains a wildcard and "false" if
+ * it does not.  Used to debug ::contains_wildcards.
  * 
  * @param env A pointer to the global ::kgenv environment object.
  * @param argc The argument count for the command entered.	
@@ -674,7 +677,8 @@ void _db_wc_contains(kgenv* env, int argc, char* argv[]){
 
 
 /** 
- * @brief 
+ * @brief Prints the expanded version of the first argument.  Used to debug
+ * ::expand_argument.
  * 
  * @param env A pointer to the global ::kgenv environment object.
  * @param argc The argument count for the command entered.	

@@ -73,7 +73,7 @@ typedef struct pathelement pathList;
 typedef struct {
     int uid;			        ///< User ID 
     char* homedir;		        ///< Home directory path
-    struct passwd *pword_entry;	///< Passwd entry info (not needed?)
+    struct passwd *pword_entry;		///< Passwd entry info (not needed?)
 
     char* cwd;	  		        ///< Current working directory
     char* pwd;    		        ///< Prior working directory
@@ -81,7 +81,7 @@ typedef struct {
     char* prompt; 		        ///< Prompt prefix string
     pathList* path;		        ///< Path list pointer
     histList* hist;		        ///< History list pointer
-    aliasList* aliases;		    ///< Alias list pointer
+    aliasList* aliases;		    	///< Alias list pointer
 } kgenv;
 
 
