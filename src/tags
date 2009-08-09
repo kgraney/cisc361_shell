@@ -1,8 +1,11 @@
 Mkgsh	kgsh.c	/^int main(int argc, char* argv[]){$/
+Mtags	tags	/^Mkgsh	kgsh.c	\/^int main(int argc, char* argv[]){$\//
 _db_history	builtins.c	/^void _db_history(kgenv* env, int argc, char* argv[/
 _db_kgenv	builtins.c	/^void _db_kgenv(kgenv* env, int argc, char* argv[])/
 _db_path	builtins.c	/^void _db_path(kgenv* env, int argc, char* argv[]){/
 _db_tokenizer	builtins.c	/^void _db_tokenizer(kgenv* env, int argc, char* arg/
+_db_wc_contains	builtins.c	/^void _db_wc_contains(kgenv* env, int argc, char* a/
+_db_wc_expand	builtins.c	/^void _db_wc_expand(kgenv* env, int argc, char* arg/
 add_alias	alias.c	/^void add_alias(kgenv* env, char* name, int cmd_arg/
 add_to_history	util.c	/^void add_to_history(char* command, kgenv* env){$/
 bic_alias	builtins.c	/^void bic_alias(kgenv* env, int argc, char* argv[])/
@@ -19,13 +22,18 @@ bic_setenv	builtins.c	/^void bic_setenv(kgenv* env, int argc, char* argv[]/
 bic_unalias	builtins.c	/^void bic_unalias(kgenv* env, int argc, char* argv[/
 bic_where	builtins.c	/^void bic_where(kgenv* env, int argc, char* argv[])/
 bic_which	builtins.c	/^void bic_which(kgenv* env, int argc, char* argv[])/
+contains_wildcards	wildcard.c	/^bool contains_wildcards(char* line){$/
 detokenize	util.c	/^void detokenize(char* str, int length){$/
 exec_cmd	util.c	/^int exec_cmd(char* cmd, char** argv){$/
+expand_argument	wildcard.c	/^char* expand_argument(char* argument){$/
+expand_wildcards	wildcard.c	/^char* expand_wildcards(char* line){$/
 get_path	get_path.c	/^struct pathelement *get_path()$/
 initialize_environment	kgsh.c	/^void initialize_environment(kgenv* env){$/
 is_alias	alias.c	/^aliasList* is_alias(kgenv* env, char* name){$/
 is_builtin	builtins.c	/^short int is_builtin(char* command){$/
 parse_line	util.c	/^int parse_line(int* argc, char*** argv, char* line/
 process_command_in	util.c	/^int process_command_in(char* line_in, kgenv* globa/
-remove_alias	alias.c	/^void remove_alias(kgenv* env, char* name){$/
+remove_alias	alias.c	/^bool remove_alias(kgenv* env, char* name){$/
+set_environment	util.c	/^void set_environment(kgenv* env, char* name, char*/
+sig_interrupt	kgsh.c	/^void sig_interrupt(int signal){$/
 which	util.c	/^char* which(const char* command, pathList* pathlis/

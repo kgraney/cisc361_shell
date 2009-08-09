@@ -15,6 +15,8 @@
 #include <sys/types.h>  // for readdir and opendir
 #include <dirent.h>	// for readdir and opendir
 
+#include <string.h>
+
 #include "types.h"
 #include "get_path.h"
 

@@ -1,17 +1,22 @@
 
-ARCH:sh =uname -m
-CC=cc
-CFLAGS=-g -DDEBUG -v -xcheck -m64 
-#CFLAGS=-std=c99
-OBJ= kgsh.o builtins.o get_path.o util.o alias.o wildcard.o
-OBJDIR=obj-$(ARCH)
+ARCH	:= $(shell uname -m)
+CC	:= cc
+CFLAGS	:= -g -DDEBUG -v -xcheck -m64 
+#CC	:= gcc
+#CFLAGS	:= -g -DDEBUG -std=c99
+#OBJ	:= kgsh.o builtins.o get_path.o util.o alias.o wildcard.o
+OBJDIR	:= tgt-$(ARCH)
+#SOURCES := $(shell ls -l src/*.c | awk '{print $9}' | sed 's/src\///g')
+SOURCES := $(shell ls -t src/*.c | sed 's/src\///g')
+OBJS	:= $(SOURCES:%.c=$(OBJDIR)/%.o)
 
-default: kgsh
+default: $(OBJDIR)/kgsh
 
-kgsh: $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $@
+$(OBJDIR)/kgsh: $(OBJS) 
+	$(CC) $(CFLAGS) $(OBJS) -o $@
 
-%.o: src/%.c
+$(OBJDIR)/%.o: src/%.c
+	mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c $<  -o $@
 
 doc:
@@ -19,4 +24,7 @@ doc:
 	make -f docs/latex/Makefile
 
 clean: 
-	rm -f kgsh *.o
+	rm -r $(OBJDIR)
+
+clean_all:
+	rm -r 'tgt-*'
