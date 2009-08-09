@@ -68,6 +68,7 @@ int main(int argc, char* argv[]){
 
 	//## Parse the command and execute the appropriate action
 	process_command_in(line_in, &global_env);
+	free(line_in);
     }
 }
 

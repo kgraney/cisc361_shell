@@ -112,6 +112,7 @@ char* expand_argument(char* argument){
         if(pglob.gl_pathc == 0){
             char* argument_copy = malloc(strlen(argument) + 1);
             strcpy(argument_copy, argument);
+	    globfree(&pglob);		// Free up memory
             return argument_copy;
         }
 
@@ -136,6 +137,9 @@ char* expand_argument(char* argument){
         return expanded_arg;
 
     } else {
+
+	//## Free up memory
+        globfree(&pglob);
 
         //## Make a copy of the argument and return
         char* argument_copy = malloc(strlen(argument) + 1);

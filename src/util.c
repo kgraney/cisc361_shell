@@ -199,6 +199,9 @@ int process_command_in(char* line_in, kgenv* global_env){
     }
 
     if(!parse_line(&in_argc, &in_argv, line_in)){
+
+	free(in_argv);
+	free(line_in);
 	return line_length;	// continue if the line is blank
     }
 
@@ -208,6 +211,9 @@ int process_command_in(char* line_in, kgenv* global_env){
     if(alias_ptr){
 	int length = process_command_in(alias_ptr->string, global_env);
 	detokenize(alias_ptr->string, length);
+
+	free(in_argv);
+	free(line_in);
 	return line_length;
     }
 
@@ -219,6 +225,9 @@ int process_command_in(char* line_in, kgenv* global_env){
 	printf("Executing builtin %s\n", in_argv[0]);
 	#endif //O_VERBOSE_EXE
 	(*BUILT_IN_FUNCS[--builtin_code])(global_env, in_argc, in_argv);
+
+	free(in_argv);
+	free(line_in);
 	return line_length;
     }
 
@@ -231,6 +240,9 @@ int process_command_in(char* line_in, kgenv* global_env){
 	// Execute the file if it's executable
 	if(access(in_argv[0], X_OK) == 0){
 	    exec_cmd(in_argv[0], in_argv);
+
+	    free(in_argv);
+	    free(line_in);
 	    return line_length;
 	}
     }
@@ -241,6 +253,10 @@ int process_command_in(char* line_in, kgenv* global_env){
     if(exe_path != NULL){
 
 	exec_cmd(exe_path, in_argv);
+
+	free(in_argv);
+	free(line_in);
+	free(exe_path);
 	return line_length;
 
     }
@@ -248,6 +264,9 @@ int process_command_in(char* line_in, kgenv* global_env){
     //## Command not found
     fprintf(stderr, "%s: Command not found.\n", in_argv[0]);
 
+    free(in_argv);
+    free(line_in);
+    return line_length;
 }
 
 /** 
@@ -315,10 +334,11 @@ void detokenize(char* str, int length){
  */
 void set_environment(kgenv* env, char* name, char* value){
 
-    //TODO: check for possible memory leaks here
+    // Store the new environment variable
     char* str = malloc(strlen(name) + strlen(value) + 2);
     sprintf(str, "%s=%s", name, value);
     putenv(str);
+    free(str);	//TODO: confirm this is correct and putenv doesn't alias here
 
     // Handle a change to HOME
     if(strcmp(name, "HOME") == 0){
