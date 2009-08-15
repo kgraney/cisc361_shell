@@ -2,11 +2,7 @@
  * CISC361: Operating Systems (Fall 2009)
  * Instructor: Ben Miller
  *
-<<<<<<< HEAD:src/builtins.h
  * Project 2
-=======
- * Project 1
->>>>>>> proj1:src/builtins.h
  * Kevin Graney
  */
 
