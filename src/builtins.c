@@ -612,6 +612,16 @@ void bic_setenv(kgenv* env, int argc, char* argv[]){
     }
 }
 
+/** 
+ * @brief Built-in lsbuiltins command.
+ *
+ * Lists all built-in functions.  Ignores any arguments passed.
+ * (Not a project requirement.)
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
 void bic_lsbuiltins(kgenv* env, int argc, char* argv[]){
 
     for(int i=0; i < NUM_BUILTINS; i++){
