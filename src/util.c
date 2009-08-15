@@ -191,10 +191,9 @@ int process_command_in(char* line_in, kgenv* global_env){
 
     //## Capture an EOF with no prefix 
     if(feof(stdin)){
-	printf("\nUse \"exit\" to leave kgsh.\n");
+	//printf("\nUse \"exit\" to leave kgsh.\n");
+	//TODO: Fix this feature.
     }
-    //TODO: Add EOF listing capability
-
 
     //## Add the line to the history stack
     if(line_in[0] != '\0')	// don't add blank lines

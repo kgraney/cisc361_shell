@@ -43,7 +43,8 @@ const char* BUILT_IN_COMMANDS[] = {
     "alias",
     "unalias", 		// Not a requirement, but easy to add. 
     "history", 
-    "setenv"
+    "setenv",
+    "lsbuiltins"
 #ifdef DEBUG		// Various built ins defined for debugging purposes.
 	,
     "_db_tokenizer",
@@ -86,7 +87,8 @@ void (*BUILT_IN_FUNCS[])(kgenv* env, int argc, char** argv) = {
     bic_alias,
     bic_unalias,
     bic_history, 
-    bic_setenv
+    bic_setenv,
+    bic_lsbuiltins
 #ifdef DEBUG		// various built ins defined for debugging purposes
     	,
     _db_tokenizer,
@@ -377,18 +379,31 @@ void bic_pid(kgenv* env, int argc, char* argv[]){
  * @param argv[] The argument values for the command entered.
  */
 void bic_kill(kgenv* env, int argc, char* argv[]){
-    //TODO: bic_kill
+    int pid;			///< PID of the process to send signal to
+    int signal = SIGTERM;	///< Default signal is SIGTERM
 
+    // Called with no arguments
     if(argc == 1){
 	fprintf(stderr, "kill: Too few arguments.\n");
+	return;
     }
 
-    else if(argc == 1){
-	int pid = atoi(argv[1]);
-	//sigsend(P_PID, pid, SIGTERM);
-	if(kill(pid, SIGTERM) != 0){
-	    perror("kill");
-	}
+    if(argc == 2){		// Called with just a pid
+    	pid = atoi(argv[1]);
+    } else if(argc == 3){	// Called with a signal specified
+	pid = atoi(argv[2]);
+	signal = atoi(argv[1] + 1);	// Add one to remove hyphen
+    } else {			// Called with too many arguments
+	fprintf(stderr, "kill: Too many arguments.\n");
+	return;
+    }	
+
+    //sigsend(P_PID, pid, signal);
+    //printf("Sending code %d to pid %d\n", signal, pid);
+
+    // Send the kill signal
+    if(kill(pid, signal) != 0){
+	perror("kill");
     }
 
 }
@@ -595,6 +610,24 @@ void bic_setenv(kgenv* env, int argc, char* argv[]){
     else {
 	fprintf(stderr, "setenv: Too many arguments.\n");
     }
+}
+
+/** 
+ * @brief Built-in lsbuiltins command.
+ *
+ * Lists all built-in functions.  Ignores any arguments passed.
+ * (Not a project requirement.)
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
+void bic_lsbuiltins(kgenv* env, int argc, char* argv[]){
+
+    for(int i=0; i < NUM_BUILTINS; i++){
+	printf("%s\n", BUILT_IN_COMMANDS[i]);
+    }
+
 }
 
 //------------------------------------------------------------------------------
