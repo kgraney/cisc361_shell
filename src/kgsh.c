@@ -35,8 +35,7 @@ int main(int argc, char* argv[]){
     // Populate the global environment for the first time
     initialize_environment(&global_env);
 
-    // Set the interrupt function to catch SIGINT (Ctrl-C)
-    sigset(SIGINT, sig_interrupt);
+    sigset(SIGINT, sig_interrupt);	// Interrupt function for Ctrl-C 
     sigignore(SIGTSTP); 		// Ignore Ctrl-Z
     sigignore(SIGTERM);
 
