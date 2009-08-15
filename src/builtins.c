@@ -43,7 +43,8 @@ const char* BUILT_IN_COMMANDS[] = {
     "alias",
     "unalias", 		// Not a requirement, but easy to add. 
     "history", 
-    "setenv"
+    "setenv",
+    "lsbuiltins"
 #ifdef DEBUG		// Various built ins defined for debugging purposes.
 	,
     "_db_tokenizer",
@@ -86,7 +87,8 @@ void (*BUILT_IN_FUNCS[])(kgenv* env, int argc, char** argv) = {
     bic_alias,
     bic_unalias,
     bic_history, 
-    bic_setenv
+    bic_setenv,
+    bic_lsbuiltins
 #ifdef DEBUG		// various built ins defined for debugging purposes
     	,
     _db_tokenizer,
@@ -608,6 +610,14 @@ void bic_setenv(kgenv* env, int argc, char* argv[]){
     else {
 	fprintf(stderr, "setenv: Too many arguments.\n");
     }
+}
+
+void bic_lsbuiltins(kgenv* env, int argc, char* argv[]){
+
+    for(int i=0; i < NUM_BUILTINS; i++){
+	printf("%s\n", BUILT_IN_COMMANDS[i]);
+    }
+
 }
 
 //------------------------------------------------------------------------------
