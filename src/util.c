@@ -40,8 +40,14 @@ char* which(const char* command, pathList* pathlist){
 
 	DIR* dirp = opendir(pl->element);
 
-	if(dirp != NULL){
-	    struct dirent* dp = readdir(dirp);
+	if(dirp == NULL){
+
+	    perror("Error in which");
+	    return NULL;
+
+	} else {
+
+	    struct dirent* dp = readdir(dirp);	//TODO: errno check?
 
 	    // Iterate over every file in the directory
 	    while(dp != NULL){
@@ -53,12 +59,19 @@ char* which(const char* command, pathList* pathlist){
 		    // Generate an absolute path for the file that was found
 		    char* full_path = malloc(strlen(command) 
 			    + strlen(pl->element) + 2);                
+		    if(full_path == NULL){
+			perror("Error in which");
+			return NULL;
+		    }
+
                     sprintf(full_path, "%s/%s", pl->element, command);
 
 		    // Check for execute permissions on the file found
 		    if(access(full_path, X_OK) == 0){
 			return full_path;
 		    } else {
+			//TODO: Verify we don't need a perror here.  This should
+			//be silent if an error condition occurs.
 
 			// Free the memory if we're not returning it
 			free(full_path);
@@ -66,7 +79,9 @@ char* which(const char* command, pathList* pathlist){
 		}
 		dp = readdir(dirp);
 	    }
-	    closedir(dirp);
+	    if(closedir(dirp) == -1){
+		perror("Error in which");
+	    }
 	}
 	pl = pl->next;
     }
@@ -84,8 +99,17 @@ char* which(const char* command, pathList* pathlist){
 void add_to_history(char* command, kgenv* env){
     histList* new_item;
     new_item = malloc(sizeof(histList));
+    if(new_item == NULL){
+	perror("Error adding to history");
+	return;
+    }
 
     new_item->command = (char*)malloc(strlen(command) + 1);
+    if(new_item->command == NULL){
+	perror("Error adding to history");
+	return;
+    }
+
     strcpy(new_item->command, command);
     new_item->next = env->hist;
 
@@ -200,9 +224,9 @@ int process_command_in(char* line_in, kgenv* global_env){
     //## Tokenize the line
     //TODO: free in_argv
     in_argv = (char**)calloc(MAX_TOKENS_PER_LINE, sizeof(char*));
-    if(!in_argv){
-	perror("Not enough heap");
-	exit(1);
+    if(in_argv == NULL){
+	perror("Error processing command");
+	return 0;
     }
 
     if(!parse_line(&in_argc, &in_argv, line_in)){
