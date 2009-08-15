@@ -139,11 +139,16 @@ int exec_cmd(char* cmd, char** argv, bool background){
 	if(!background){
 
 	    // If the job isn't backgrounded, wait for child process to return
-	    waitpid(child_pid, &child_status, 0);
+	    if(!waitpid(child_pid, &child_status, 0)){
+		perror("Error in waidpid");
+	    }
 
 	} else {
 
-	    waitpid(child_pid, &child_status, WNOWAIT);
+	    // TODO: determine if anything else needs to be done here
+	    if(!waitpid(child_pid, &child_status, WNOHANG)){
+		perror("Error in backgrounding waitpid");
+	    }
 
 	}
 
