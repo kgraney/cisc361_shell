@@ -377,18 +377,31 @@ void bic_pid(kgenv* env, int argc, char* argv[]){
  * @param argv[] The argument values for the command entered.
  */
 void bic_kill(kgenv* env, int argc, char* argv[]){
-    //TODO: bic_kill
+    int pid;			///< PID of the process to send signal to
+    int signal = SIGTERM;	///< Default signal is SIGTERM
 
+    // Called with no arguments
     if(argc == 1){
 	fprintf(stderr, "kill: Too few arguments.\n");
+	return;
     }
 
-    else if(argc == 1){
-	int pid = atoi(argv[1]);
-	//sigsend(P_PID, pid, SIGTERM);
-	if(kill(pid, SIGTERM) != 0){
-	    perror("kill");
-	}
+    if(argc == 2){		// Called with just a pid
+    	pid = atoi(argv[1]);
+    } else if(argc == 3){	// Called with a signal specified
+	pid = atoi(argv[2]);
+	signal = atoi(argv[1] + 1);	// Add one to remove hyphen
+    } else {			// Called with too many arguments
+	fprintf(stderr, "kill: Too many arguments.\n");
+	return;
+    }	
+
+    //sigsend(P_PID, pid, signal);
+    //printf("Sending code %d to pid %d\n", signal, pid);
+
+    // Send the kill signal
+    if(kill(pid, signal) != 0){
+	perror("kill");
     }
 
 }
