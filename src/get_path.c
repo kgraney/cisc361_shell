@@ -1,4 +1,12 @@
 /*
+ * CISC361: Operating Systems (Fall 2009)
+ * Instructor: Ben Miller
+ *
+ * Project 1
+ * Kevin Graney
+ */
+
+/*
   get_path.c
   Ben Miller
 

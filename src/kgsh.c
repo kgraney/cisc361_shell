@@ -1,3 +1,11 @@
+/*
+ * CISC361: Operating Systems (Fall 2009)
+ * Instructor: Ben Miller
+ *
+ * Project 1
+ * Kevin Graney
+ */
+
 /** 
  * @file kgsh.c
  * @brief kgsh main file
