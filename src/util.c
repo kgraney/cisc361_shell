@@ -99,10 +99,11 @@ void add_to_history(char* command, kgenv* env){
  * 
  * @param cmd The command to be exectued.
  * @param argv Argument array for the command.
+ * @param background True if the job needs to be backgrounded
  * 
  * @return The exit status of the command.
  */
-int exec_cmd(char* cmd, char** argv){
+int exec_cmd(char* cmd, char** argv, bool background){
 
     //TODO: Print absolute path even if relative is passed?
     #ifdef O_VERBOSE_EXE
@@ -127,7 +128,16 @@ int exec_cmd(char* cmd, char** argv){
 
     } else if(child_pid > 0) {		//** Executed in parent process
 
-	waitpid(child_pid, &child_status, 0);
+	if(!background){
+
+	    // If the job isn't backgrounded, wait for child process to return
+	    waitpid(child_pid, &child_status, 0);
+
+	} else {
+
+	    waitpid(child_pid, &child_status, WNOWAIT);
+
+	}
 
 	// Print out the exit status if it is non-zero
 	if(WEXITSTATUS(child_status) != 0)
@@ -163,7 +173,7 @@ int process_command_in(char* line_in, kgenv* global_env){
     int    in_argc;		// argc for the command being processed
     char** in_argv;	        // argv for the command being processed
     int    line_length; 	// The length of the input line
-    bool   background;		// True if the command needs to be backgrounded
+    bool   background = false;	// True if the command needs to be backgrounded
 
 
 
@@ -199,7 +209,7 @@ int process_command_in(char* line_in, kgenv* global_env){
 	exit(1);
     }
 
-    if(!parse_line(&in_argc, &in_argv, background, line_in)){
+    if(!parse_line(&in_argc, &in_argv, &background, line_in)){
 
 	free(in_argv);
 	free(line_in);
@@ -240,7 +250,7 @@ int process_command_in(char* line_in, kgenv* global_env){
 
 	// Execute the file if it's executable
 	if(access(in_argv[0], X_OK) == 0){
-	    exec_cmd(in_argv[0], in_argv);
+	    exec_cmd(in_argv[0], in_argv, background);
 
 	    free(in_argv);
 	    free(line_in);
@@ -253,7 +263,7 @@ int process_command_in(char* line_in, kgenv* global_env){
     char* exe_path = which(in_argv[0], global_env->path);
     if(exe_path != NULL){
 
-	exec_cmd(exe_path, in_argv);
+	exec_cmd(exe_path, in_argv, background);
 
 	free(in_argv);
 	free(line_in);
@@ -290,7 +300,6 @@ int parse_line(int* argc, char*** argv, bool* background, char* line){
     char* strtok_ptr = NULL;
     char* token = strtok_r(line, " \n", &strtok_ptr);
 
-    background = false;	// Initialize background in case it hasn't already been
 
     // If the line is blank, the first token will be the null string.
     if(token == '\0')
@@ -307,8 +316,9 @@ int parse_line(int* argc, char*** argv, bool* background, char* line){
     // Check if job needs to be backgrounded
     if(line[line_length - 1] == '&'){
 	line[line_length - 1] = '\0';	// Remove the '&' character
-	background = true;
-	printf("backgrounding\n");
+	*background = true;
+    } else {
+	*background = false;
     }
 
     return 1;
