@@ -61,9 +61,10 @@ char* expand_wildcards(char* line){
     //## Parse the line into arguments
     int    argc;
     char** argv;
+    bool   background;
 
     argv = (char**)calloc(MAX_TOKENS_PER_LINE, sizeof(char*));
-    parse_line(&argc, &argv, line);
+    parse_line(&argc, &argv, &background, line);
 
     //## Expand all the arguments individually
     char** expanded_argv = (char**)calloc(argc, sizeof(char*));
