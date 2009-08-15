@@ -42,7 +42,7 @@ int exec_cmd(char* cmd, char** argv);
 
 int process_command_in(char* line_in, kgenv* global_env);
 
-int parse_line(int* argc, char*** argv, char* line);
+int parse_line(int* argc, char*** argv, bool* background, char* line);
 
 void detokenize(char* str, int length);
 
