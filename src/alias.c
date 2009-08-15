@@ -1,3 +1,11 @@
+/*
+ * CISC361: Operating Systems (Fall 2009)
+ * Instructor: Ben Miller
+ *
+ * Project 2
+ * Kevin Graney
+ */
+
 /** 
  * @file alias.c
  * @brief Definition of alias functions.

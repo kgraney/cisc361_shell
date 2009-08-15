@@ -1,3 +1,11 @@
+/*
+ * CISC361: Operating Systems (Fall 2009)
+ * Instructor: Ben Miller
+ *
+ * Project 2
+ * Kevin Graney
+ */
+
 /** 
  * @file builtins.h
  * @brief Declarations of builtin functions and constant members.
