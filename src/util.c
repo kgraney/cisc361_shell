@@ -309,6 +309,14 @@ int process_command_in(char* line_in, kgenv* global_env){
 int parse_line(int* argc, char*** argv, bool* background, char* line){
     int line_length = strlen(line);
 
+    // Check if job needs to be backgrounded
+    if(line[line_length - 1] == '&'){
+	line[line_length - 1] = '\0';	// Remove the '&' character
+	*background = true;
+    } else {
+	*background = false;
+    }
+
     char* strtok_ptr = NULL;
     char* token = strtok_r(line, " \n", &strtok_ptr);
 
@@ -323,14 +331,6 @@ int parse_line(int* argc, char*** argv, bool* background, char* line){
 	token = strtok_r(NULL, " \t", &strtok_ptr);
 	(*argv)[i] = token;
 	*argc = i;
-    }
-
-    // Check if job needs to be backgrounded
-    if(line[line_length - 1] == '&'){
-	line[line_length - 1] = '\0';	// Remove the '&' character
-	*background = true;
-    } else {
-	*background = false;
     }
 
     return 1;
