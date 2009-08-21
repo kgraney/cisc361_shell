@@ -204,6 +204,9 @@ int exec_cmd(char* cmd, char** argv, bool background){
  *
  * @param line_in The command line entered at the shell prompt.
  * @param global_env The ::kgenv global environment structure.
+ * @param deref_alias True if being called on an expanded alias.  False
+ * otherwise.  Needed to allow aliases to override commands without causing
+ * circular references.
  * 
  * @return The length of the line processed.
  */
@@ -213,7 +216,6 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
     char** in_argv;	        // argv for the command being processed
     int    line_length; 	// The length of the input line
     bool   background = false;	// True if the command needs to be backgrounded
-
 
     line_length = strlen(line_in);
     if(line_in[line_length - 1] == '\n')      // Remove trailing newline
