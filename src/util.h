@@ -48,7 +48,7 @@ void add_to_history(char* command, kgenv* env);
 
 int exec_cmd(char* cmd, char** argv, bool background);
 
-int process_command_in(char* line_in, kgenv* global_env);
+int process_command_in(char* line_in, kgenv* global_env, bool deref_alias);
 
 int parse_line(int* argc, char*** argv, bool* background, char* line);
 

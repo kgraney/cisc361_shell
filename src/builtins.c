@@ -18,6 +18,8 @@
 #include "alias.h"
 #include "wildcard.h"
 
+extern int errno;
+
 //------------------------------------------------------------------------------
 //-- The following constants define the built-in commands.  The commands are
 //-- matched to the function pointers with a one-to-one matching done in order.
@@ -195,8 +197,11 @@ void bic_where(kgenv* env, int argc, char* argv[]){
 	// While loop executed once for ach directory in the path
 	while(pl != NULL){
 	    DIR* dirp = opendir(pl->element);
-	    if(dirp != NULL){
-		struct dirent* dp = readdir(dirp);
+	    if(dirp == NULL){
+		perror("Error in where");
+		return;
+	    } else {
+		struct dirent* dp = readdir(dirp); //TODO: check errno?
 
 		// While loop executed once for each file in directory
 		while(dp != NULL){
@@ -205,7 +210,11 @@ void bic_where(kgenv* env, int argc, char* argv[]){
 		    }
 		    dp = readdir(dirp);
 		}
-		closedir(dirp);
+
+		if(closedir(dirp) == -1){
+		    perror("Error in where");
+		    return;
+		}
 	    }
 	    pl = pl->next;
 	}
@@ -243,11 +252,16 @@ void bic_cd(kgenv* env, int argc, char* argv[]){
 
 	// Set the current directory to the home directory
 	env->cwd = (char*)malloc(strlen(env->homedir) + 1);
+	if(env->cwd == NULL){
+	    perror("Error in cd");
+	    return;
+	}
 	strcpy(env->cwd, env->homedir);
 	
 	// Use chdir to change the working directory
-	if(chdir(env->cwd) != 0) 
+	if(chdir(env->cwd) != 0) {
 	    perror("Error in chdir");
+	}
 
     } 
     
@@ -263,8 +277,9 @@ void bic_cd(kgenv* env, int argc, char* argv[]){
 	env->pwd = temp;
 
 	// Use chdir to change the working directory
-	if(chdir(env->cwd) != 0) 
+	if(chdir(env->cwd) != 0) {
 	    perror("Error in chdir");
+	}
 
     }
 
@@ -274,7 +289,7 @@ void bic_cd(kgenv* env, int argc, char* argv[]){
     {
 	// Change to the path specified in the argument
 	if(chdir(argv[1]) != 0){
-	    perror(NULL);
+	    perror("Error in chdir");
 	    return;
 	}
 
@@ -335,18 +350,22 @@ void bic_list(kgenv* env, int argc, char* argv[]){
 
 	dirp = opendir(argv[i]);
 	if(dirp == NULL){
-	    fprintf(stderr, "Error opening directory!\n");
+	    perror("Error in list");
+	    return;
 
 	} else {
 
 	    // This loop iterates through the directory stream.
-	    struct dirent* dp = readdir(dirp);
+	    struct dirent* dp = readdir(dirp);	//TODO: check errno?
 	    while(dp != NULL){
 		printf("%s\n", dp->d_name);
 		dp = readdir(dirp);
 	    }
 
-	    closedir(dirp);
+	    if(closedir(dirp) == -1){
+		perror("Error in list");
+		return;
+	    }
 	}
 
     }
@@ -363,8 +382,13 @@ void bic_list(kgenv* env, int argc, char* argv[]){
  * @param argv[] The argument values for the command entered.
  */
 void bic_pid(kgenv* env, int argc, char* argv[]){
-    //TODO: add error handling for getpid
-    printf("%d\n", getpid());
+    pid_t pid = getpid();
+    if(pid == -1){		//TODO: check error condition
+	perror("Error in pid");
+	return;
+    }
+
+    printf("%d\n", pid);
 }
 
 
@@ -382,6 +406,8 @@ void bic_kill(kgenv* env, int argc, char* argv[]){
     int pid;			///< PID of the process to send signal to
     int signal = SIGTERM;	///< Default signal is SIGTERM
 
+    errno = 0;
+
     // Called with no arguments
     if(argc == 1){
 	fprintf(stderr, "kill: Too few arguments.\n");
@@ -389,10 +415,24 @@ void bic_kill(kgenv* env, int argc, char* argv[]){
     }
 
     if(argc == 2){		// Called with just a pid
+
     	pid = atoi(argv[1]);
+
+	if(errno != 0){
+	    perror("Error in kill");
+	    return;
+	}
+
     } else if(argc == 3){	// Called with a signal specified
+
 	pid = atoi(argv[2]);
 	signal = atoi(argv[1] + 1);	// Add one to remove hyphen
+
+	if(errno != 0){
+	    perror("Error in kill");
+	    return;
+	}
+
     } else {			// Called with too many arguments
 	fprintf(stderr, "kill: Too many arguments.\n");
 	return;
@@ -402,8 +442,8 @@ void bic_kill(kgenv* env, int argc, char* argv[]){
     //printf("Sending code %d to pid %d\n", signal, pid);
 
     // Send the kill signal
-    if(kill(pid, signal) != 0){
-	perror("kill");
+    if(kill(pid, signal) == -1){
+	perror("Error in kill");
     }
 
 }
@@ -432,6 +472,11 @@ void bic_prompt(kgenv* env, int argc, char* argv[]){
     // Case where we prompt user for input.
     printf("New prompt prefix: ");
     char* prompt_in = (char*)malloc(LINE_BUFFER_SIZE);
+    if(prompt_in == NULL){
+	perror("Error in prompt");
+	return;
+    }
+
     fgets(prompt_in, LINE_BUFFER_SIZE, stdin);
 
     // Need to remove trailing newline from input.
@@ -441,6 +486,11 @@ void bic_prompt(kgenv* env, int argc, char* argv[]){
 
     // Save some heap by re-allocating only what's needed.
     new_prompt = (char*)malloc(strlen(prompt_in) + 1);
+    if(new_prompt == NULL){
+	perror("Error in prompt");
+	return;
+    }
+
     strcpy(new_prompt, prompt_in);
     env->prompt = new_prompt;
     free(prompt_in);
@@ -472,7 +522,10 @@ void bic_printenv(kgenv* env, int argc, char* argv[]){
 	char* value = getenv(argv[1]);
 	if(value != NULL){
 	    printf("%s\n", value);
-	} 
+	} else {
+	    fprintf(stderr, "%s was not found in the current environment",
+		    argv[1]);
+	}
     }
 
 
@@ -525,8 +578,9 @@ void bic_alias(kgenv* env, int argc, char* argv[]){
  */
 void bic_unalias(kgenv* env, int argc, char* argv[]){
     //TODO: support multiple arguments
-    if(argc == 2)
+    if(argc == 2){
 	remove_alias(env, argv[1]);
+    }
 }
 
 
@@ -548,7 +602,12 @@ void bic_history(kgenv* env, int argc, char* argv[]){
     if(argc == 1){
 	num_items = 10;
     } else {
+	errno = 0;
 	num_items = atoi(argv[1]);
+	if(errno != 0){
+	    perror("Error in history");
+	    return;
+	}
     }
 
     // Output ordered pointers; we allocate space for num_items pointers even
@@ -585,7 +644,6 @@ void bic_history(kgenv* env, int argc, char* argv[]){
  * @param argv[] The argument values for the command entered.
  */
 void bic_setenv(kgenv* env, int argc, char* argv[]){
-    //TODO: bic_setenv
 
     // Called with no arguments, print entire environment
     if(argc == 1){
@@ -610,6 +668,7 @@ void bic_setenv(kgenv* env, int argc, char* argv[]){
     else {
 	fprintf(stderr, "setenv: Too many arguments.\n");
     }
+    
 }
 
 /** 
