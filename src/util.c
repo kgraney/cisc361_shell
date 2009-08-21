@@ -196,9 +196,6 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
     char** in_argv;	        // argv for the command being processed
     int    line_length; 	// The length of the input line
 
-
-    printf("line_in = %d\n", line_in);
-
     line_length = strlen(line_in);
     if(line_in[line_length - 1] == '\n')      // Remove trailing newline
 	line_in[line_length -1] = '\0';
