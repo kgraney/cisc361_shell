@@ -64,10 +64,19 @@ char* expand_wildcards(char* line){
     bool   background;
 
     argv = (char**)calloc(MAX_TOKENS_PER_LINE, sizeof(char*));
+    if(argv == NULL){
+	perror("Error while expanding wilcards");
+	return NULL;
+    }
     parse_line(&argc, &argv, &background, line);
 
     //## Expand all the arguments individually
     char** expanded_argv = (char**)calloc(argc, sizeof(char*));
+    if(expanded_argv == NULL){
+	perror("Error while expanding wilcards");
+	return NULL;
+    }
+
     for(int i=0; i < argc; i++){
         expanded_argv[i] = expand_argument(argv[i]);
     }
@@ -80,6 +89,11 @@ char* expand_wildcards(char* line){
 
     //## Form expanded line by concatenating all the expanded arguments
     char* expanded = calloc(length, sizeof(char));
+    if(expanded == NULL){
+	perror("Error while expanding wilcards");
+	return NULL;
+    }
+
     for(int i=0; i < argc; i++){
         strcat(expanded, " ");
         strcat(expanded, expanded_argv[i]);
@@ -115,11 +129,17 @@ char* expand_argument(char* argument){
 
     glob_t pglob;
 
-    if(glob(argument, 0, NULL, &pglob) == 0){
+    if(glob(argument, 0, NULL, &pglob) == 0){	//TODO: errno handling
 
         //## If no wildcard in the argument return a copy of itself
         if(pglob.gl_pathc == 0){
             char* argument_copy = malloc(strlen(argument) + 1);
+	    if(argument_copy == NULL){
+		perror("Error expanding argument");
+		globfree(&pglob);
+		return NULL;
+	    }
+
             strcpy(argument_copy, argument);
 	    globfree(&pglob);		// Free up memory
             return argument_copy;
@@ -133,6 +153,11 @@ char* expand_argument(char* argument){
 
         //## Allocate new space for the expanded argument
         char* expanded_arg = calloc(length, sizeof(char));
+	if(expanded_arg == NULL){
+	    perror("Error expanding argument");
+	    globfree(&pglob);
+	    return NULL;
+	}
 
         //## Form expanded argument string
         for(int i=0; i < pglob.gl_pathc; i++){
@@ -152,6 +177,12 @@ char* expand_argument(char* argument){
 
         //## Make a copy of the argument and return
         char* argument_copy = malloc(strlen(argument) + 1);
+	if(argument_copy == NULL){
+	    perror("Error expanding argument");
+	    globfree(&pglob);
+	    return NULL;
+	}
+
         strcpy(argument_copy, argument);
         return argument_copy;
     }

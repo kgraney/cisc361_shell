@@ -33,12 +33,20 @@ void add_alias(kgenv* env, char* name, int cmd_argc, char* cmd_argv[]){
 
     // Allocate space for the new alias
     aliasList* new_alias = malloc(sizeof(aliasList));
+    if(new_alias == NULL){
+	perror("Failed to add alias");
+	return;
+    }
 
     // Delete any existing alias with the same name
     remove_alias(env, name);
 
     // Copy over the alias name
     new_alias->name = (char*)malloc(strlen(name) + 1);
+    if(new_alias->name == NULL){
+	perror("Failed to add alias");
+	return;
+    }
     strcpy(new_alias->name, name);
 
     // Copy over the argv arrray and reconstruct the command line string so
@@ -52,6 +60,11 @@ void add_alias(kgenv* env, char* name, int cmd_argc, char* cmd_argv[]){
     }
     
     new_alias->string = malloc(line_length);
+    if(new_alias->string == NULL){
+	perror("Failed to add alias");
+	return;
+    }
+
     memcpy(new_alias->string , *cmd_argv, line_length);
 
     detokenize(new_alias->string, line_length);

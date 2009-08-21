@@ -72,7 +72,7 @@ int main(int argc, char* argv[]){
 	fgets(line_in, LINE_BUFFER_SIZE, stdin);
 
 	//## Parse the command and execute the appropriate action
-	process_command_in(line_in, &global_env);
+	process_command_in(line_in, &global_env, false);
     }
 }
 

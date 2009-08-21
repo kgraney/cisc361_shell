@@ -40,8 +40,14 @@ char* which(const char* command, pathList* pathlist){
 
 	DIR* dirp = opendir(pl->element);
 
-	if(dirp != NULL){
-	    struct dirent* dp = readdir(dirp);
+	if(dirp == NULL){
+
+	    perror("Error in which");
+	    return NULL;
+
+	} else {
+
+	    struct dirent* dp = readdir(dirp);	//TODO: errno check?
 
 	    // Iterate over every file in the directory
 	    while(dp != NULL){
@@ -53,12 +59,19 @@ char* which(const char* command, pathList* pathlist){
 		    // Generate an absolute path for the file that was found
 		    char* full_path = malloc(strlen(command) 
 			    + strlen(pl->element) + 2);                
+		    if(full_path == NULL){
+			perror("Error in which");
+			return NULL;
+		    }
+
                     sprintf(full_path, "%s/%s", pl->element, command);
 
 		    // Check for execute permissions on the file found
 		    if(access(full_path, X_OK) == 0){
 			return full_path;
 		    } else {
+			//TODO: Verify we don't need a perror here.  This should
+			//be silent if an error condition occurs.
 
 			// Free the memory if we're not returning it
 			free(full_path);
@@ -66,7 +79,9 @@ char* which(const char* command, pathList* pathlist){
 		}
 		dp = readdir(dirp);
 	    }
-	    closedir(dirp);
+	    if(closedir(dirp) == -1){
+		perror("Error in which");
+	    }
 	}
 	pl = pl->next;
     }
@@ -84,8 +99,17 @@ char* which(const char* command, pathList* pathlist){
 void add_to_history(char* command, kgenv* env){
     histList* new_item;
     new_item = malloc(sizeof(histList));
+    if(new_item == NULL){
+	perror("Error adding to history");
+	return;
+    }
 
     new_item->command = (char*)malloc(strlen(command) + 1);
+    if(new_item->command == NULL){
+	perror("Error adding to history");
+	return;
+    }
+
     strcpy(new_item->command, command);
     new_item->next = env->hist;
 
@@ -181,7 +205,7 @@ int exec_cmd(char* cmd, char** argv, bool background){
  * 
  * @return The length of the line processed.
  */
-int process_command_in(char* line_in, kgenv* global_env){
+int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){ 
 
     int    in_argc;		// argc for the command being processed
     char** in_argv;	        // argv for the command being processed
@@ -189,6 +213,7 @@ int process_command_in(char* line_in, kgenv* global_env){
     bool   background = false;	// True if the command needs to be backgrounded
 
 
+    printf("line_in = %d\n", line_in);
 
     line_length = strlen(line_in);
     if(line_in[line_length - 1] == '\n')      // Remove trailing newline
@@ -201,8 +226,10 @@ int process_command_in(char* line_in, kgenv* global_env){
     }
 
     //## Add the line to the history stack
-    if(line_in[0] != '\0')	// don't add blank lines
+    if(line_in[0] != '\0'	// don't add blank lines
+	    && !deref_alias){	// don't add the second call for an alias
 	add_to_history(line_in, global_env);
+    }
     
 
     //## Expand wildcards
@@ -216,9 +243,9 @@ int process_command_in(char* line_in, kgenv* global_env){
     //## Tokenize the line
     //TODO: free in_argv
     in_argv = (char**)calloc(MAX_TOKENS_PER_LINE, sizeof(char*));
-    if(!in_argv){
-	perror("Not enough heap");
-	exit(1);
+    if(in_argv == NULL){
+	perror("Error processing command");
+	return 0;
     }
 
     if(!parse_line(&in_argc, &in_argv, &background, line_in)){
@@ -230,14 +257,19 @@ int process_command_in(char* line_in, kgenv* global_env){
 
     //## Check for aliases (Do before builtins to allow for aliasing
     //## builtin commands.
-    aliasList* alias_ptr = is_alias(global_env, in_argv[0]);
-    if(alias_ptr){
-	int length = process_command_in(alias_ptr->string, global_env);
-	detokenize(alias_ptr->string, length);
+    if(!deref_alias){
+	aliasList* alias_ptr = is_alias(global_env, in_argv[0]);
+	if(alias_ptr){
+	    char* new_line_in = (char*)malloc(strlen(alias_ptr->string) + 1);
+	    strcpy(new_line_in, alias_ptr->string);
 
-	free(in_argv);
-	free(line_in);
-	return line_length;
+	    int length = process_command_in(new_line_in, global_env, true);
+	    detokenize(alias_ptr->string, length);
+
+	    free(in_argv);
+	    free(line_in);
+	    return line_length;
+	}
     }
 
 
