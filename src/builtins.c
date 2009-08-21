@@ -46,7 +46,8 @@ const char* BUILT_IN_COMMANDS[] = {
     "unalias", 		// Not a requirement, but easy to add. 
     "history", 
     "setenv",
-    "lsbuiltins"
+    "lsbuiltins",
+    "watchmail"
 #ifdef DEBUG		// Various built ins defined for debugging purposes.
 	,
     "_db_tokenizer",
@@ -90,7 +91,8 @@ void (*BUILT_IN_FUNCS[])(kgenv* env, int argc, char** argv) = {
     bic_unalias,
     bic_history, 
     bic_setenv,
-    bic_lsbuiltins
+    bic_lsbuiltins,
+    bic_watchmail
 #ifdef DEBUG		// various built ins defined for debugging purposes
     	,
     _db_tokenizer,
@@ -689,6 +691,65 @@ void bic_lsbuiltins(kgenv* env, int argc, char* argv[]){
 
 }
 
+/** 
+ * @brief Built-in watchmail command.
+ *
+ * Watches for new mail in the specified file.  Prints a message and beeps when
+ * mail is received.
+ * //TODO: add more detailed documentation
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
+void bic_watchmail(kgenv* env, int argc, char* argv[]){
+
+    char* file;			//<< The file to watch
+
+    int action;			//<< The new stop/start action on the file
+    enum { START, STOP };	//<< Two states for the action variable
+
+
+    //## Print out the help message if run with no arguments
+    if(argc == 1 || argc > 3){
+	printf("watchmail:\n\n\twatchmail [file] [on/off]\n\n");
+	return;
+    }
+
+    file = argv[1];
+
+    //## If run with only one argument, we're starting a watchmail on the file
+    if(argc == 2){
+	action = START;
+    }
+	
+    //## If run with two arguments, parse the second to find action needed	
+    else if(argc == 3){
+
+	if(strcmp(argv[2], "off") == 0){
+	    action = STOP;
+	} else if(strcmp(argv[2], "on") == 0){
+
+	    action = START;
+	} else {
+	    fprintf(stderr, "watchmail: Invalid command.\n");
+	    return;
+	}
+
+    }
+
+
+    //## Take the action to start/stop watchmail    
+    if(action == START){
+	printf("Starting watchmail for %s\n", file);
+	//TODO: startup action
+    } else if(action == STOP){
+	printf("Stopping watchmail for %s\n", file);
+	//TODO: shutdown action
+    }
+
+}
+
 //------------------------------------------------------------------------------
 //-- Definitions of debug functions
 //------------------------------------------------------------------------------
@@ -785,6 +846,7 @@ void _db_wc_contains(kgenv* env, int argc, char* argv[]){
  * @param argv[] The argument values for the command entered.
  */
 void _db_wc_expand(kgenv* env, int argc, char* argv[]){
+    
     printf("%s\n", expand_argument(argv[1]));
 }
 
