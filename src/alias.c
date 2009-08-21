@@ -64,6 +64,7 @@ void add_alias(kgenv* env, char* name, int cmd_argc, char* cmd_argv[]){
 	perror("Failed to add alias");
 	return;
     }
+
     memcpy(new_alias->string , *cmd_argv, line_length);
 
     detokenize(new_alias->string, line_length);

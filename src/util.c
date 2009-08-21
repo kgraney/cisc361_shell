@@ -190,13 +190,14 @@ int exec_cmd(char* cmd, char** argv){
  * 
  * @return The length of the line processed.
  */
-int process_command_in(char* line_in, kgenv* global_env){
+int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){ 
 
     int    in_argc;		// argc for the command being processed
     char** in_argv;	        // argv for the command being processed
     int    line_length; 	// The length of the input line
 
 
+    printf("line_in = %d\n", line_in);
 
     line_length = strlen(line_in);
     if(line_in[line_length - 1] == '\n')      // Remove trailing newline
@@ -209,8 +210,10 @@ int process_command_in(char* line_in, kgenv* global_env){
     }
 
     //## Add the line to the history stack
-    if(line_in[0] != '\0')	// don't add blank lines
+    if(line_in[0] != '\0'	// don't add blank lines
+	    && !deref_alias){	// don't add the second call for an alias
 	add_to_history(line_in, global_env);
+    }
     
 
     //## Expand wildcards
@@ -238,14 +241,19 @@ int process_command_in(char* line_in, kgenv* global_env){
 
     //## Check for aliases (Do before builtins to allow for aliasing
     //## builtin commands.
-    aliasList* alias_ptr = is_alias(global_env, in_argv[0]);
-    if(alias_ptr){
-	int length = process_command_in(alias_ptr->string, global_env);
-	detokenize(alias_ptr->string, length);
+    if(!deref_alias){
+	aliasList* alias_ptr = is_alias(global_env, in_argv[0]);
+	if(alias_ptr){
+	    char* new_line_in = (char*)malloc(strlen(alias_ptr->string) + 1);
+	    strcpy(new_line_in, alias_ptr->string);
 
-	free(in_argv);
-	free(line_in);
-	return line_length;
+	    int length = process_command_in(new_line_in, global_env, true);
+	    detokenize(alias_ptr->string, length);
+
+	    free(in_argv);
+	    free(line_in);
+	    return line_length;
+	}
     }
 
 
