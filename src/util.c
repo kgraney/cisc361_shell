@@ -187,6 +187,9 @@ int exec_cmd(char* cmd, char** argv){
  *
  * @param line_in The command line entered at the shell prompt.
  * @param global_env The ::kgenv global environment structure.
+ * @param deref_alias True if being called on an expanded alias.  False
+ * otherwise.  Needed to allow aliases to override commands without causing
+ * circular references.
  * 
  * @return The length of the line processed.
  */
