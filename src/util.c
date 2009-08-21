@@ -139,7 +139,9 @@ int exec_cmd(char* cmd, char** argv, bool background){
 
     //TODO: Print absolute path even if relative is passed?
     #ifdef O_VERBOSE_EXE
-    printf("Executing %s\n", cmd);	// Print out what's being executed
+
+    // Print out what's being executed and if it is backgrounded
+    printf("Executing %s%s\n", cmd, (background ? " in background":""));
     fflush(stdout);
     #endif //O_VERBOSE_EXE
 
@@ -212,8 +214,6 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
     int    line_length; 	// The length of the input line
     bool   background = false;	// True if the command needs to be backgrounded
 
-
-    printf("line_in = %d\n", line_in);
 
     line_length = strlen(line_in);
     if(line_in[line_length - 1] == '\n')      // Remove trailing newline

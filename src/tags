@@ -14,6 +14,7 @@ bic_exit	builtins.c	/^void bic_exit(kgenv* env, int argc, char* argv[]){/
 bic_history	builtins.c	/^void bic_history(kgenv* env, int argc, char* argv[/
 bic_kill	builtins.c	/^void bic_kill(kgenv* env, int argc, char* argv[]){/
 bic_list	builtins.c	/^void bic_list(kgenv* env, int argc, char* argv[]){/
+bic_lsbuiltins	builtins.c	/^void bic_lsbuiltins(kgenv* env, int argc, char* ar/
 bic_pid	builtins.c	/^void bic_pid(kgenv* env, int argc, char* argv[]){$/
 bic_printenv	builtins.c	/^void bic_printenv(kgenv* env, int argc, char* argv/
 bic_prompt	builtins.c	/^void bic_prompt(kgenv* env, int argc, char* argv[]/
@@ -24,14 +25,14 @@ bic_where	builtins.c	/^void bic_where(kgenv* env, int argc, char* argv[])/
 bic_which	builtins.c	/^void bic_which(kgenv* env, int argc, char* argv[])/
 contains_wildcards	wildcard.c	/^bool contains_wildcards(char* line){$/
 detokenize	util.c	/^void detokenize(char* str, int length){$/
-exec_cmd	util.c	/^int exec_cmd(char* cmd, char** argv){$/
+exec_cmd	util.c	/^int exec_cmd(char* cmd, char** argv, bool backgrou/
 expand_argument	wildcard.c	/^char* expand_argument(char* argument){$/
 expand_wildcards	wildcard.c	/^char* expand_wildcards(char* line){$/
 get_path	get_path.c	/^struct pathelement *get_path()$/
 initialize_environment	kgsh.c	/^void initialize_environment(kgenv* env){$/
 is_alias	alias.c	/^aliasList* is_alias(kgenv* env, char* name){$/
 is_builtin	builtins.c	/^short int is_builtin(char* command){$/
-parse_line	util.c	/^int parse_line(int* argc, char*** argv, char* line/
+parse_line	util.c	/^int parse_line(int* argc, char*** argv, bool* back/
 process_command_in	util.c	/^int process_command_in(char* line_in, kgenv* globa/
 remove_alias	alias.c	/^bool remove_alias(kgenv* env, char* name){$/
 set_environment	util.c	/^void set_environment(kgenv* env, char* name, char*/
