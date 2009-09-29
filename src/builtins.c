@@ -156,19 +156,34 @@ void bic_exit(kgenv* env, int argc, char* argv[]){
  * @param argv[] The argument values for the command entered.
  */
 void bic_which(kgenv* env, int argc, char* argv[]){
+
     if(argc == 1){
-	fprintf(stderr, "which: too few arguments\n");
-	return;
+        fprintf(stderr, "which: too few arguments\n");
+        return;
     }
 
     // Loop through each argument and display the path
     for(int i = 1; i < argc; i++){
-	char* path = which(argv[i], env->path);
 
-	if(path != NULL){
-	    printf("%s\n", path);
-	    free(path);
-	}
+        bool found = false;     // Becomes true if something is found
+
+        // Loop through aliases and print them if any exist for this command
+        aliasList* al = env->aliases;
+        while(al != NULL){
+            if(strcmp(al->name, argv[i]) == 0){
+                printf("%s:\t aliased to %s\n", al->name, al->string);
+                found = true;
+            }
+            al = al->next;
+        }
+
+        if(!found){
+            char* path = which(argv[i], env->path);
+            if(path != NULL){
+                printf("%s\n", path);
+                free(path);
+            }
+        }
     }
 }
 
@@ -184,17 +199,28 @@ void bic_which(kgenv* env, int argc, char* argv[]){
  * @param argv[] The argument values for the command entered.
  */
 void bic_where(kgenv* env, int argc, char* argv[]){
+
     if(argc == 1){
-	fprintf(stderr, "where: Too few arguments.\n");
-	return;
+        fprintf(stderr, "where: Too few arguments.\n");
+        return;
     }
 
     // For loop executed once for each argument
     for(int i = 1; i < argc; i++){
 	pathList* pl = env->path;
+        aliasList* al = env->aliases;
+
 	char* cmd = argv[i];
+
+        // Loop through aliases and print them if any exist for this command
+        while(al != NULL){
+            if(strcmp(al->name, cmd) == 0){
+                printf("%s:\t aliased to %s\n", al->name, al->string);
+            }
+            al = al->next;
+        }
 	
-	// While loop executed once for ach directory in the path
+	// While loop executed once for each directory in the path
 	while(pl != NULL){
 	    DIR* dirp = opendir(pl->element);
 	    if(dirp == NULL){
