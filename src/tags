@@ -1,40 +1,91 @@
-Mkgsh	kgsh.c	/^int main(int argc, char* argv[]){$/
-Mtags	tags	/^Mkgsh	kgsh.c	\/^int main(int argc, char* argv[]){$\//
-_db_history	builtins.c	/^void _db_history(kgenv* env, int argc, char* argv[/
-_db_kgenv	builtins.c	/^void _db_kgenv(kgenv* env, int argc, char* argv[])/
-_db_path	builtins.c	/^void _db_path(kgenv* env, int argc, char* argv[]){/
-_db_tokenizer	builtins.c	/^void _db_tokenizer(kgenv* env, int argc, char* arg/
-_db_wc_contains	builtins.c	/^void _db_wc_contains(kgenv* env, int argc, char* a/
-_db_wc_expand	builtins.c	/^void _db_wc_expand(kgenv* env, int argc, char* arg/
-add_alias	alias.c	/^void add_alias(kgenv* env, char* name, int cmd_arg/
-add_to_history	util.c	/^void add_to_history(char* command, kgenv* env){$/
-bic_alias	builtins.c	/^void bic_alias(kgenv* env, int argc, char* argv[])/
-bic_cd	builtins.c	/^void bic_cd(kgenv* env, int argc, char* argv[]){$/
-bic_exit	builtins.c	/^void bic_exit(kgenv* env, int argc, char* argv[]){/
-bic_history	builtins.c	/^void bic_history(kgenv* env, int argc, char* argv[/
-bic_kill	builtins.c	/^void bic_kill(kgenv* env, int argc, char* argv[]){/
-bic_list	builtins.c	/^void bic_list(kgenv* env, int argc, char* argv[]){/
-bic_lsbuiltins	builtins.c	/^void bic_lsbuiltins(kgenv* env, int argc, char* ar/
-bic_pid	builtins.c	/^void bic_pid(kgenv* env, int argc, char* argv[]){$/
-bic_printenv	builtins.c	/^void bic_printenv(kgenv* env, int argc, char* argv/
-bic_prompt	builtins.c	/^void bic_prompt(kgenv* env, int argc, char* argv[]/
-bic_pwd	builtins.c	/^void bic_pwd(kgenv* env, int argc, char* argv[]){$/
-bic_setenv	builtins.c	/^void bic_setenv(kgenv* env, int argc, char* argv[]/
-bic_unalias	builtins.c	/^void bic_unalias(kgenv* env, int argc, char* argv[/
-bic_where	builtins.c	/^void bic_where(kgenv* env, int argc, char* argv[])/
-bic_which	builtins.c	/^void bic_which(kgenv* env, int argc, char* argv[])/
-contains_wildcards	wildcard.c	/^bool contains_wildcards(char* line){$/
-detokenize	util.c	/^void detokenize(char* str, int length){$/
-exec_cmd	util.c	/^int exec_cmd(char* cmd, char** argv, bool backgrou/
-expand_argument	wildcard.c	/^char* expand_argument(char* argument){$/
-expand_wildcards	wildcard.c	/^char* expand_wildcards(char* line){$/
-get_path	get_path.c	/^struct pathelement *get_path()$/
-initialize_environment	kgsh.c	/^void initialize_environment(kgenv* env){$/
-is_alias	alias.c	/^aliasList* is_alias(kgenv* env, char* name){$/
-is_builtin	builtins.c	/^short int is_builtin(char* command){$/
-parse_line	util.c	/^int parse_line(int* argc, char*** argv, bool* back/
-process_command_in	util.c	/^int process_command_in(char* line_in, kgenv* globa/
-remove_alias	alias.c	/^bool remove_alias(kgenv* env, char* name){$/
-set_environment	util.c	/^void set_environment(kgenv* env, char* name, char*/
-sig_interrupt	kgsh.c	/^void sig_interrupt(int signal){$/
-which	util.c	/^char* which(const char* command, pathList* pathlis/
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.6	//
+BUILT_IN_COMMANDS	builtins.c	/^const char* BUILT_IN_COMMANDS[] = {$/;"	v
+BUILT_IN_FUNCS	builtins.c	/^void (*BUILT_IN_FUNCS[])(kgenv* env, int argc, char** argv) = {$/;"	v
+BUILT_IN_FUNCS	builtins.h	/^void (*BUILT_IN_FUNCS[NUM_BUILTINS])(kgenv*, int, char**);$/;"	v
+CWD_BUFFER_SIZE	util.h	34;"	d
+HISTORY_SIZE	util.h	37;"	d
+LINE_BUFFER_SIZE	util.h	35;"	d
+MAX_TOKENS_PER_LINE	util.h	36;"	d
+MAX_WILDCARDS	wildcard.h	24;"	d
+NUM_BUILTINS	builtins.h	34;"	d
+NUM_BUILTINS	builtins.h	36;"	d
+O_VERBOSE_EXE	util.h	32;"	d
+WILDCARD_CHARS	wildcard.h	25;"	d
+_ALIAS_INC	alias.h	17;"	d
+_BUILTINS_INC	builtins.h	17;"	d
+_GET_PATH_INC	get_path.h	15;"	d
+_TYPES_INC	types.h	17;"	d
+_UTIL_INC	util.h	17;"	d
+_WILDCARD_H	wildcard.h	17;"	d
+_db_history	builtins.c	/^void _db_history(kgenv* env, int argc, char* argv[]){$/;"	f
+_db_kgenv	builtins.c	/^void _db_kgenv(kgenv* env, int argc, char* argv[]){$/;"	f
+_db_path	builtins.c	/^void _db_path(kgenv* env, int argc, char* argv[]){$/;"	f
+_db_tokenizer	builtins.c	/^void _db_tokenizer(kgenv* env, int argc, char* argv[]){$/;"	f
+_db_wc_contains	builtins.c	/^void _db_wc_contains(kgenv* env, int argc, char* argv[]){$/;"	f
+_db_wc_expand	builtins.c	/^void _db_wc_expand(kgenv* env, int argc, char* argv[]){$/;"	f
+add_alias	alias.c	/^void add_alias(kgenv* env, char* name, int cmd_argc, char* cmd_argv[]){$/;"	f
+add_to_history	util.c	/^void add_to_history(char* command, kgenv* env){$/;"	f
+aliasList	types.h	/^typedef struct aliaselement aliasList;$/;"	t	typeref:struct:aliaselement
+aliaselement	types.h	/^struct aliaselement {$/;"	s
+aliases	types.h	/^    aliasList* aliases;		    	\/\/\/< Alias list pointer$/;"	m	struct:__anon1
+bic_alias	builtins.c	/^void bic_alias(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_cd	builtins.c	/^void bic_cd(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_exit	builtins.c	/^void bic_exit(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_history	builtins.c	/^void bic_history(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_kill	builtins.c	/^void bic_kill(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_list	builtins.c	/^void bic_list(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_lsbuiltins	builtins.c	/^void bic_lsbuiltins(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_pid	builtins.c	/^void bic_pid(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_printenv	builtins.c	/^void bic_printenv(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_prompt	builtins.c	/^void bic_prompt(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_pwd	builtins.c	/^void bic_pwd(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_setenv	builtins.c	/^void bic_setenv(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_unalias	builtins.c	/^void bic_unalias(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_where	builtins.c	/^void bic_where(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_which	builtins.c	/^void bic_which(kgenv* env, int argc, char* argv[]){$/;"	f
+bicfunc	types.h	/^typedef void (*bicfunc)(kgenv*, int, char*);$/;"	t
+bool	types.h	/^typedef char bool;  \/\/\/< Fake boolean in C++ style$/;"	t
+command	types.h	/^    char*  command;		\/\/\/< Command string$/;"	m	struct:histelement
+contains_wildcards	wildcard.c	/^bool contains_wildcards(char* line){$/;"	f
+cwd	types.h	/^    char* cwd;	  		        \/\/\/< Current working directory$/;"	m	struct:__anon1
+detokenize	util.c	/^void detokenize(char* str, int length){$/;"	f
+element	get_path.h	/^  char *element;			\/* a dir in the path *\/$/;"	m	struct:pathelement
+exec_cmd	util.c	/^int exec_cmd(char* cmd, char** argv, bool background){$/;"	f
+expand_argument	wildcard.c	/^char* expand_argument(char* argument){$/;"	f
+expand_wildcards	wildcard.c	/^char* expand_wildcards(char* line){$/;"	f
+false	types.h	21;"	d
+get_path	get_path.c	/^struct pathelement *get_path()$/;"	f
+hist	types.h	/^    histList* hist;		        \/\/\/< History list pointer$/;"	m	struct:__anon1
+histList	types.h	/^typedef struct histelement histList;$/;"	t	typeref:struct:histelement
+histelement	types.h	/^struct histelement {$/;"	s
+homedir	types.h	/^    char* homedir;		        \/\/\/< Home directory path$/;"	m	struct:__anon1
+initialize_environment	kgsh.c	/^void initialize_environment(kgenv* env){$/;"	f
+is_alias	alias.c	/^aliasList* is_alias(kgenv* env, char* name){$/;"	f
+is_builtin	builtins.c	/^short int is_builtin(char* command){$/;"	f
+kgenv	types.h	/^} kgenv;$/;"	t	typeref:struct:__anon1
+main	kgsh.c	/^int main(int argc, char* argv[]){$/;"	f
+name	types.h	/^    char*  name;		\/\/\/< The name of the alias$/;"	m	struct:aliaselement
+next	get_path.h	/^  struct pathelement *next;		\/* pointer to next node *\/$/;"	m	struct:pathelement	typeref:struct:pathelement::pathelement
+next	types.h	/^    struct aliaselement* next;	\/\/\/< Pointer to next node$/;"	m	struct:aliaselement	typeref:struct:aliaselement::aliaselement
+next	types.h	/^    struct histelement* next;	\/\/\/< Pointer to next node (previous command)$/;"	m	struct:histelement	typeref:struct:histelement::histelement
+num	types.h	/^    int	   num;			\/\/\/< Command number$/;"	m	struct:histelement
+parse_line	util.c	/^int parse_line(int* argc, char*** argv, bool* background, char* line){$/;"	f
+path	types.h	/^    pathList* path;		        \/\/\/< Path list pointer$/;"	m	struct:__anon1
+pathList	types.h	/^typedef struct pathelement pathList;$/;"	t	typeref:struct:pathelement
+pathelement	get_path.h	/^struct pathelement$/;"	s
+process_command_in	util.c	/^int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){ $/;"	f
+prompt	types.h	/^    char* prompt; 		        \/\/\/< Prompt prefix string$/;"	m	struct:__anon1
+pwd	types.h	/^    char* pwd;    		        \/\/\/< Prior working directory$/;"	m	struct:__anon1
+pword_entry	types.h	/^    struct passwd *pword_entry;		\/\/\/< Passwd entry info (not needed?)$/;"	m	struct:__anon1	typeref:struct:__anon1::passwd
+remove_alias	alias.c	/^bool remove_alias(kgenv* env, char* name){$/;"	f
+set_environment	util.c	/^void set_environment(kgenv* env, char* name, char* value){$/;"	f
+sig_interrupt	kgsh.c	/^void sig_interrupt(int signal){$/;"	f
+string	types.h	/^    char*  string;		\/\/\/< Command string alias refers to$/;"	m	struct:aliaselement
+true	types.h	22;"	d
+uid	types.h	/^    int uid;			        \/\/\/< User ID $/;"	m	struct:__anon1
+which	util.c	/^char* which(const char* command, pathList* pathlist){$/;"	f
