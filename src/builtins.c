@@ -17,6 +17,7 @@
 #include "get_path.h"
 #include "alias.h"
 #include "wildcard.h"
+#include "watchmail.h"
 
 extern int errno;
 
@@ -729,7 +730,6 @@ void bic_watchmail(kgenv* env, int argc, char* argv[]){
 	if(strcmp(argv[2], "off") == 0){
 	    action = STOP;
 	} else if(strcmp(argv[2], "on") == 0){
-
 	    action = START;
 	} else {
 	    fprintf(stderr, "watchmail: Invalid command.\n");
@@ -741,11 +741,17 @@ void bic_watchmail(kgenv* env, int argc, char* argv[]){
 
     //## Take the action to start/stop watchmail    
     if(action == START){
+
+        // Start watching the file
 	printf("Starting watchmail for %s\n", file);
-	//TODO: startup action
+        control_watchmail(file, false);
+
     } else if(action == STOP){
+
+        // Stop watching the file
 	printf("Stopping watchmail for %s\n", file);
-	//TODO: shutdown action
+        control_watchmail(file, false);
+
     }
 
 }

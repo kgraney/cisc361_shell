@@ -174,7 +174,7 @@ char* expand_argument(char* argument){
 
         //## Make a copy of the argument and return
         char* argument_copy = malloc(strlen(argument) + 1);
-	if(argument_copy == NULL){
+        if(argument_copy == NULL){
 	    perror("Error expanding argument");
 	    globfree(&pglob);
 	    return NULL;
