@@ -523,7 +523,7 @@ void bic_printenv(kgenv* env, int argc, char* argv[]){
 	if(value != NULL){
 	    printf("%s\n", value);
 	} else {
-	    fprintf(stderr, "%s was not found in the current environment",
+	    fprintf(stderr, "%s was not found in the current environment\n",
 		    argv[1]);
 	}
     }
