@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>	// for perror
 
 #include <sys/types.h>  // for readdir and opendir
 #include <dirent.h>	// for readdir and opendir

@@ -16,6 +16,7 @@
 #ifndef _ALIAS_INC
 #define _ALIAS_INC
 
+#include <errno.h>
 #include "types.h"
 
 void add_alias(kgenv* env, char* name, int cmd_argc, char* cmd_argv[]);
