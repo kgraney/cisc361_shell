@@ -18,6 +18,7 @@
 
 #include <string.h>
 #include <glob.h>
+#include <errno.h>
 #include "types.h"
 
 #define MAX_WILDCARDS		512
