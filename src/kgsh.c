@@ -53,8 +53,9 @@ int main(int argc, char* argv[]){
     while(1){
 
 	// Free up memory from the previous iteration.
-	if(line_in != NULL)
-	    free(line_in);
+	//Removed to prevent double free
+	//if(line_in != NULL)
+	//    free(line_in);
 
 	//## Print the shell prompt
 	printf("%s %s> ", global_env.prompt, global_env.cwd);
@@ -95,7 +96,7 @@ void initialize_environment(kgenv* env){
     }
 
     env->cwd = cwd;
-    env->pwd = "";
+    env->pwd = NULL;
     env->prompt = "";
     env->uid = getuid();
     env->pword_entry = getpwuid(env->uid);

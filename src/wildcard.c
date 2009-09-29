@@ -172,9 +172,6 @@ char* expand_argument(char* argument){
 
     } else {
 
-	//## Free up memory
-        globfree(&pglob);
-
         //## Make a copy of the argument and return
         char* argument_copy = malloc(strlen(argument) + 1);
 	if(argument_copy == NULL){
@@ -182,6 +179,9 @@ char* expand_argument(char* argument){
 	    globfree(&pglob);
 	    return NULL;
 	}
+
+	//## Free up memory
+        globfree(&pglob);
 
         strcpy(argument_copy, argument);
         return argument_copy;
