@@ -18,6 +18,11 @@
 #include "alias.h"
 #include "wildcard.h"
 
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
 extern int errno;
 
 //------------------------------------------------------------------------------
@@ -46,7 +51,8 @@ const char* BUILT_IN_COMMANDS[] = {
     "unalias", 		// Not a requirement, but easy to add. 
     "history", 
     "setenv",
-    "lsbuiltins"
+    "lsbuiltins",
+    "copy"
 #ifdef DEBUG		// Various built ins defined for debugging purposes.
 	,
     "_db_tokenizer",
@@ -90,7 +96,8 @@ void (*BUILT_IN_FUNCS[])(kgenv* env, int argc, char** argv) = {
     bic_unalias,
     bic_history, 
     bic_setenv,
-    bic_lsbuiltins
+    bic_lsbuiltins,
+    bic_copy
 #ifdef DEBUG		// various built ins defined for debugging purposes
     	,
     _db_tokenizer,
@@ -712,6 +719,83 @@ void bic_lsbuiltins(kgenv* env, int argc, char* argv[]){
     for(int i=0; i < NUM_BUILTINS; i++){
 	printf("%s\n", BUILT_IN_COMMANDS[i]);
     }
+
+}
+
+/** 
+ * @brief Built-in copy command.
+ *
+ * Behaves the same as 'cp -i file1 file2'.  Creates a copy of file1 called
+ * file2.
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
+void bic_copy(kgenv* env, int argc, char* argv[]){
+
+    //## When not run with two arguments, print a usage message
+    if(argc != 3){
+        fprintf(stderr, "copy: too %s arguments\n",
+                (argc < 3) ? "few" : "many");
+        fprintf(stderr, "\n\tcopy filesrc filedest\n\n");
+        return;
+    }
+
+    char* src = argv[1];
+    char* dst = argv[2];
+
+
+    //## Check permissions of source
+    if(access(src, R_OK) == -1){
+        perror("Error reading source file");
+        return;
+    }
+
+    //## Check for existance of source file
+    if(access(dst, F_OK) == 0){
+        printf("copy: overwrite '%s'? ", dst);
+        int c = getchar();
+        while (getchar() != '\n');      // read off to end of line
+        if(!(c == 'y' || c == 'Y')){
+            return;
+        }
+    }
+
+    //## Make the copy
+    int src_handle = open(src, O_RDONLY);
+    int dst_handle = open(dst, O_WRONLY | O_CREAT, S_IRWXU);
+    if(access(dst, W_OK) == -1){
+        perror("Error writing destination file");
+        return;
+    }
+
+    if(src_handle < 0 || dst_handle < 0){
+        perror("Error in open");
+        return;
+    }
+
+    const int buf_size = 512;
+    char buf[buf_size];
+
+    // Loop over reading from src and writing to dst
+    int pkt_size = pkt_size = read(src_handle, &buf, buf_size);
+    while(pkt_size != 0){
+
+        if(pkt_size < 0){
+            perror("Error in read");
+        }
+
+        int size_written = write(dst_handle, &buf, pkt_size);
+        if(size_written < 0){
+            perror("Error in write");
+        }
+
+        pkt_size = read(src_handle, &buf, buf_size);
+    }
+
+    close(src_handle);
+    close(dst_handle);
 
 }
 

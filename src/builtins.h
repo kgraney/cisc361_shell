@@ -31,9 +31,9 @@
 
 //-- Constants to define how many builtins we have
 #ifdef DEBUG
-#define NUM_BUILTINS 21		// Total number of commands, including debug
+#define NUM_BUILTINS 22		// Total number of commands, including debug
 #else
-#define NUM_BUILTINS 15		// Total number of commands, excluding debug
+#define NUM_BUILTINS 16		// Total number of commands, excluding debug
 #endif //DEBUG
 
 short int is_builtin(char* command);
@@ -75,6 +75,8 @@ void bic_history(kgenv* env, int argc, char* argv[]);
 void bic_setenv(kgenv* env, int argc, char* argv[]);
 
 void bic_lsbuiltins(kgenv* env, int argc, char* argv[]);
+
+void bic_copy(kgenv* env, int argc, char* argv[]);
 
 //------------------------------------------------------------------------------
 //-- The following are functions associated with debugging commands and are
