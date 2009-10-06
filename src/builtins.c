@@ -232,7 +232,7 @@ void bic_where(kgenv* env, int argc, char* argv[]){
 	    DIR* dirp = opendir(pl->element);
 	    if(dirp == NULL){
 		perror("Error in where");
-		return;
+		//return;
 	    } else {
 		struct dirent* dp = readdir(dirp); //TODO: check errno?
 
@@ -246,7 +246,7 @@ void bic_where(kgenv* env, int argc, char* argv[]){
 
 		if(closedir(dirp) == -1){
 		    perror("Error in where");
-		    return;
+		    //return;
 		}
 	    }
 	    pl = pl->next;

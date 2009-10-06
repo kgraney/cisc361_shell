@@ -377,8 +377,6 @@ void set_environment(kgenv* env, char* name, char* value){
     char* str = malloc(strlen(name) + strlen(value) + 2);
     sprintf(str, "%s=%s", name, value);
     putenv(str);
-    //free(str);    //TODO: confirm this is correct and putenv doesn't alias here
-                    // (apparently it does ...)
 
     // Handle a change to HOME
     if(strcmp(name, "HOME") == 0){
