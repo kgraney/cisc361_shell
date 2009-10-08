@@ -16,6 +16,10 @@
 #include "types.h"
 #include "watchmail.h"
 
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #include <pthread.h>
 
 //TODO: error checking
@@ -31,7 +35,7 @@ int control_watchmail(char* file, bool disable, kgenv* env){
 
         // Spawn a thread to monitor the new file
         pthread_create(&(new_node->thread), NULL, watchmail_thread, 
-                (void*)file);
+                (void*)(new_node->filename));
 
     } else {
         
@@ -66,9 +70,28 @@ int control_watchmail(char* file, bool disable, kgenv* env){
 
 void* watchmail_thread(void* param){
 
+    char* filename = (char*)param;
+
+    struct stat stat_info;
+    time_t  last_time;      ///< The modified time from the last iteration
+
+    stat(filename, &stat_info);
+    last_time = stat_info.st_mtime;
+
     while(1) {
-        printf("\nwatchmail running for file %s...\n", (char*)param);
-        sleep(5);
+        stat(filename, &stat_info);
+
+        if(stat_info.st_mtime > last_time){
+
+            struct timeval tp;
+            gettimeofday(&tp, NULL);
+
+            printf("\n\aYou have new mail in %s at %s\n", filename, 
+                    ctime(&(tp.tv_sec)));
+        }
+
+        last_time = stat_info.st_mtime;
+        sleep(1);
     }
 
     return NULL;
