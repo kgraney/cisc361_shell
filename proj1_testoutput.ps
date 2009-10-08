@@ -1,0 +1,1394 @@
+%!PS-Adobe-3.0
+%%Title: proj1_test
+%%For: Kevin Graney
+%%Creator: a2ps version 4.13
+%%CreationDate: Tue Oct  6 01:23:58 2009
+%%BoundingBox: 24 24 588 768
+%%DocumentData: Clean7Bit
+%%Orientation: Landscape
+%%Pages: 5
+%%PageOrder: Ascend
+%%DocumentMedia: Letter 612 792 0 () ()
+%%DocumentNeededResources: font Courier
+%%+ font Courier-Bold
+%%+ font Courier-BoldOblique
+%%+ font Courier-Oblique
+%%+ font Helvetica
+%%+ font Helvetica-Bold
+%%+ font Symbol
+%%+ font Times-Bold
+%%+ font Times-Roman
+%%DocumentProcessColors: Black 
+%%DocumentSuppliedResources: procset a2ps-a2ps-hdr
+%%+ procset a2ps-black+white-Prolog
+%%+ encoding ISO-8859-1Encoding
+%%EndComments
+/a2psdict 200 dict def
+a2psdict begin
+%%BeginProlog
+%%Copyright: (c) 1988, 89, 90, 91, 92, 93 Miguel Santana
+%%Copyright: (c) 1995, 96, 97, 98 Akim Demaille, Miguel Santana
+% Check PostScript language level.
+/languagelevel where {
+  pop /gs_languagelevel languagelevel def
+} {
+  /gs_languagelevel 1 def
+} ifelse
+
+% EPSF import as in the Red Book
+/BeginInclude {
+  /b4_Inc_state save def    		% Save state for cleanup
+  /dict_count countdictstack def	% Count objects on dict stack
+  /op_count count 1 sub def		% Count objects on operand stack 
+  userdict begin
+    0 setgray 0 setlinecap
+    1 setlinewidth 0 setlinejoin
+    10 setmiterlimit [ ] 0 setdash newpath
+    gs_languagelevel 1 ne {
+      false setstrokeadjust false setoverprint 
+    } if
+} bind def
+
+/EndInclude {
+  count op_count sub { pos } repeat	% Clean up stacks
+  countdictstack dict_count sub { end } repeat
+  b4_Inc_state restore
+} bind def
+
+/BeginEPSF {
+  BeginInclude
+  /showpage { } def
+} bind def
+
+/EndEPSF {
+  EndInclude
+} bind def
+
+% Page prefeed
+/page_prefeed {         % bool -> -
+  statusdict /prefeed known {
+    statusdict exch /prefeed exch put
+  } {
+    pop
+  } ifelse
+} bind def
+
+/deffont {
+  findfont exch scalefont def
+} bind def
+
+/reencode_font {
+  findfont reencode 2 copy definefont pop def
+} bind def
+
+% Function c-show (str => -)
+% centers text only according to x axis.
+/c-show { 
+  dup stringwidth pop
+  2 div neg 0 rmoveto
+  show
+} bind def
+
+% Function l-show (str => -)
+% prints texts so that it ends at currentpoint
+/l-show {
+  dup stringwidth pop neg 
+  0 
+  rmoveto show
+} bind def
+
+% center-fit show (str w => -)
+% show centered, and scale currentfont so that the width is less than w
+/cfshow {
+  exch dup stringwidth pop
+  % If the title is too big, try to make it smaller
+  3 2 roll 2 copy
+  gt
+  { % if, i.e. too big
+    exch div
+    currentfont exch scalefont setfont
+  } { % ifelse
+    pop pop 
+  }
+  ifelse
+  c-show			% center title
+} bind def
+
+% Return the y size of the current font
+% - => fontsize
+/currentfontsize {
+  currentfont /FontMatrix get 3 get 1000 mul
+} bind def
+
+% reencode the font
+% <encoding-vector> <fontdict> -> <newfontdict>
+/reencode { %def
+  dup length 5 add dict begin
+    { %forall
+      1 index /FID ne 
+      { def }{ pop pop } ifelse
+    } forall
+    /Encoding exch def
+
+    % Use the font's bounding box to determine the ascent, descent,
+    % and overall height; don't forget that these values have to be
+    % transformed using the font's matrix.
+    % We use `load' because sometimes BBox is executable, sometimes not.
+    % Since we need 4 numbers an not an array avoid BBox from being executed
+    /FontBBox load aload pop
+    FontMatrix transform /Ascent exch def pop
+    FontMatrix transform /Descent exch def pop
+    /FontHeight Ascent Descent sub def
+
+    % Define these in case they're not in the FontInfo (also, here
+    % they're easier to get to.
+    /UnderlinePosition 1 def
+    /UnderlineThickness 1 def
+    
+    % Get the underline position and thickness if they're defined.
+    currentdict /FontInfo known {
+      FontInfo
+      
+      dup /UnderlinePosition known {
+	dup /UnderlinePosition get
+	0 exch FontMatrix transform exch pop
+	/UnderlinePosition exch def
+      } if
+      
+      dup /UnderlineThickness known {
+	/UnderlineThickness get
+	0 exch FontMatrix transform exch pop
+	/UnderlineThickness exch def
+      } if
+      
+    } if
+    currentdict 
+  end 
+} bind def
+
+% Function print line number (<string> # -)
+/# {
+  gsave
+    sx cw mul neg 2 div 0 rmoveto
+    f# setfont
+    c-show
+  grestore
+} bind def
+
+% -------- Some routines to enlight plain b/w printings ---------
+
+% Underline
+% width --
+/dounderline {
+  currentpoint
+  gsave
+    moveto
+    0 currentfont /Descent get currentfontsize mul rmoveto
+    0 rlineto
+    stroke
+  grestore
+} bind def
+
+% Underline a string
+% string --
+/dounderlinestring {
+  stringwidth pop
+  dounderline
+} bind def
+
+/UL {
+  /ul exch store
+} bind def
+
+% Draw a box of WIDTH wrt current font
+% width --
+/dobox {
+  currentpoint
+  gsave
+    newpath
+    moveto
+    0 currentfont /Descent get currentfontsize mul rmoveto
+    dup 0 rlineto
+    0 currentfont /FontHeight get currentfontsize mul rlineto
+    neg 0 rlineto
+    closepath
+    stroke
+  grestore
+} bind def
+
+/BX {
+  /bx exch store
+} bind def
+
+% Box a string
+% string --
+/doboxstring {
+  stringwidth pop
+  dobox
+} bind def
+
+%
+% ------------- Color routines ---------------
+%
+/FG /setrgbcolor load def
+
+% Draw the background
+% width --
+/dobackground {
+  currentpoint
+  gsave
+    newpath
+    moveto
+    0 currentfont /Descent get currentfontsize mul rmoveto
+    dup 0 rlineto
+    0 currentfont /FontHeight get currentfontsize mul rlineto
+    neg 0 rlineto
+    closepath
+    bgcolor aload pop setrgbcolor
+    fill
+  grestore
+} bind def
+
+% Draw bg for a string
+% string --
+/dobackgroundstring {
+  stringwidth pop
+  dobackground
+} bind def
+
+
+/BG {
+  dup /bg exch store
+  { mark 4 1 roll ] /bgcolor exch store } if
+} bind def
+
+
+/Show {
+  bg { dup dobackgroundstring } if
+  ul { dup dounderlinestring } if
+  bx { dup doboxstring } if
+  show
+} bind def
+
+% Function T(ab), jumps to the n-th tabulation in the current line
+/T {
+  cw mul x0 add
+  bg { dup currentpoint pop sub dobackground } if
+  ul { dup currentpoint pop sub dounderline } if
+  bx { dup currentpoint pop sub dobox } if
+  y0 moveto
+} bind def
+
+% Function n: move to the next line
+/n {
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+} bind def
+
+% Function N: show and move to the next line
+/N {
+  Show
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+} bind def
+
+/S {
+  Show
+} bind def
+
+%%BeginResource: procset a2ps-a2ps-hdr 2.0 2
+%%Copyright: (c) 1988, 89, 90, 91, 92, 93 Miguel Santana
+%%Copyright: (c) 1995, 96, 97, 98 Akim Demaille, Miguel Santana
+% Function title: prints page header.
+% <ct> <rt> <lt> are passed as argument
+/title { 
+  % 1. Draw the background
+  x v get y v get moveto
+  gsave
+    0 th 2 div neg rmoveto 
+    th setlinewidth
+    0.95 setgray
+    pw 0 rlineto stroke
+  grestore
+  % 2. Border it
+  gsave
+    0.7 setlinewidth
+    pw 0 rlineto
+    0 th neg rlineto
+    pw neg 0 rlineto
+    closepath stroke
+  grestore
+  % stk: ct rt lt
+  x v get y v get th sub 1 add moveto
+%%IncludeResource: font Helvetica
+  fHelvetica fnfs 0.8 mul scalefont setfont
+  % 3. The left title
+  gsave
+    dup stringwidth pop fnfs 0.8 mul add exch % leave space took on stack
+    fnfs 0.8 mul hm rmoveto
+    show			% left title
+  grestore
+  exch
+  % stk: ct ltw rt
+  % 4. the right title
+  gsave
+    dup stringwidth pop fnfs 0.8 mul add exch % leave space took on stack
+    dup
+    pw exch stringwidth pop fnfs 0.8 mul add sub
+    hm
+    rmoveto
+    show			% right title
+  grestore
+  % stk: ct ltw rtw
+  % 5. the center title
+  gsave
+    pw 3 1 roll
+    % stk: ct pw ltw rtw
+    3 copy 
+    % Move to the center of the left room
+    sub add 2 div hm rmoveto
+    % What is the available space in here?
+    add sub fnfs 0.8 mul sub fnfs 0.8 mul sub
+    % stk: ct space_left
+%%IncludeResource: font Helvetica-Bold
+  fHelvetica-Bold fnfs scalefont setfont
+    cfshow
+  grestore
+} bind def
+
+% Function border: prints virtual page border
+/border { %def
+  gsave				% print four sides
+    0 setgray
+    x v get y v get moveto
+    0.7 setlinewidth		% of the square
+    pw 0 rlineto
+    0 ph neg rlineto
+    pw neg 0 rlineto
+    closepath stroke
+  grestore
+} bind def
+
+% Function water: prints a water mark in background
+/water { %def
+  gsave
+    scx scy moveto rotate
+%%IncludeResource: font Times-Bold
+  fTimes-Bold 100 scalefont setfont
+    .97 setgray
+    dup stringwidth pop 2 div neg -50 rmoveto
+    show
+  grestore
+} bind def
+
+% Function rhead: prints the right header
+/rhead {  %def
+  lx ly moveto
+  fHelvetica fnfs 0.8 mul scalefont setfont
+  l-show
+} bind def
+
+% Function footer (cf rf lf -> -)
+/footer {
+  fHelvetica fnfs 0.8 mul scalefont setfont
+  dx dy moveto
+  show
+
+  snx sny moveto
+  l-show
+  
+  fnx fny moveto
+  c-show
+} bind def
+%%EndResource
+%%BeginResource: procset a2ps-black+white-Prolog 2.0 1
+
+% Function T(ab), jumps to the n-th tabulation in the current line
+/T { 
+  cw mul x0 add y0 moveto
+} bind def
+
+% Function n: move to the next line
+/n { %def
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+} bind def
+
+% Function N: show and move to the next line
+/N {
+  Show
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+}  bind def
+
+/S {
+  Show
+} bind def
+
+/p {
+  false UL
+  false BX
+  fCourier bfs scalefont setfont
+  Show
+} bind def
+
+/sy {
+  false UL
+  false BX
+  fSymbol bfs scalefont setfont
+  Show
+} bind def
+
+/k {
+  false UL
+  false BX
+  fCourier-Oblique bfs scalefont setfont
+  Show
+} bind def
+
+/K {
+  false UL
+  false BX
+  fCourier-Bold bfs scalefont setfont
+  Show
+} bind def
+
+/c {
+  false UL
+  false BX
+  fCourier-Oblique bfs scalefont setfont
+  Show
+} bind def
+
+/C {
+  false UL
+  false BX
+  fCourier-BoldOblique bfs scalefont setfont
+  Show 
+} bind def
+
+/l {
+  false UL
+  false BX
+  fHelvetica bfs scalefont setfont
+  Show
+} bind def
+
+/L {
+  false UL
+  false BX
+  fHelvetica-Bold bfs scalefont setfont
+  Show 
+} bind def
+
+/str{
+  false UL
+  false BX
+  fTimes-Roman bfs scalefont setfont
+  Show
+} bind def
+
+/e{
+  false UL
+  true BX
+  fHelvetica-Bold bfs scalefont setfont
+  Show
+} bind def
+
+%%EndResource
+%%EndProlog
+%%BeginSetup
+%%IncludeResource: font Courier
+%%IncludeResource: font Courier-Oblique
+%%IncludeResource: font Courier-Bold
+%%IncludeResource: font Times-Roman
+%%IncludeResource: font Symbol
+%%IncludeResource: font Courier-BoldOblique
+%%BeginResource: encoding ISO-8859-1Encoding
+/ISO-8859-1Encoding [
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quoteright 
+/parenleft /parenright /asterisk /plus /comma /minus /period /slash 
+/zero /one /two /three /four /five /six /seven 
+/eight /nine /colon /semicolon /less /equal /greater /question 
+/at /A /B /C /D /E /F /G 
+/H /I /J /K /L /M /N /O 
+/P /Q /R /S /T /U /V /W 
+/X /Y /Z /bracketleft /backslash /bracketright /asciicircum /underscore 
+/quoteleft /a /b /c /d /e /f /g 
+/h /i /j /k /l /m /n /o 
+/p /q /r /s /t /u /v /w 
+/x /y /z /braceleft /bar /braceright /asciitilde /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/space /exclamdown /cent /sterling /currency /yen /brokenbar /section 
+/dieresis /copyright /ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron 
+/degree /plusminus /twosuperior /threesuperior /acute /mu /paragraph /bullet 
+/cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf /threequarters /questiondown 
+/Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla 
+/Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis 
+/Eth /Ntilde /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply 
+/Oslash /Ugrave /Uacute /Ucircumflex /Udieresis /Yacute /Thorn /germandbls 
+/agrave /aacute /acircumflex /atilde /adieresis /aring /ae /ccedilla 
+/egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis 
+/eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide 
+/oslash /ugrave /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis 
+] def
+%%EndResource
+% Initialize page description variables.
+/sh 612 def
+/sw 792 def
+/llx 24 def
+/urx 768 def
+/ury 588 def
+/lly 24 def
+/#copies 1 def
+/th 15.000000 def
+/fnfs 11 def
+/bfs 7.493857 def
+/cw 4.496314 def
+
+% Dictionary for ISO-8859-1 support
+/iso1dict 8 dict begin
+  /fCourier ISO-8859-1Encoding /Courier reencode_font
+  /fCourier-Bold ISO-8859-1Encoding /Courier-Bold reencode_font
+  /fCourier-BoldOblique ISO-8859-1Encoding /Courier-BoldOblique reencode_font
+  /fCourier-Oblique ISO-8859-1Encoding /Courier-Oblique reencode_font
+  /fHelvetica ISO-8859-1Encoding /Helvetica reencode_font
+  /fHelvetica-Bold ISO-8859-1Encoding /Helvetica-Bold reencode_font
+  /fTimes-Bold ISO-8859-1Encoding /Times-Bold reencode_font
+  /fTimes-Roman ISO-8859-1Encoding /Times-Roman reencode_font
+currentdict end def
+/bgcolor [ 0 0 0 ] def
+/bg false def
+/ul false def
+/bx false def
+% The font for line numbering
+/f# /Helvetica findfont bfs .6 mul scalefont def
+/fSymbol /Symbol findfont def
+/hm fnfs 0.25 mul def
+/pw
+   cw 81.400000 mul
+def
+/ph
+   522.321860 th add
+def
+/pmw urx llx sub pw 2 mul sub 1 div def
+/pmh 0 def
+/v 0 def
+/x [
+  0
+  dup pmw add pw add
+] def
+/y [
+  pmh ph add 0 mul ph add
+  dup
+] def
+/scx sw 2 div def
+/scy sh 2 div def
+/snx urx def
+/sny lly 2 add def
+/dx llx def
+/dy sny def
+/fnx scx def
+/fny dy def
+/lx snx def
+/ly ury fnfs 0.8 mul sub def
+/sx 0 def
+/tab 8 def
+/x0 0 def
+/y0 0 def
+%%EndSetup
+
+%%Page: (1-2) 1
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(Script started on Tue Oct 06 00:53:10 2009) p n
+(^[[2;7myankees0^[[22;27m[31] [~/shell/]> t^H^[[Kgmake clean) N
+() N
+(rm -rf tgt-sun4u) N
+(rm -rf doc/*) N
+(^[[2;7myankees0^[[22;27m[32] [~/shell/]> ls) N
+() N
+(Doxyfile     new_file     out.ps~      src_file     tgt-x86_64/) N
+(Makefile     out.pdf      proj1_test   testscript) N
+(doc/         out.ps       src/         tgt-i686/) N
+(^[[2;7myankees0^[[22;27m[33] [~/shell/]> gmake) N
+() N
+(mkdir -p tgt-sun4u) N
+(gcc -g -DDEBUG -std=c99 -c src/wildcard.c  -o tgt-sun4u/wildcard.o) N
+(mkdir -p tgt-sun4u) N
+(gcc -g -DDEBUG -std=c99 -c src/util.c  -o tgt-sun4u/util.o) N
+(src/util.c: In function `parse_line':) N
+(src/util.c:325: warning: implicit declaration of function `strtok_r') N
+(src/util.c:325: warning: initialization makes pointer from integer without a cas) N
+(t) N
+(src/util.c:334: warning: assignment makes pointer from integer without a cast) N
+(src/util.c: In function `set_environment':) N
+(src/util.c:379: warning: implicit declaration of function `putenv') N
+(mkdir -p tgt-sun4u) N
+(gcc -g -DDEBUG -std=c99 -c src/kgsh.c  -o tgt-sun4u/kgsh.o) N
+(src/kgsh.c: In function `main':) N
+(src/kgsh.c:46: warning: implicit declaration of function `sigset') N
+(src/kgsh.c:47: warning: implicit declaration of function `sigignore') N
+(mkdir -p tgt-sun4u) N
+(gcc -g -DDEBUG -std=c99 -c src/get_path.c  -o tgt-sun4u/get_path.o) N
+(mkdir -p tgt-sun4u) N
+(gcc -g -DDEBUG -std=c99 -c src/builtins.c  -o tgt-sun4u/builtins.o) N
+(src/builtins.c: In function `bic_kill':) N
+(src/builtins.c:478: warning: implicit declaration of function `kill') N
+(mkdir -p tgt-sun4u) N
+(gcc -g -DDEBUG -std=c99 -c src/alias.c  -o tgt-sun4u/alias.o) N
+(gcc -g -DDEBUG -std=c99 tgt-sun4u/wildcard.o tgt-sun4u/util.o tgt-sun4u/kgsh.o t) N
+(gt-sun4u/get_path.o tgt-sun4u/builtins.o tgt-sun4u/alias.o -o tgt-sun4u/kgsh) N
+(^[[2;7myankees0^[[22;27m[34] [~/shell/]> tgt-sun4u/kgsh ) N
+() N
+( /usa/kgraney/shell> ^D^H^H /usa/kgraney/shell> ^Z^C) N
+( /usa/kgraney/shell> which) N
+(Executing builtin which) N
+(which: too few arguments) N
+( /usa/kgraney/shell> which ls) N
+(Executing builtin which) N
+(/usr/bin/ls) N
+( /usa/kgraney/shell> ls) N
+(Executing /usr/bin/ls) N
+(Doxyfile    new_file    out.ps~     src_file    tgt-sun4u) N
+(Makefile    out.pdf     proj1_test  testscript  tgt-x86_64) N
+(doc         out.ps      src         tgt-i686) N
+( /usa/kgraney/shell> ^D^H^H /usa/kgraney/shell> ^Z^C) N
+( /usa/kgraney/shell> ls -l) N
+(Executing /usr/bin/ls) N
+(total 555) N
+(-rw-r--r--   1 kgraney  kgraney      308 Oct  6 00:36 Doxyfile) N
+(-rw-r--r--   1 kgraney  kgraney      567 Oct  6 00:36 Makefile) N
+(drwxr-xr-x   2 kgraney  kgraney        2 Oct  6 00:21 doc) N
+(-rw-r-----   1 kgraney  kgraney       13 Oct  6 00:51 new_file) N
+(-rw-r--r--   1 kgraney  kgraney    51788 Oct  6 00:36 out.pdf) N
+(-rw-r--r--   1 kgraney  kgraney   109192 Oct  6 00:46 out.ps) N
+(-rw-r--r--   1 kgraney  kgraney    97866 Oct  6 00:36 out.ps~) N
+(-rw-r-----   1 kgraney  kgraney        0 Oct  6 00:53 proj1_test) N
+(drwxr-xr-x   2 kgraney  kgraney       15 Oct  6 00:21 src) N
+(-rw-r-----   1 kgraney  kgraney       21 Oct  6 00:50 src_file) N
+(-rw-r--r--   1 kgraney  kgraney      572 Oct  6 00:36 testscript) N
+(drwxr-xr-x   2 kgraney  kgraney        9 Oct  6 00:21 tgt-i686) N
+(drwxr-s---   2 kgraney  kgraney        9 Oct  6 00:53 tgt-sun4u) N
+(proj1_test) (Page 1/10) (Oct 06, 09 1:18) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(drwxr-xr-x   2 kgraney  kgraney        9 Oct  6 00:21 tgt-x86_64) p n
+( /usa/kgraney/shell> ls -l -a /sbin) N
+(Executing /usr/bin/ls) N
+(total 1899) N
+(drwxr-xr-x   2 root     sys           51 Dec 12  2008 .) N
+(drwxr-xr-x  24 root     other         28 Oct  5 04:00 ..) N
+(-r-xr-xr-x   1 root     bin        18396 Jan 22  2005 autopush) N
+(-r-xr-xr-x   1 root     bin       110684 Oct  3  2008 bootadm) N
+(lrwxrwxrwx   1 root     root          21 Jan  7  2009 bpgetfile -> ../usr/sbin/b) N
+(pgetfile) N
+(-r-xr-xr-x   1 root     bin       111176 Nov 16  2007 dhcpagent) N
+(-r-xr-xr-x   1 root     bin        10140 Aug 16  2007 dhcpinfo) N
+(-r-xr-xr-x   1 root     bin        35912 Aug 16  2007 dladm) N
+(-r-xr-xr-x   1 root     bin        55192 Jan 22  2005 fdisk) N
+(-r-xr-xr-x   1 root     bin        10084 Oct  3  2008 fiocompress) N
+(-r-xr-xr-x   1 root     bin        10312 Jan 22  2005 hostconfig) N
+(-r-xr-xr-x   1 root     bin        61168 Aug 16  2007 ifconfig) N
+(-r-xr-xr-x   1 root     bin        11680 Jan 22  2005 ifparse) N
+(lrwxrwxrwx   1 root     root          25 Jan  7  2009 in.mpathd -> ../usr/lib/in) N
+(et/in.mpathd) N
+(-r-xr-xr-x   1 root     sys        48992 Apr  7  2008 init) N
+(lrwxrwxrwx   1 root     root           2 Jan  7  2009 jsh -> sh) N
+(-r-xr--r--   1 root     bin       181307 Sep 24  2008 luactivate) N
+(-r-xr--r--   2 root     bin       202344 Sep 27  2008 lucurr) N
+(-r-xr-xr-x   1 root     bin        18744 Jan 22  2005 metadb) N
+(-r-xr-xr-x   1 root     bin        10260 Jan 22  2005 metadevadm) N
+(-r-xr-xr-x   1 root     bin        18792 Jan 22  2005 metainit) N
+(-r-xr-xr-x   1 root     bin        10220 Jan 22  2005 metarecover) N
+(-r-xr-xr-x   1 root     bin        27516 Jan 22  2005 metastat) N
+(-r-xr-xr-x   1 root     bin        27636 Jan 22  2005 mount) N
+(-r-xr-xr-x   1 root     sys         8159 Jan 21  2005 mountall) N
+(-r-xr-xr-x   1 root     bin        10112 Jan 22  2005 netstrategy) N
+(lrwxrwxrwx   1 root     root           2 Jan  7  2009 pfsh -> sh) N
+(-rwxr--r--   3 root     sys         1983 Jan 21  2005 rc0) N
+(-rwxr--r--   1 root     sys         2242 Jan 21  2005 rc1) N
+(-rwxr--r--   1 root     sys         2536 Jan 21  2005 rc2) N
+(-rwxr--r--   1 root     sys         2567 Jan 21  2005 rc3) N
+(-rwxr--r--   3 root     sys         1983 Jan 21  2005 rc5) N
+(-rwxr--r--   3 root     sys         1983 Jan 21  2005 rc6) N
+(-rwxr--r--   1 root     sys         5125 Jan 21  2005 rcS) N
+(-r-xr-xr-x   1 root     bin        46188 Jan 24  2007 route) N
+(-r-xr-xr-x   1 root     bin        36324 Aug 16  2007 routeadm) N
+(-r-xr-xr-x   1 root     root       95468 May 21  2008 sh) N
+(-r-xr-xr-x   1 root     bin        10044 Jan 22  2005 soconfig) N
+(lrwxrwxrwx   1 root     root          13 Jan  7  2009 su -> ../usr/bin/su) N
+(-r-xr-xr-x   1 root     sys        25284 Jan 22  2005 su.static) N
+(-r-xr-xr-x   1 root     bin        18920 Jul 22  2008 sulogin) N
+(-rwxr--r--   1 root     sys         3419 Sep 20  2008 swapadd) N
+(-r-xr-xr-x   1 root     bin         9800 Jan 22  2005 sync) N
+(-r-xr-xr-x   1 root     sys        18748 Apr  7  2008 tnctl) N
+(-r-xr-xr-x   1 root     sys        10008 Jan 22  2005 uadmin) N
+(-r-xr-xr-x   1 root     bin        18952 Oct  3  2008 umount) N
+(-r-xr-xr-x   1 root     sys         7859 Jul  3  2007 umountall) N
+(-r-xr-xr-x   1 root     bin        10096 Jan 22  2005 uname) N
+(-r-xr-xr-x   1 root     bin        61836 Oct  3  2008 zfs) N
+(-r-xr-xr-x   1 root     bin        10172 Aug 16  2007 zonename) N
+(-r-xr-xr-x   1 root     bin        78752 Oct  3  2008 zpool) N
+( /usa/kgraney/shell> ls -l -F /sbin) N
+(Executing /usr/bin/ls) N
+(total 1891) N
+(-r-xr-xr-x   1 root     bin        18396 Jan 22  2005 autopush*) N
+(-r-xr-xr-x   1 root     bin       110684 Oct  3  2008 bootadm*) N
+(lrwxrwxrwx   1 root     root          21 Jan  7  2009 bpgetfile -> ../usr/sbin/b) N
+(pgetfile*) N
+(-r-xr-xr-x   1 root     bin       111176 Nov 16  2007 dhcpagent*) N
+(-r-xr-xr-x   1 root     bin        10140 Aug 16  2007 dhcpinfo*) N
+(-r-xr-xr-x   1 root     bin        35912 Aug 16  2007 dladm*) N
+(-r-xr-xr-x   1 root     bin        55192 Jan 22  2005 fdisk*) N
+(-r-xr-xr-x   1 root     bin        10084 Oct  3  2008 fiocompress*) N
+(proj1_test) (Page 2/10) (Oct 06, 09 1:18) title
+grestore
+(Printed by Kevin Graney) rhead
+(proj1_test) (1/5) (Tuesday October 06, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (3-4) 2
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(-r-xr-xr-x   1 root     bin        10312 Jan 22  2005 hostconfig*) p n
+(-r-xr-xr-x   1 root     bin        61168 Aug 16  2007 ifconfig*) N
+(-r-xr-xr-x   1 root     bin        11680 Jan 22  2005 ifparse*) N
+(lrwxrwxrwx   1 root     root          25 Jan  7  2009 in.mpathd -> ../usr/lib/in) N
+(et/in.mpathd*) N
+(-r-xr-xr-x   1 root     sys        48992 Apr  7  2008 init*) N
+(lrwxrwxrwx   1 root     root           2 Jan  7  2009 jsh -> sh*) N
+(-r-xr--r--   1 root     bin       181307 Sep 24  2008 luactivate*) N
+(-r-xr--r--   2 root     bin       202344 Sep 27  2008 lucurr*) N
+(-r-xr-xr-x   1 root     bin        18744 Jan 22  2005 metadb*) N
+(-r-xr-xr-x   1 root     bin        10260 Jan 22  2005 metadevadm*) N
+(-r-xr-xr-x   1 root     bin        18792 Jan 22  2005 metainit*) N
+(-r-xr-xr-x   1 root     bin        10220 Jan 22  2005 metarecover*) N
+(-r-xr-xr-x   1 root     bin        27516 Jan 22  2005 metastat*) N
+(-r-xr-xr-x   1 root     bin        27636 Jan 22  2005 mount*) N
+(-r-xr-xr-x   1 root     sys         8159 Jan 21  2005 mountall*) N
+(-r-xr-xr-x   1 root     bin        10112 Jan 22  2005 netstrategy*) N
+(lrwxrwxrwx   1 root     root           2 Jan  7  2009 pfsh -> sh*) N
+(-rwxr--r--   3 root     sys         1983 Jan 21  2005 rc0*) N
+(-rwxr--r--   1 root     sys         2242 Jan 21  2005 rc1*) N
+(-rwxr--r--   1 root     sys         2536 Jan 21  2005 rc2*) N
+(-rwxr--r--   1 root     sys         2567 Jan 21  2005 rc3*) N
+(-rwxr--r--   3 root     sys         1983 Jan 21  2005 rc5*) N
+(-rwxr--r--   3 root     sys         1983 Jan 21  2005 rc6*) N
+(-rwxr--r--   1 root     sys         5125 Jan 21  2005 rcS*) N
+(-r-xr-xr-x   1 root     bin        46188 Jan 24  2007 route*) N
+(-r-xr-xr-x   1 root     bin        36324 Aug 16  2007 routeadm*) N
+(-r-xr-xr-x   1 root     root       95468 May 21  2008 sh*) N
+(-r-xr-xr-x   1 root     bin        10044 Jan 22  2005 soconfig*) N
+(lrwxrwxrwx   1 root     root          13 Jan  7  2009 su -> ../usr/bin/su*) N
+(-r-xr-xr-x   1 root     sys        25284 Jan 22  2005 su.static*) N
+(-r-xr-xr-x   1 root     bin        18920 Jul 22  2008 sulogin*) N
+(-rwxr--r--   1 root     sys         3419 Sep 20  2008 swapadd*) N
+(-r-xr-xr-x   1 root     bin         9800 Jan 22  2005 sync*) N
+(-r-xr-xr-x   1 root     sys        18748 Apr  7  2008 tnctl*) N
+(-r-xr-xr-x   1 root     sys        10008 Jan 22  2005 uadmin*) N
+(-r-xr-xr-x   1 root     bin        18952 Oct  3  2008 umount*) N
+(-r-xr-xr-x   1 root     sys         7859 Jul  3  2007 umountall*) N
+(-r-xr-xr-x   1 root     bin        10096 Jan 22  2005 uname*) N
+(-r-xr-xr-x   1 root     bin        61836 Oct  3  2008 zfs*) N
+(-r-xr-xr-x   1 root     bin        10172 Aug 16  2007 zonename*) N
+(-r-xr-xr-x   1 root     bin        78752 Oct  3  2008 zpool*) N
+( /usa/kgraney/shell> where) N
+(Executing builtin where) N
+(where: Too few arguments.) N
+( /usa/kgraney/shell> where ls) N
+(Executing builtin where) N
+(/usr/bin/ls) N
+(/usr/ucb/ls) N
+(Error in where: No such file or directory) N
+(/usr/local/gnu/bin/ls) N
+(Error in where: No such file or directory) N
+(Error in where: No such file or directory) N
+( /usa/kgraney/shell> /usr/ucb/ls -l -g) N
+(Executing /usr/ucb/ls) N
+(total 277) N
+(-rw-r--r--   1 kgraney  kgraney       308 Oct  6 00:36 Doxyfile) N
+(-rw-r--r--   1 kgraney  kgraney       567 Oct  6 00:36 Makefile) N
+(drwxr-xr-x   2 kgraney  kgraney         2 Oct  6 00:21 doc) N
+(-rw-r-----   1 kgraney  kgraney        13 Oct  6 00:51 new_file) N
+(-rw-r--r--   1 kgraney  kgraney     51788 Oct  6 00:36 out.pdf) N
+(-rw-r--r--   1 kgraney  kgraney    109192 Oct  6 00:46 out.ps) N
+(-rw-r--r--   1 kgraney  kgraney     97866 Oct  6 00:36 out.ps~) N
+(-rw-r-----   1 kgraney  kgraney      8192 Oct  6 00:53 proj1_test) N
+(drwxr-xr-x   2 kgraney  kgraney        15 Oct  6 00:21 src) N
+(-rw-r-----   1 kgraney  kgraney        21 Oct  6 00:50 src_file) N
+(-rw-r--r--   1 kgraney  kgraney       572 Oct  6 00:36 testscript) N
+(drwxr-xr-x   2 kgraney  kgraney         9 Oct  6 00:21 tgt-i686) N
+(drwxr-s---   2 kgraney  kgraney         9 Oct  6 00:53 tgt-sun4u) N
+(proj1_test) (Page 3/10) (Oct 06, 09 1:18) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(drwxr-xr-x   2 kgraney  kgraney         9 Oct  6 00:21 tgt-x86_64) p n
+( /usa/kgraney/shell> /usr/ucb/ls -l) N
+(Executing /usr/ucb/ls) N
+(total 286) N
+(-rw-r--r--   1 kgraney       308 Oct  6 00:36 Doxyfile) N
+(-rw-r--r--   1 kgraney       567 Oct  6 00:36 Makefile) N
+(drwxr-xr-x   2 kgraney         2 Oct  6 00:21 doc) N
+(-rw-r-----   1 kgraney        13 Oct  6 00:51 new_file) N
+(-rw-r--r--   1 kgraney     51788 Oct  6 00:36 out.pdf) N
+(-rw-r--r--   1 kgraney    109192 Oct  6 00:46 out.ps) N
+(-rw-r--r--   1 kgraney     97866 Oct  6 00:36 out.ps~) N
+(-rw-r-----   1 kgraney      8192 Oct  6 00:53 proj1_test) N
+(drwxr-xr-x   2 kgraney        15 Oct  6 00:21 src) N
+(-rw-r-----   1 kgraney        21 Oct  6 00:50 src_file) N
+(-rw-r--r--   1 kgraney       572 Oct  6 00:36 testscript) N
+(drwxr-xr-x   2 kgraney         9 Oct  6 00:21 tgt-i686) N
+(drwxr-s---   2 kgraney         9 Oct  6 00:53 tgt-sun4u) N
+(drwxr-xr-x   2 kgraney         9 Oct  6 00:21 tgt-x86_64) N
+( /usa/kgraney/shell> /usr/bin/ls -l -g) N
+(Executing /usr/bin/ls) N
+(total 572) N
+(-rw-r--r--   1 kgraney      308 Oct  6 00:36 Doxyfile) N
+(-rw-r--r--   1 kgraney      567 Oct  6 00:36 Makefile) N
+(drwxr-xr-x   2 kgraney        2 Oct  6 00:21 doc) N
+(-rw-r-----   1 kgraney       13 Oct  6 00:51 new_file) N
+(-rw-r--r--   1 kgraney    51788 Oct  6 00:36 out.pdf) N
+(-rw-r--r--   1 kgraney   109192 Oct  6 00:46 out.ps) N
+(-rw-r--r--   1 kgraney    97866 Oct  6 00:36 out.ps~) N
+(-rw-r-----   1 kgraney     8192 Oct  6 00:53 proj1_test) N
+(drwxr-xr-x   2 kgraney       15 Oct  6 00:21 src) N
+(-rw-r-----   1 kgraney       21 Oct  6 00:50 src_file) N
+(-rw-r--r--   1 kgraney      572 Oct  6 00:36 testscript) N
+(drwxr-xr-x   2 kgraney        9 Oct  6 00:21 tgt-i686) N
+(drwxr-s---   2 kgraney        9 Oct  6 00:53 tgt-sun4u) N
+(drwxr-xr-x   2 kgraney        9 Oct  6 00:21 tgt-x86_64) N
+( /usa/kgraney/shell> /usr/bin/ls -l) N
+(Executing /usr/bin/ls) N
+(total 572) N
+(-rw-r--r--   1 kgraney  kgraney      308 Oct  6 00:36 Doxyfile) N
+(-rw-r--r--   1 kgraney  kgraney      567 Oct  6 00:36 Makefile) N
+(drwxr-xr-x   2 kgraney  kgraney        2 Oct  6 00:21 doc) N
+(-rw-r-----   1 kgraney  kgraney       13 Oct  6 00:51 new_file) N
+(-rw-r--r--   1 kgraney  kgraney    51788 Oct  6 00:36 out.pdf) N
+(-rw-r--r--   1 kgraney  kgraney   109192 Oct  6 00:46 out.ps) N
+(-rw-r--r--   1 kgraney  kgraney    97866 Oct  6 00:36 out.ps~) N
+(-rw-r-----   1 kgraney  kgraney     8192 Oct  6 00:53 proj1_test) N
+(drwxr-xr-x   2 kgraney  kgraney       15 Oct  6 00:21 src) N
+(-rw-r-----   1 kgraney  kgraney       21 Oct  6 00:50 src_file) N
+(-rw-r--r--   1 kgraney  kgraney      572 Oct  6 00:36 testscript) N
+(drwxr-xr-x   2 kgraney  kgraney        9 Oct  6 00:21 tgt-i686) N
+(drwxr-s---   2 kgraney  kgraney        9 Oct  6 00:53 tgt-sun4u) N
+(drwxr-xr-x   2 kgraney  kgraney        9 Oct  6 00:21 tgt-x86_64) N
+( /usa/kgraney/shell> file *) N
+(Executing /usr/local/bin/file) N
+(Doxyfile:   ASCII text) N
+(Makefile:   ASCII make commands text) N
+(doc:        directory) N
+(new_file:   ASCII text) N
+(out.pdf:    PDF document, version 1.2) N
+(out.ps:     PostScript document text conforming at level 3.0) N
+(out.ps~:    PostScript document text conforming at level 3.0) N
+(proj1_test: ASCII text, with CRLF, CR, LF line terminators, with escape sequence) N
+(s, with overstriking) N
+(src:        directory) N
+(src_file:   ASCII text) N
+(testscript: ASCII text) N
+(tgt-i686:   directory) N
+(tgt-sun4u:  setgid directory) N
+(tgt-x86_64: directory) N
+(proj1_test) (Page 4/10) (Oct 06, 09 1:18) title
+grestore
+(Printed by Kevin Graney) rhead
+(proj1_test) (2/5) (Tuesday October 06, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (5-6) 3
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+( /usa/kgraney/shell> ls *) p n
+(Executing /usr/bin/ls) N
+(Doxyfile    new_file    out.ps      proj1_test  testscript) N
+(Makefile    out.pdf     out.ps~     src_file) N
+() N
+(doc:) N
+() N
+(src:) N
+(alias.c     builtins.h  kgsh.c      util.c      wildcard.h) N
+(alias.h     get_path.c  tags        util.h) N
+(builtins.c  get_path.h  types.h     wildcard.c) N
+() N
+(tgt-i686:) N
+(alias.o     get_path.o  kgsh.o      wildcard.o) N
+(builtins.o  kgsh        util.o) N
+() N
+(tgt-sun4u:) N
+(alias.o     get_path.o  kgsh.o      wildcard.o) N
+(builtins.o  kgsh        util.o) N
+() N
+(tgt-x86_64:) N
+(alias.o     get_path.o  kgsh.o      wildcard.o) N
+(builtins.o  kgsh        util.o) N
+( /usa/kgraney/shell> cd src) N
+(Executing builtin cd) N
+( /usa/kgraney/shell/src> ls *.c) N
+(Executing /usr/bin/ls) N
+(alias.c     builtins.c  get_path.c  kgsh.c      util.c      wildcard.c) N
+( /usa/kgraney/shell/src> ls -l kgs^H ^H^H ^H^H ^Hutil.*) N
+(Executing /usr/bin/ls) N
+(-rw-r--r--   1 kgraney  kgraney    10644 Oct  6 00:36 util.c) N
+(-rw-r--r--   1 kgraney  kgraney     1219 Oct  6 00:36 util.h) N
+( /usa/kgraney/shell/src> ls -l k*.c) N
+(Executing /usr/bin/ls) N
+(-rw-r--r--   1 kgraney  kgraney     2812 Oct  6 00:36 kgsh.c) N
+( /usa/kgraney/shell/src> ls -l kg*sh.c) N
+(Executing /usr/bin/ls) N
+(-rw-r--r--   1 kgraney  kgraney     2812 Oct  6 00:36 kgsh.c) N
+( /usa/kgraney/shell/src> ls kgsh.^H ^H^H ^H^H ^H^H ^H^H ^Hutil.>^H ^H?) N
+(Executing /usr/bin/ls) N
+(util.c  util.h) N
+( /usa/kgraney/shell/src> ls ?gsh.c) N
+(Executing /usr/bin/ls) N
+(kgsh.c) N
+( /usa/kgraney/shell/src> ls *.?) N
+(Executing /usr/bin/ls) N
+(alias.c     builtins.c  get_path.c  kgsh.c      util.c      wildcard.c) N
+(alias.h     builtins.h  get_path.h  types.h     util.h      wildcard.h) N
+() N
+(..:) N
+(Doxyfile    new_file    out.ps~     src_file    tgt-sun4u) N
+(Makefile    out.pdf     proj1_test  testscript  tgt-x86_64) N
+(doc         out.ps      src         tgt-i686) N
+( /usa/kgraney/shell/src> blah) N
+(Error in which: No such file or directory) N
+(blah: Command not found.) N
+( /usa/kgraney/shell/src> /blah) N
+(Error in which: No such file or directory) N
+(/blah: Command not found.) N
+( /usa/kgraney/shell/src> ls -l /blah) N
+(Executing /usr/bin/ls) N
+(/blah: No such file or directory) N
+(Exit 2) N
+( /usa/kgraney/shell/src> /usr/bin) N
+(Executing /usr/bin) N
+(Error in exec: Permission denied) N
+( /usa/kgraney/shell/src> /l^H ^Hbin/ls -la /) N
+(Executing /bin/ls) N
+(total 1051) N
+(proj1_test) (Page 5/10) (Oct 06, 09 1:18) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(drwxr-xr-x  24 root     other         28 Oct  5 04:00 .) p n
+(drwxr-xr-x  24 root     other         28 Oct  5 04:00 ..) N
+(-rw-r--r--   1 root     root        1586 Dec 12  2006 .cshrc) N
+(lrwxrwxrwx   1 root     root          11 Oct  5 04:00 .rhosts -> /dev/rhosts) N
+(-rw-r--r--   1 root     root          62 Mar 13  2008 .shosts) N
+(drwx------   3 root     root           3 Mar 12  2008 .sunw) N
+(lrwxrwxrwx   1 root     root           9 Mar 12  2008 bin -> ./usr/bin) N
+(drwxr-xr-x  12 root     other         51 Sep 30 07:30 dev) N
+(drwxr-xr-x  68 root     sys          208 Sep 30 07:30 etc) N
+(drwxr-xr-x   2 root     sys            2 Dec 21  2006 export) N
+(dr-xr-xr-x   1 root     root           1 Sep 30 07:30 home) N
+(drwxr-xr-x   7 root     bin          244 Dec 17  2008 lib) N
+(dr-xr-xr-x   3 root     root           3 Oct  6 00:46 m) N
+(drwxr-xr-x   3 root     sys            3 Feb 13  2009 mnt) N
+(dr-xr-xr-x   1 root     root           1 Sep 30 07:30 net) N
+(drwxr-xr-x   5 root     sys            7 Dec 17  2008 opt) N
+(drwxr-xr-x  54 root     sys           65 Dec 12  2008 platform) N
+(dr-xr-xr-x 231 root     root      480032 Oct  6 00:55 proc) N
+(dr-xr-xr-x   1 root     root           1 Sep 30 07:30 samba) N
+(drwxr-xr-x   2 root     sys           51 Dec 12  2008 sbin) N
+(drwxr-xr-x   4 root     root           4 Dec 21  2006 system) N
+(dr-xr-xr-x   1 root     root           1 Sep 30 07:30 temp) N
+(drwxrwxrwt   6 root     sys          528 Oct  6 00:53 tmp) N
+(dr-xr-xr-x   4 root     root           4 Oct  5 05:14 usa) N
+(dr-xr-xr-x   1 root     root           1 Sep 30 08:40 usb) N
+(drwxr-xr-x  39 root     sys           53 Oct  5 01:06 usr) N
+(drwxr-xr-x  33 root     sys           35 Mar 14  2008 var) N
+(drwxr-xr-x   2 root     root           2 Mar 12  2009 yankees) N
+( /usa/kgraney/shell/src> file /bin/ls /bin/rm) N
+(Executing /usr/local/bin/file) N
+(/bin/ls: ELF 32-bit MSB executable, SPARC, version 1 \(SYSV\), dynamically linked ) N
+(\(uses shared libs\), stripped) N
+(/bin/rm: ELF 32-bit MSB executable, SPARC, version 1 \(SYSV\), dynamically linked ) N
+(\(uses shared libs\), stripped) N
+( /usa/kgraney/shell/src> which ls rm) N
+(Executing builtin which) N
+(/usr/bin/ls) N
+(/usr/bin/rm) N
+( /usa/kgraney/shell/src> where ls rm) N
+(Executing builtin where) N
+(/usr/bin/ls) N
+(/usr/ucb/ls) N
+(Error in where: No such file or directory) N
+(/usr/local/gnu/bin/ls) N
+(Error in where: No such file or directory) N
+(Error in where: No such file or directory) N
+(/usr/bin/rm) N
+(Error in where: No such file or directory) N
+(/usr/local/gnu/bin/rm) N
+(Error in where: No such file or directory) N
+(Error in where: No such file or directory) N
+( /usa/kgraney/shell/src> list) N
+(Executing builtin list) N
+(.) N
+(..) N
+(builtins.h) N
+(types.h) N
+(get_path.h) N
+(kgsh.c) N
+(util.h) N
+(wildcard.c) N
+(alias.c) N
+(tags) N
+(builtins.c) N
+(util.c) N
+(wildcard.h) N
+(alias.h) N
+(get_path.c) N
+( /usa/kgraney/shell/src> list / /usr/proc/bin) N
+(proj1_test) (Page 6/10) (Oct 06, 09 1:18) title
+grestore
+(Printed by Kevin Graney) rhead
+(proj1_test) (3/5) (Tuesday October 06, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (7-8) 4
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(Executing builtin list) p n
+() N
+(/:) N
+(.) N
+(..) N
+(etc) N
+(temp) N
+(yankees) N
+(usa) N
+(net) N
+(usr) N
+(bin) N
+(sbin) N
+(.cshrc) N
+(.shosts) N
+(lib) N
+(.rhosts) N
+(usb) N
+(platform) N
+(home) N
+(proc) N
+(opt) N
+(system) N
+(mnt) N
+(tmp) N
+(export) N
+(.sunw) N
+(m) N
+(var) N
+(dev) N
+() N
+(/usr/proc/bin:) N
+(.) N
+(..) N
+(prun) N
+(pfiles) N
+(ptree) N
+(pldd) N
+(pwdx) N
+(pflags) N
+(psig) N
+(pwait) N
+(pcred) N
+(pstack) N
+(ptime) N
+(pstop) N
+(pmap) N
+( /usa/kgraney/shell/src> cd) N
+(Executing builtin cd) N
+( /usa/kgraney> pwd) N
+(Executing builtin pwd) N
+(/usa/kgraney) N
+( /usa/kgraney> cd /blah) N
+(Executing builtin cd) N
+(Error in chdir: No such file or directory) N
+( /usa/kgraney> cd /usr/bin /usr/ucb) N
+(Executing builtin cd) N
+(cd: Too many arguments.) N
+( /usa/kgraney> cd -) N
+(Executing builtin cd) N
+( /usa/kgraney/shell/src> pwd) N
+(Executing builtin pwd) N
+(/usa/kgraney/shell/src) N
+( /usa/kgraney/shell/src> more kgsh.c) N
+(Executing /usr/bin/more) N
+(/*) N
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+(proj1_test) (Page 7/10) (Oct 06, 09 1:18) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+( * Project 1) p n
+( * Kevin Graney) N
+( */) N
+() N
+(/** ) N
+( * @file kgsh.c) N
+( * @brief kgsh main file) N
+( * @author Kevin Graney) N
+( * @version v0.1) N
+( * @date 2009-08-02) N
+( */) N
+(#include <stdlib.h>) N
+(#include <stdio.h>) N
+(#include <string.h>) N
+(#include <strings.h>) N
+(#include <limits.h>) N
+() N
+(#include <unistd.h>     // for access) N
+(^[[2;7m--More--\(12%\)^[[22;27m) N
+(Exit 2) N
+( /usa/kgraney/shell/src> ) N
+(^[[K^C) N
+( /usa/kgraney/shell/src> cd /usr/bin) N
+(Executing builtin cd) N
+( /usr/bin> pwd) N
+(Executing builtin pwd) N
+(/usr/bin) N
+( /usr/bin> ./ls /) N
+(Executing ./ls) N
+(bin       export    m         opt       samba     temp      usb       yankees) N
+(dev       home      mnt       platform  sbin      tmp       usr) N
+(etc       lib       net       proc      system    usa       var) N
+( /usr/bin> ../bin/ls /) N
+(Executing ../bin/ls) N
+(bin       export    m         opt       samba     temp      usb       yankees) N
+(dev       home      mnt       platform  sbin      tmp       usr) N
+(etc       lib       net       proc      system    usa       var) N
+( /usr/bin> history) N
+(Executing builtin history) N
+(35: cd /blah) N
+(36: cd /usr/bin /usr/ucb) N
+(37: cd -) N
+(38: pwd) N
+(39: more kgsh.c) N
+(40: cd /usr/bin) N
+(41: pwd) N
+(42: ./ls /) N
+(43: ../bin/ls /) N
+(44: history) N
+( /usr/bin> history 15) N
+(Executing builtin history) N
+(31: list) N
+(32: list / /usr/proc/bin) N
+(33: cd) N
+(34: pwd) N
+(35: cd /blah) N
+(36: cd /usr/bin /usr/ucb) N
+(37: cd -) N
+(38: pwd) N
+(39: more kgsh.c) N
+(40: cd /usr/bin) N
+(41: pwd) N
+(42: ./ls /) N
+(43: ../bin/ls /) N
+(44: history) N
+(45: history 15) N
+( /usr/bin> history) N
+(Executing builtin history) N
+(37: cd -) N
+(proj1_test) (Page 8/10) (Oct 06, 09 1:18) title
+grestore
+(Printed by Kevin Graney) rhead
+(proj1_test) (4/5) (Tuesday October 06, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (9-10) 5
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(38: pwd) p n
+(39: more kgsh.c) N
+(40: cd /usr/bin) N
+(41: pwd) N
+(42: ./ls /) N
+(43: ../bin/ls /) N
+(44: history) N
+(45: history 15) N
+(46: history) N
+( /usr/bin> history 5) N
+(Executing builtin history) N
+(43: ../bin/ls /) N
+(44: history) N
+(45: history 15) N
+(46: history) N
+(47: history 5) N
+( /usr/bin> history) N
+(Executing builtin history) N
+(39: more kgsh.c) N
+(40: cd /usr/bin) N
+(41: pwd) N
+(42: ./ls /) N
+(43: ../bin/ls /) N
+(44: history) N
+(45: history 15) N
+(46: history) N
+(47: history 5) N
+(48: history) N
+( /usr/bin> pid) N
+(Executing builtin pid) N
+(28957) N
+( /usr/bin> kill 2897^H ^H57) N
+(Executing builtin kill) N
+( /usr/bin> kill -1 28957) N
+(Executing builtin kill) N
+(Hangup) N
+(^[[2;7myankees0^[[22;27m[35] [~/shell/]> tgt-sun4u/kgsh) N
+() N
+( /usa/kgraney/shell> promt^H ^Hpt test) N
+(Executing builtin prompt) N
+(test /usa/kgraney/shell> ) N
+(test /usa/kgraney/shell> ) N
+(test /usa/kgraney/shell> prompt) N
+(Executing builtin prompt) N
+(New prompt prefix: 361shell) N
+(361shell /usa/kgraney/shell> ) N
+(361shell /usa/kgraney/shell> ) N
+(361shell /usa/kgraney/shell> ) N
+(361shell /usa/kgraney/shell> lsa^H ^H) N
+(Executing /usr/bin/ls) N
+(Doxyfile    new_file    out.ps~     src_file    tgt-sun4u) N
+(Makefile    out.pdf     proj1_test  testscript  tgt-x86_64) N
+(doc         out.ps      src         tgt-i686) N
+(361shell /usa/kgraney/shell> cat src_file) N
+(Executing /usr/bin/cat) N
+(This is a text file.) N
+(361shell /usa/kgraney/shell> cat new_file) N
+(Executing /usr/bin/cat) N
+(This is new.) N
+(361shell /usa/kgraney/shell> copy src_file new_file) N
+(Executing builtin copy) N
+(copy: overwrite 'new_file'? n) N
+(361shell /usa/kgraney/shell> cat new_file) N
+(Executing /usr/bin/cat) N
+(This is new.) N
+(361shell /usa/kgraney/shell> copy src_file new_file) N
+(Executing builtin copy) N
+(copy: overwrite 'new_file'? y) N
+(361shell /usa/kgraney/shell> ls) N
+(proj1_test) (Page 9/10) (Oct 06, 09 1:18) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(Executing /usr/bin/ls) p n
+(Doxyfile    new_file    out.ps~     src_file    tgt-sun4u) N
+(Makefile    out.pdf     proj1_test  testscript  tgt-x86_64) N
+(doc         out.ps      src         tgt-i686) N
+(361shell /usa/kgraney/shell> rm new_fi^H ^H^H ^H^H ^H^H ^H^H ^H^H ^H^H ^H^H ^H^H) N
+( ^Hcat new_file) N
+(Executing /usr/bin/cat) N
+(This is a text file.) N
+(361shell /usa/kgraney/shell> rm new_file) N
+(Executing /usr/bin/rm) N
+(361shell /usa/kgraney/shell> copy src_file new_file) N
+(Executing builtin copy) N
+(361shell /usa/kgraney/shell> cat newf^H) S
+( ) k
+(file) p n
+(Executing /usr/bin/cat) N
+(This is a text file.) N
+(361shell /usa/kgraney/shell> echo 'Test' > n^H ^Hsrc_file) N
+(Executing /usr/bin/echo) N
+('Test' > src_file) N
+(361shell /usa/kgraney/shell> cat src_file) N
+(Executing /usr/bin/cat) N
+(This is a text file.) N
+(361shell /usa/kgraney/shell> rm src_file) N
+(Executing /usr/bin/rm) N
+(361shell /usa/kgraney/shell> touch test_file) N
+(Executing /usr/bin/touch) N
+(361shell /usa/kgraney/shell> cat test_file) N
+(Executing /usr/bin/cat) N
+(361shell /usa/kgraney/shell> copy test_file new_file) N
+(Executing builtin copy) N
+(copy: overwrite 'new_file'? y) N
+(361shell /usa/kgraney/shell> cat new_file) N
+(Executing /usr/bin/cat) N
+(This is a text file.) N
+(361shell /usa/kgraney/shell> exit) N
+(Executing builtin exit) N
+(^[[2;7myankees0^[[22;27m[36] [~/shell/]> exit) N
+() N
+(exit) N
+() N
+(script done on Tue Oct 06 01:03:40 2009) N
+(proj1_test) (Page 10/10) (Oct 06, 09 1:18) title
+grestore
+(Printed by Kevin Graney) rhead
+(proj1_test) (5/5) (Tuesday October 06, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+
+%%Trailer
+end
+%%EOF

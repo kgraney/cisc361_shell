@@ -1,0 +1,644 @@
+Script started on Tue Oct 06 00:53:10 2009
+[2;7myankees0[22;27m[31] [~/shell/]> t[Kgmake clean
+rm -rf tgt-sun4u
+rm -rf doc/*
+[2;7myankees0[22;27m[32] [~/shell/]> ls
+Doxyfile     new_file     out.ps~      src_file     tgt-x86_64/
+Makefile     out.pdf      proj1_test   testscript
+doc/         out.ps       src/         tgt-i686/
+[2;7myankees0[22;27m[33] [~/shell/]> gmake
+mkdir -p tgt-sun4u
+gcc -g -DDEBUG -std=c99 -c src/wildcard.c  -o tgt-sun4u/wildcard.o
+mkdir -p tgt-sun4u
+gcc -g -DDEBUG -std=c99 -c src/util.c  -o tgt-sun4u/util.o
+src/util.c: In function `parse_line':
+src/util.c:325: warning: implicit declaration of function `strtok_r'
+src/util.c:325: warning: initialization makes pointer from integer without a cast
+src/util.c:334: warning: assignment makes pointer from integer without a cast
+src/util.c: In function `set_environment':
+src/util.c:379: warning: implicit declaration of function `putenv'
+mkdir -p tgt-sun4u
+gcc -g -DDEBUG -std=c99 -c src/kgsh.c  -o tgt-sun4u/kgsh.o
+src/kgsh.c: In function `main':
+src/kgsh.c:46: warning: implicit declaration of function `sigset'
+src/kgsh.c:47: warning: implicit declaration of function `sigignore'
+mkdir -p tgt-sun4u
+gcc -g -DDEBUG -std=c99 -c src/get_path.c  -o tgt-sun4u/get_path.o
+mkdir -p tgt-sun4u
+gcc -g -DDEBUG -std=c99 -c src/builtins.c  -o tgt-sun4u/builtins.o
+src/builtins.c: In function `bic_kill':
+src/builtins.c:478: warning: implicit declaration of function `kill'
+mkdir -p tgt-sun4u
+gcc -g -DDEBUG -std=c99 -c src/alias.c  -o tgt-sun4u/alias.o
+gcc -g -DDEBUG -std=c99 tgt-sun4u/wildcard.o tgt-sun4u/util.o tgt-sun4u/kgsh.o tgt-sun4u/get_path.o tgt-sun4u/builtins.o tgt-sun4u/alias.o -o tgt-sun4u/kgsh
+[2;7myankees0[22;27m[34] [~/shell/]> tgt-sun4u/kgsh 
+ /usa/kgraney/shell> ^D /usa/kgraney/shell> ^Z^C
+ /usa/kgraney/shell> which
+Executing builtin which
+which: too few arguments
+ /usa/kgraney/shell> which ls
+Executing builtin which
+/usr/bin/ls
+ /usa/kgraney/shell> ls
+Executing /usr/bin/ls
+Doxyfile    new_file    out.ps~     src_file    tgt-sun4u
+Makefile    out.pdf     proj1_test  testscript  tgt-x86_64
+doc         out.ps      src         tgt-i686
+ /usa/kgraney/shell> ^D /usa/kgraney/shell> ^Z^C
+ /usa/kgraney/shell> ls -l
+Executing /usr/bin/ls
+total 555
+-rw-r--r--   1 kgraney  kgraney      308 Oct  6 00:36 Doxyfile
+-rw-r--r--   1 kgraney  kgraney      567 Oct  6 00:36 Makefile
+drwxr-xr-x   2 kgraney  kgraney        2 Oct  6 00:21 doc
+-rw-r-----   1 kgraney  kgraney       13 Oct  6 00:51 new_file
+-rw-r--r--   1 kgraney  kgraney    51788 Oct  6 00:36 out.pdf
+-rw-r--r--   1 kgraney  kgraney   109192 Oct  6 00:46 out.ps
+-rw-r--r--   1 kgraney  kgraney    97866 Oct  6 00:36 out.ps~
+-rw-r-----   1 kgraney  kgraney        0 Oct  6 00:53 proj1_test
+drwxr-xr-x   2 kgraney  kgraney       15 Oct  6 00:21 src
+-rw-r-----   1 kgraney  kgraney       21 Oct  6 00:50 src_file
+-rw-r--r--   1 kgraney  kgraney      572 Oct  6 00:36 testscript
+drwxr-xr-x   2 kgraney  kgraney        9 Oct  6 00:21 tgt-i686
+drwxr-s---   2 kgraney  kgraney        9 Oct  6 00:53 tgt-sun4u
+drwxr-xr-x   2 kgraney  kgraney        9 Oct  6 00:21 tgt-x86_64
+ /usa/kgraney/shell> ls -l -a /sbin
+Executing /usr/bin/ls
+total 1899
+drwxr-xr-x   2 root     sys           51 Dec 12  2008 .
+drwxr-xr-x  24 root     other         28 Oct  5 04:00 ..
+-r-xr-xr-x   1 root     bin        18396 Jan 22  2005 autopush
+-r-xr-xr-x   1 root     bin       110684 Oct  3  2008 bootadm
+lrwxrwxrwx   1 root     root          21 Jan  7  2009 bpgetfile -> ../usr/sbin/bpgetfile
+-r-xr-xr-x   1 root     bin       111176 Nov 16  2007 dhcpagent
+-r-xr-xr-x   1 root     bin        10140 Aug 16  2007 dhcpinfo
+-r-xr-xr-x   1 root     bin        35912 Aug 16  2007 dladm
+-r-xr-xr-x   1 root     bin        55192 Jan 22  2005 fdisk
+-r-xr-xr-x   1 root     bin        10084 Oct  3  2008 fiocompress
+-r-xr-xr-x   1 root     bin        10312 Jan 22  2005 hostconfig
+-r-xr-xr-x   1 root     bin        61168 Aug 16  2007 ifconfig
+-r-xr-xr-x   1 root     bin        11680 Jan 22  2005 ifparse
+lrwxrwxrwx   1 root     root          25 Jan  7  2009 in.mpathd -> ../usr/lib/inet/in.mpathd
+-r-xr-xr-x   1 root     sys        48992 Apr  7  2008 init
+lrwxrwxrwx   1 root     root           2 Jan  7  2009 jsh -> sh
+-r-xr--r--   1 root     bin       181307 Sep 24  2008 luactivate
+-r-xr--r--   2 root     bin       202344 Sep 27  2008 lucurr
+-r-xr-xr-x   1 root     bin        18744 Jan 22  2005 metadb
+-r-xr-xr-x   1 root     bin        10260 Jan 22  2005 metadevadm
+-r-xr-xr-x   1 root     bin        18792 Jan 22  2005 metainit
+-r-xr-xr-x   1 root     bin        10220 Jan 22  2005 metarecover
+-r-xr-xr-x   1 root     bin        27516 Jan 22  2005 metastat
+-r-xr-xr-x   1 root     bin        27636 Jan 22  2005 mount
+-r-xr-xr-x   1 root     sys         8159 Jan 21  2005 mountall
+-r-xr-xr-x   1 root     bin        10112 Jan 22  2005 netstrategy
+lrwxrwxrwx   1 root     root           2 Jan  7  2009 pfsh -> sh
+-rwxr--r--   3 root     sys         1983 Jan 21  2005 rc0
+-rwxr--r--   1 root     sys         2242 Jan 21  2005 rc1
+-rwxr--r--   1 root     sys         2536 Jan 21  2005 rc2
+-rwxr--r--   1 root     sys         2567 Jan 21  2005 rc3
+-rwxr--r--   3 root     sys         1983 Jan 21  2005 rc5
+-rwxr--r--   3 root     sys         1983 Jan 21  2005 rc6
+-rwxr--r--   1 root     sys         5125 Jan 21  2005 rcS
+-r-xr-xr-x   1 root     bin        46188 Jan 24  2007 route
+-r-xr-xr-x   1 root     bin        36324 Aug 16  2007 routeadm
+-r-xr-xr-x   1 root     root       95468 May 21  2008 sh
+-r-xr-xr-x   1 root     bin        10044 Jan 22  2005 soconfig
+lrwxrwxrwx   1 root     root          13 Jan  7  2009 su -> ../usr/bin/su
+-r-xr-xr-x   1 root     sys        25284 Jan 22  2005 su.static
+-r-xr-xr-x   1 root     bin        18920 Jul 22  2008 sulogin
+-rwxr--r--   1 root     sys         3419 Sep 20  2008 swapadd
+-r-xr-xr-x   1 root     bin         9800 Jan 22  2005 sync
+-r-xr-xr-x   1 root     sys        18748 Apr  7  2008 tnctl
+-r-xr-xr-x   1 root     sys        10008 Jan 22  2005 uadmin
+-r-xr-xr-x   1 root     bin        18952 Oct  3  2008 umount
+-r-xr-xr-x   1 root     sys         7859 Jul  3  2007 umountall
+-r-xr-xr-x   1 root     bin        10096 Jan 22  2005 uname
+-r-xr-xr-x   1 root     bin        61836 Oct  3  2008 zfs
+-r-xr-xr-x   1 root     bin        10172 Aug 16  2007 zonename
+-r-xr-xr-x   1 root     bin        78752 Oct  3  2008 zpool
+ /usa/kgraney/shell> ls -l -F /sbin
+Executing /usr/bin/ls
+total 1891
+-r-xr-xr-x   1 root     bin        18396 Jan 22  2005 autopush*
+-r-xr-xr-x   1 root     bin       110684 Oct  3  2008 bootadm*
+lrwxrwxrwx   1 root     root          21 Jan  7  2009 bpgetfile -> ../usr/sbin/bpgetfile*
+-r-xr-xr-x   1 root     bin       111176 Nov 16  2007 dhcpagent*
+-r-xr-xr-x   1 root     bin        10140 Aug 16  2007 dhcpinfo*
+-r-xr-xr-x   1 root     bin        35912 Aug 16  2007 dladm*
+-r-xr-xr-x   1 root     bin        55192 Jan 22  2005 fdisk*
+-r-xr-xr-x   1 root     bin        10084 Oct  3  2008 fiocompress*
+-r-xr-xr-x   1 root     bin        10312 Jan 22  2005 hostconfig*
+-r-xr-xr-x   1 root     bin        61168 Aug 16  2007 ifconfig*
+-r-xr-xr-x   1 root     bin        11680 Jan 22  2005 ifparse*
+lrwxrwxrwx   1 root     root          25 Jan  7  2009 in.mpathd -> ../usr/lib/inet/in.mpathd*
+-r-xr-xr-x   1 root     sys        48992 Apr  7  2008 init*
+lrwxrwxrwx   1 root     root           2 Jan  7  2009 jsh -> sh*
+-r-xr--r--   1 root     bin       181307 Sep 24  2008 luactivate*
+-r-xr--r--   2 root     bin       202344 Sep 27  2008 lucurr*
+-r-xr-xr-x   1 root     bin        18744 Jan 22  2005 metadb*
+-r-xr-xr-x   1 root     bin        10260 Jan 22  2005 metadevadm*
+-r-xr-xr-x   1 root     bin        18792 Jan 22  2005 metainit*
+-r-xr-xr-x   1 root     bin        10220 Jan 22  2005 metarecover*
+-r-xr-xr-x   1 root     bin        27516 Jan 22  2005 metastat*
+-r-xr-xr-x   1 root     bin        27636 Jan 22  2005 mount*
+-r-xr-xr-x   1 root     sys         8159 Jan 21  2005 mountall*
+-r-xr-xr-x   1 root     bin        10112 Jan 22  2005 netstrategy*
+lrwxrwxrwx   1 root     root           2 Jan  7  2009 pfsh -> sh*
+-rwxr--r--   3 root     sys         1983 Jan 21  2005 rc0*
+-rwxr--r--   1 root     sys         2242 Jan 21  2005 rc1*
+-rwxr--r--   1 root     sys         2536 Jan 21  2005 rc2*
+-rwxr--r--   1 root     sys         2567 Jan 21  2005 rc3*
+-rwxr--r--   3 root     sys         1983 Jan 21  2005 rc5*
+-rwxr--r--   3 root     sys         1983 Jan 21  2005 rc6*
+-rwxr--r--   1 root     sys         5125 Jan 21  2005 rcS*
+-r-xr-xr-x   1 root     bin        46188 Jan 24  2007 route*
+-r-xr-xr-x   1 root     bin        36324 Aug 16  2007 routeadm*
+-r-xr-xr-x   1 root     root       95468 May 21  2008 sh*
+-r-xr-xr-x   1 root     bin        10044 Jan 22  2005 soconfig*
+lrwxrwxrwx   1 root     root          13 Jan  7  2009 su -> ../usr/bin/su*
+-r-xr-xr-x   1 root     sys        25284 Jan 22  2005 su.static*
+-r-xr-xr-x   1 root     bin        18920 Jul 22  2008 sulogin*
+-rwxr--r--   1 root     sys         3419 Sep 20  2008 swapadd*
+-r-xr-xr-x   1 root     bin         9800 Jan 22  2005 sync*
+-r-xr-xr-x   1 root     sys        18748 Apr  7  2008 tnctl*
+-r-xr-xr-x   1 root     sys        10008 Jan 22  2005 uadmin*
+-r-xr-xr-x   1 root     bin        18952 Oct  3  2008 umount*
+-r-xr-xr-x   1 root     sys         7859 Jul  3  2007 umountall*
+-r-xr-xr-x   1 root     bin        10096 Jan 22  2005 uname*
+-r-xr-xr-x   1 root     bin        61836 Oct  3  2008 zfs*
+-r-xr-xr-x   1 root     bin        10172 Aug 16  2007 zonename*
+-r-xr-xr-x   1 root     bin        78752 Oct  3  2008 zpool*
+ /usa/kgraney/shell> where
+Executing builtin where
+where: Too few arguments.
+ /usa/kgraney/shell> where ls
+Executing builtin where
+/usr/bin/ls
+/usr/ucb/ls
+Error in where: No such file or directory
+/usr/local/gnu/bin/ls
+Error in where: No such file or directory
+Error in where: No such file or directory
+ /usa/kgraney/shell> /usr/ucb/ls -l -g
+Executing /usr/ucb/ls
+total 277
+-rw-r--r--   1 kgraney  kgraney       308 Oct  6 00:36 Doxyfile
+-rw-r--r--   1 kgraney  kgraney       567 Oct  6 00:36 Makefile
+drwxr-xr-x   2 kgraney  kgraney         2 Oct  6 00:21 doc
+-rw-r-----   1 kgraney  kgraney        13 Oct  6 00:51 new_file
+-rw-r--r--   1 kgraney  kgraney     51788 Oct  6 00:36 out.pdf
+-rw-r--r--   1 kgraney  kgraney    109192 Oct  6 00:46 out.ps
+-rw-r--r--   1 kgraney  kgraney     97866 Oct  6 00:36 out.ps~
+-rw-r-----   1 kgraney  kgraney      8192 Oct  6 00:53 proj1_test
+drwxr-xr-x   2 kgraney  kgraney        15 Oct  6 00:21 src
+-rw-r-----   1 kgraney  kgraney        21 Oct  6 00:50 src_file
+-rw-r--r--   1 kgraney  kgraney       572 Oct  6 00:36 testscript
+drwxr-xr-x   2 kgraney  kgraney         9 Oct  6 00:21 tgt-i686
+drwxr-s---   2 kgraney  kgraney         9 Oct  6 00:53 tgt-sun4u
+drwxr-xr-x   2 kgraney  kgraney         9 Oct  6 00:21 tgt-x86_64
+ /usa/kgraney/shell> /usr/ucb/ls -l
+Executing /usr/ucb/ls
+total 286
+-rw-r--r--   1 kgraney       308 Oct  6 00:36 Doxyfile
+-rw-r--r--   1 kgraney       567 Oct  6 00:36 Makefile
+drwxr-xr-x   2 kgraney         2 Oct  6 00:21 doc
+-rw-r-----   1 kgraney        13 Oct  6 00:51 new_file
+-rw-r--r--   1 kgraney     51788 Oct  6 00:36 out.pdf
+-rw-r--r--   1 kgraney    109192 Oct  6 00:46 out.ps
+-rw-r--r--   1 kgraney     97866 Oct  6 00:36 out.ps~
+-rw-r-----   1 kgraney      8192 Oct  6 00:53 proj1_test
+drwxr-xr-x   2 kgraney        15 Oct  6 00:21 src
+-rw-r-----   1 kgraney        21 Oct  6 00:50 src_file
+-rw-r--r--   1 kgraney       572 Oct  6 00:36 testscript
+drwxr-xr-x   2 kgraney         9 Oct  6 00:21 tgt-i686
+drwxr-s---   2 kgraney         9 Oct  6 00:53 tgt-sun4u
+drwxr-xr-x   2 kgraney         9 Oct  6 00:21 tgt-x86_64
+ /usa/kgraney/shell> /usr/bin/ls -l -g
+Executing /usr/bin/ls
+total 572
+-rw-r--r--   1 kgraney      308 Oct  6 00:36 Doxyfile
+-rw-r--r--   1 kgraney      567 Oct  6 00:36 Makefile
+drwxr-xr-x   2 kgraney        2 Oct  6 00:21 doc
+-rw-r-----   1 kgraney       13 Oct  6 00:51 new_file
+-rw-r--r--   1 kgraney    51788 Oct  6 00:36 out.pdf
+-rw-r--r--   1 kgraney   109192 Oct  6 00:46 out.ps
+-rw-r--r--   1 kgraney    97866 Oct  6 00:36 out.ps~
+-rw-r-----   1 kgraney     8192 Oct  6 00:53 proj1_test
+drwxr-xr-x   2 kgraney       15 Oct  6 00:21 src
+-rw-r-----   1 kgraney       21 Oct  6 00:50 src_file
+-rw-r--r--   1 kgraney      572 Oct  6 00:36 testscript
+drwxr-xr-x   2 kgraney        9 Oct  6 00:21 tgt-i686
+drwxr-s---   2 kgraney        9 Oct  6 00:53 tgt-sun4u
+drwxr-xr-x   2 kgraney        9 Oct  6 00:21 tgt-x86_64
+ /usa/kgraney/shell> /usr/bin/ls -l
+Executing /usr/bin/ls
+total 572
+-rw-r--r--   1 kgraney  kgraney      308 Oct  6 00:36 Doxyfile
+-rw-r--r--   1 kgraney  kgraney      567 Oct  6 00:36 Makefile
+drwxr-xr-x   2 kgraney  kgraney        2 Oct  6 00:21 doc
+-rw-r-----   1 kgraney  kgraney       13 Oct  6 00:51 new_file
+-rw-r--r--   1 kgraney  kgraney    51788 Oct  6 00:36 out.pdf
+-rw-r--r--   1 kgraney  kgraney   109192 Oct  6 00:46 out.ps
+-rw-r--r--   1 kgraney  kgraney    97866 Oct  6 00:36 out.ps~
+-rw-r-----   1 kgraney  kgraney     8192 Oct  6 00:53 proj1_test
+drwxr-xr-x   2 kgraney  kgraney       15 Oct  6 00:21 src
+-rw-r-----   1 kgraney  kgraney       21 Oct  6 00:50 src_file
+-rw-r--r--   1 kgraney  kgraney      572 Oct  6 00:36 testscript
+drwxr-xr-x   2 kgraney  kgraney        9 Oct  6 00:21 tgt-i686
+drwxr-s---   2 kgraney  kgraney        9 Oct  6 00:53 tgt-sun4u
+drwxr-xr-x   2 kgraney  kgraney        9 Oct  6 00:21 tgt-x86_64
+ /usa/kgraney/shell> file *
+Executing /usr/local/bin/file
+Doxyfile:   ASCII text
+Makefile:   ASCII make commands text
+doc:        directory
+new_file:   ASCII text
+out.pdf:    PDF document, version 1.2
+out.ps:     PostScript document text conforming at level 3.0
+out.ps~:    PostScript document text conforming at level 3.0
+proj1_test: ASCII text, with CRLF, CR, LF line terminators, with escape sequences, with overstriking
+src:        directory
+src_file:   ASCII text
+testscript: ASCII text
+tgt-i686:   directory
+tgt-sun4u:  setgid directory
+tgt-x86_64: directory
+ /usa/kgraney/shell> ls *
+Executing /usr/bin/ls
+Doxyfile    new_file    out.ps      proj1_test  testscript
+Makefile    out.pdf     out.ps~     src_file
+
+doc:
+
+src:
+alias.c     builtins.h  kgsh.c      util.c      wildcard.h
+alias.h     get_path.c  tags        util.h
+builtins.c  get_path.h  types.h     wildcard.c
+
+tgt-i686:
+alias.o     get_path.o  kgsh.o      wildcard.o
+builtins.o  kgsh        util.o
+
+tgt-sun4u:
+alias.o     get_path.o  kgsh.o      wildcard.o
+builtins.o  kgsh        util.o
+
+tgt-x86_64:
+alias.o     get_path.o  kgsh.o      wildcard.o
+builtins.o  kgsh        util.o
+ /usa/kgraney/shell> cd src
+Executing builtin cd
+ /usa/kgraney/shell/src> ls *.c
+Executing /usr/bin/ls
+alias.c     builtins.c  get_path.c  kgsh.c      util.c      wildcard.c
+ /usa/kgraney/shell/src> ls -l kgs   util.*
+Executing /usr/bin/ls
+-rw-r--r--   1 kgraney  kgraney    10644 Oct  6 00:36 util.c
+-rw-r--r--   1 kgraney  kgraney     1219 Oct  6 00:36 util.h
+ /usa/kgraney/shell/src> ls -l k*.c
+Executing /usr/bin/ls
+-rw-r--r--   1 kgraney  kgraney     2812 Oct  6 00:36 kgsh.c
+ /usa/kgraney/shell/src> ls -l kg*sh.c
+Executing /usr/bin/ls
+-rw-r--r--   1 kgraney  kgraney     2812 Oct  6 00:36 kgsh.c
+ /usa/kgraney/shell/src> ls kgsh.     util.> ?
+Executing /usr/bin/ls
+util.c  util.h
+ /usa/kgraney/shell/src> ls ?gsh.c
+Executing /usr/bin/ls
+kgsh.c
+ /usa/kgraney/shell/src> ls *.?
+Executing /usr/bin/ls
+alias.c     builtins.c  get_path.c  kgsh.c      util.c      wildcard.c
+alias.h     builtins.h  get_path.h  types.h     util.h      wildcard.h
+
+..:
+Doxyfile    new_file    out.ps~     src_file    tgt-sun4u
+Makefile    out.pdf     proj1_test  testscript  tgt-x86_64
+doc         out.ps      src         tgt-i686
+ /usa/kgraney/shell/src> blah
+Error in which: No such file or directory
+blah: Command not found.
+ /usa/kgraney/shell/src> /blah
+Error in which: No such file or directory
+/blah: Command not found.
+ /usa/kgraney/shell/src> ls -l /blah
+Executing /usr/bin/ls
+/blah: No such file or directory
+Exit 2
+ /usa/kgraney/shell/src> /usr/bin
+Executing /usr/bin
+Error in exec: Permission denied
+ /usa/kgraney/shell/src> /l bin/ls -la /
+Executing /bin/ls
+total 1051
+drwxr-xr-x  24 root     other         28 Oct  5 04:00 .
+drwxr-xr-x  24 root     other         28 Oct  5 04:00 ..
+-rw-r--r--   1 root     root        1586 Dec 12  2006 .cshrc
+lrwxrwxrwx   1 root     root          11 Oct  5 04:00 .rhosts -> /dev/rhosts
+-rw-r--r--   1 root     root          62 Mar 13  2008 .shosts
+drwx------   3 root     root           3 Mar 12  2008 .sunw
+lrwxrwxrwx   1 root     root           9 Mar 12  2008 bin -> ./usr/bin
+drwxr-xr-x  12 root     other         51 Sep 30 07:30 dev
+drwxr-xr-x  68 root     sys          208 Sep 30 07:30 etc
+drwxr-xr-x   2 root     sys            2 Dec 21  2006 export
+dr-xr-xr-x   1 root     root           1 Sep 30 07:30 home
+drwxr-xr-x   7 root     bin          244 Dec 17  2008 lib
+dr-xr-xr-x   3 root     root           3 Oct  6 00:46 m
+drwxr-xr-x   3 root     sys            3 Feb 13  2009 mnt
+dr-xr-xr-x   1 root     root           1 Sep 30 07:30 net
+drwxr-xr-x   5 root     sys            7 Dec 17  2008 opt
+drwxr-xr-x  54 root     sys           65 Dec 12  2008 platform
+dr-xr-xr-x 231 root     root      480032 Oct  6 00:55 proc
+dr-xr-xr-x   1 root     root           1 Sep 30 07:30 samba
+drwxr-xr-x   2 root     sys           51 Dec 12  2008 sbin
+drwxr-xr-x   4 root     root           4 Dec 21  2006 system
+dr-xr-xr-x   1 root     root           1 Sep 30 07:30 temp
+drwxrwxrwt   6 root     sys          528 Oct  6 00:53 tmp
+dr-xr-xr-x   4 root     root           4 Oct  5 05:14 usa
+dr-xr-xr-x   1 root     root           1 Sep 30 08:40 usb
+drwxr-xr-x  39 root     sys           53 Oct  5 01:06 usr
+drwxr-xr-x  33 root     sys           35 Mar 14  2008 var
+drwxr-xr-x   2 root     root           2 Mar 12  2009 yankees
+ /usa/kgraney/shell/src> file /bin/ls /bin/rm
+Executing /usr/local/bin/file
+/bin/ls: ELF 32-bit MSB executable, SPARC, version 1 (SYSV), dynamically linked (uses shared libs), stripped
+/bin/rm: ELF 32-bit MSB executable, SPARC, version 1 (SYSV), dynamically linked (uses shared libs), stripped
+ /usa/kgraney/shell/src> which ls rm
+Executing builtin which
+/usr/bin/ls
+/usr/bin/rm
+ /usa/kgraney/shell/src> where ls rm
+Executing builtin where
+/usr/bin/ls
+/usr/ucb/ls
+Error in where: No such file or directory
+/usr/local/gnu/bin/ls
+Error in where: No such file or directory
+Error in where: No such file or directory
+/usr/bin/rm
+Error in where: No such file or directory
+/usr/local/gnu/bin/rm
+Error in where: No such file or directory
+Error in where: No such file or directory
+ /usa/kgraney/shell/src> list
+Executing builtin list
+.
+..
+builtins.h
+types.h
+get_path.h
+kgsh.c
+util.h
+wildcard.c
+alias.c
+tags
+builtins.c
+util.c
+wildcard.h
+alias.h
+get_path.c
+ /usa/kgraney/shell/src> list / /usr/proc/bin
+Executing builtin list
+
+/:
+.
+..
+etc
+temp
+yankees
+usa
+net
+usr
+bin
+sbin
+.cshrc
+.shosts
+lib
+.rhosts
+usb
+platform
+home
+proc
+opt
+system
+mnt
+tmp
+export
+.sunw
+m
+var
+dev
+
+/usr/proc/bin:
+.
+..
+prun
+pfiles
+ptree
+pldd
+pwdx
+pflags
+psig
+pwait
+pcred
+pstack
+ptime
+pstop
+pmap
+ /usa/kgraney/shell/src> cd
+Executing builtin cd
+ /usa/kgraney> pwd
+Executing builtin pwd
+/usa/kgraney
+ /usa/kgraney> cd /blah
+Executing builtin cd
+Error in chdir: No such file or directory
+ /usa/kgraney> cd /usr/bin /usr/ucb
+Executing builtin cd
+cd: Too many arguments.
+ /usa/kgraney> cd -
+Executing builtin cd
+ /usa/kgraney/shell/src> pwd
+Executing builtin pwd
+/usa/kgraney/shell/src
+ /usa/kgraney/shell/src> more kgsh.c
+Executing /usr/bin/more
+/*
+ * CISC361: Operating Systems (Fall 2009)
+ * Instructor: Ben Miller
+ *
+ * Project 1
+ * Kevin Graney
+ */
+
+/** 
+ * @file kgsh.c
+ * @brief kgsh main file
+ * @author Kevin Graney
+ * @version v0.1
+ * @date 2009-08-02
+ */
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <strings.h>
+#include <limits.h>
+
+#include <unistd.h>     // for access
+[2;7m--More--(12%)[22;27m
+Exit 2
+ /usa/kgraney/shell/src> [K^C
+ /usa/kgraney/shell/src> cd /usr/bin
+Executing builtin cd
+ /usr/bin> pwd
+Executing builtin pwd
+/usr/bin
+ /usr/bin> ./ls /
+Executing ./ls
+bin       export    m         opt       samba     temp      usb       yankees
+dev       home      mnt       platform  sbin      tmp       usr
+etc       lib       net       proc      system    usa       var
+ /usr/bin> ../bin/ls /
+Executing ../bin/ls
+bin       export    m         opt       samba     temp      usb       yankees
+dev       home      mnt       platform  sbin      tmp       usr
+etc       lib       net       proc      system    usa       var
+ /usr/bin> history
+Executing builtin history
+35: cd /blah
+36: cd /usr/bin /usr/ucb
+37: cd -
+38: pwd
+39: more kgsh.c
+40: cd /usr/bin
+41: pwd
+42: ./ls /
+43: ../bin/ls /
+44: history
+ /usr/bin> history 15
+Executing builtin history
+31: list
+32: list / /usr/proc/bin
+33: cd
+34: pwd
+35: cd /blah
+36: cd /usr/bin /usr/ucb
+37: cd -
+38: pwd
+39: more kgsh.c
+40: cd /usr/bin
+41: pwd
+42: ./ls /
+43: ../bin/ls /
+44: history
+45: history 15
+ /usr/bin> history
+Executing builtin history
+37: cd -
+38: pwd
+39: more kgsh.c
+40: cd /usr/bin
+41: pwd
+42: ./ls /
+43: ../bin/ls /
+44: history
+45: history 15
+46: history
+ /usr/bin> history 5
+Executing builtin history
+43: ../bin/ls /
+44: history
+45: history 15
+46: history
+47: history 5
+ /usr/bin> history
+Executing builtin history
+39: more kgsh.c
+40: cd /usr/bin
+41: pwd
+42: ./ls /
+43: ../bin/ls /
+44: history
+45: history 15
+46: history
+47: history 5
+48: history
+ /usr/bin> pid
+Executing builtin pid
+28957
+ /usr/bin> kill 2897 57
+Executing builtin kill
+ /usr/bin> kill -1 28957
+Executing builtin kill
+Hangup
+[2;7myankees0[22;27m[35] [~/shell/]> tgt-sun4u/kgsh
+ /usa/kgraney/shell> promt pt test
+Executing builtin prompt
+test /usa/kgraney/shell> 
+test /usa/kgraney/shell> 
+test /usa/kgraney/shell> prompt
+Executing builtin prompt
+New prompt prefix: 361shell
+361shell /usa/kgraney/shell> 
+361shell /usa/kgraney/shell> 
+361shell /usa/kgraney/shell> 
+361shell /usa/kgraney/shell> lsa 
+Executing /usr/bin/ls
+Doxyfile    new_file    out.ps~     src_file    tgt-sun4u
+Makefile    out.pdf     proj1_test  testscript  tgt-x86_64
+doc         out.ps      src         tgt-i686
+361shell /usa/kgraney/shell> cat src_file
+Executing /usr/bin/cat
+This is a text file.
+361shell /usa/kgraney/shell> cat new_file
+Executing /usr/bin/cat
+This is new.
+361shell /usa/kgraney/shell> copy src_file new_file
+Executing builtin copy
+copy: overwrite 'new_file'? n
+361shell /usa/kgraney/shell> cat new_file
+Executing /usr/bin/cat
+This is new.
+361shell /usa/kgraney/shell> copy src_file new_file
+Executing builtin copy
+copy: overwrite 'new_file'? y
+361shell /usa/kgraney/shell> ls
+Executing /usr/bin/ls
+Doxyfile    new_file    out.ps~     src_file    tgt-sun4u
+Makefile    out.pdf     proj1_test  testscript  tgt-x86_64
+doc         out.ps      src         tgt-i686
+361shell /usa/kgraney/shell> rm new_fi         cat new_file
+Executing /usr/bin/cat
+This is a text file.
+361shell /usa/kgraney/shell> rm new_file
+Executing /usr/bin/rm
+361shell /usa/kgraney/shell> copy src_file new_file
+Executing builtin copy
+361shell /usa/kgraney/shell> cat newf _file
+Executing /usr/bin/cat
+This is a text file.
+361shell /usa/kgraney/shell> echo 'Test' > n src_file
+Executing /usr/bin/echo
+'Test' > src_file
+361shell /usa/kgraney/shell> cat src_file
+Executing /usr/bin/cat
+This is a text file.
+361shell /usa/kgraney/shell> rm src_file
+Executing /usr/bin/rm
+361shell /usa/kgraney/shell> touch test_file
+Executing /usr/bin/touch
+361shell /usa/kgraney/shell> cat test_file
+Executing /usr/bin/cat
+361shell /usa/kgraney/shell> copy test_file new_file
+Executing builtin copy
+copy: overwrite 'new_file'? y
+361shell /usa/kgraney/shell> cat new_file
+Executing /usr/bin/cat
+This is a text file.
+361shell /usa/kgraney/shell> exit
+Executing builtin exit
+[2;7myankees0[22;27m[36] [~/shell/]> exit
+exit
+
+script done on Tue Oct 06 01:03:40 2009
