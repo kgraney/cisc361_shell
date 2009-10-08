@@ -16,7 +16,7 @@
 #ifndef _WATCHMAIL_INC
 #define _WATCHMAIL_INC
 
-int control_watchmail(char* file, bool disable);
+int control_watchmail(char* file, bool disable, kgenv* env);
 
 void* watchmail_thread(void*);
 

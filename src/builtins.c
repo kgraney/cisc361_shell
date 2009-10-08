@@ -717,7 +717,9 @@ void bic_watchmail(kgenv* env, int argc, char* argv[]){
 	return;
     }
 
-    file = argv[1];
+    file = (char*)malloc(strlen(argv[1]) + 1);	// Aliased in watchmails list 
+						// (watch free)
+    strcpy(file, argv[1]);
 
     //## If run with only one argument, we're starting a watchmail on the file
     if(argc == 2){
@@ -744,13 +746,13 @@ void bic_watchmail(kgenv* env, int argc, char* argv[]){
 
         // Start watching the file
 	printf("Starting watchmail for %s\n", file);
-        control_watchmail(file, false);
+        control_watchmail(file, false, env);
 
     } else if(action == STOP){
 
         // Stop watching the file
 	printf("Stopping watchmail for %s\n", file);
-        control_watchmail(file, false);
+        control_watchmail(file, true, env);
 
     }
 

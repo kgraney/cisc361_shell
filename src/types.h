@@ -59,6 +59,21 @@ struct aliaselement {
 typedef struct aliaselement aliasList;
 
 /** 
+ * @brief List of files and pthread_t structures that are currently being
+ * watched by the ::watchmail builtin.
+ */
+struct watchmailelement {
+    char* filename;             ///< Path to the file being watched
+    pthread_t thread;           ///< ::thread_t structure for ::watchmail_thread
+    struct watchmailelement* next; ///< Pointer to next node
+};
+
+/**
+ * @brief Typedef to refer to the watchmail linked list.
+ */
+
+typedef struct watchmailelement watchmailList;
+/** 
  * @brief A typedef is defined for the ::pathelement struct to be consistent
  * with the other linked lists.
  */
@@ -90,6 +105,7 @@ typedef struct {
     pathList* path;		        ///< Path list pointer
     histList* hist;		        ///< History list pointer
     aliasList* aliases;		    	///< Alias list pointer
+    watchmailList* watchmails;	    	///< Watchmail list pointer
 } kgenv;
 
 
