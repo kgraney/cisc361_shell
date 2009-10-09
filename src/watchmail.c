@@ -22,9 +22,18 @@
 
 #include <pthread.h>
 
-//TODO: error checking
+/** 
+* @brief Enables and disables watchmail threads.
+* 
+* @param file The filename to control the thread for.
+* @param disable If true disables the thread, and if false creates a new thread.
+* @param env The global ::kgenv environment object.
+* 
+* @return 0
+*/
 int control_watchmail(char* file, bool disable, kgenv* env){
 
+    //TODO: error checking
     if(!disable){
 
 
@@ -80,6 +89,14 @@ int control_watchmail(char* file, bool disable, kgenv* env){
 }
 
 
+/** 
+* @brief The pthread function executing for each watchmail thread. 
+* 
+* @param param A pointer to a char[] containing the filename to watch for new 
+* mail in
+* 
+* @return NULL
+*/
 void* watchmail_thread(void* param){
 
     char* filename = (char*)param;
