@@ -104,6 +104,7 @@ void initialize_environment(kgenv* env){
     env->path = get_path();
     env->hist = NULL;
     env->aliases = NULL;
+    env->watchmails = NULL;
 
 }
 

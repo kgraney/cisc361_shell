@@ -27,6 +27,8 @@ int control_watchmail(char* file, bool disable, kgenv* env){
 
     if(!disable){
 
+
+
         // Create a new node in the watchmails linked list
         watchmailList* new_node = (watchmailList*)malloc(sizeof(watchmailList));
         new_node->filename = file; 
@@ -52,6 +54,12 @@ int control_watchmail(char* file, bool disable, kgenv* env){
             curr = curr->next;
         }
 
+        // Case where a thread doesn't exist for the file
+        if(curr == NULL){
+            fprintf(stderr, "No watchmail thread for %s exists!\n", file);
+            return -1;
+        }
+
         pthread_cancel(curr->thread);
 
         // Delete the node from the watchmails linked list
@@ -60,6 +68,10 @@ int control_watchmail(char* file, bool disable, kgenv* env){
         } else {
             env->watchmails = curr->next;
         }
+
+        // Free the memory allocated for the node in the linked list
+        free(curr->filename);
+        free(curr);
             
     }
 
@@ -81,6 +93,7 @@ void* watchmail_thread(void* param){
     while(1) {
         stat(filename, &stat_info);
 
+        // TODO: change to check file size instead of modification time
         if(stat_info.st_mtime > last_time){
 
             struct timeval tp;
@@ -88,6 +101,7 @@ void* watchmail_thread(void* param){
 
             printf("\n\aYou have new mail in %s at %s\n", filename, 
                     ctime(&(tp.tv_sec)));
+
         }
 
         last_time = stat_info.st_mtime;
