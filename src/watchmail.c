@@ -102,16 +102,16 @@ void* watchmail_thread(void* param){
     char* filename = (char*)param;
 
     struct stat stat_info;
-    time_t  last_time;      ///< The modified time from the last iteration
+    off_t last_size;          ///< The file size from the last iteration
 
     stat(filename, &stat_info);
-    last_time = stat_info.st_mtime;
+    last_size = stat_info.st_size;
 
+    // Closed loop to monitor file
     while(1) {
         stat(filename, &stat_info);
 
-        // TODO: change to check file size instead of modification time
-        if(stat_info.st_mtime > last_time){
+        if(stat_info.st_size > last_size){
 
             struct timeval tp;
             gettimeofday(&tp, NULL);
@@ -121,7 +121,7 @@ void* watchmail_thread(void* param){
 
         }
 
-        last_time = stat_info.st_mtime;
+        last_size = stat_info.st_size;
         sleep(1);
     }
 
