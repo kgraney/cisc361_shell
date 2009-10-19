@@ -101,6 +101,8 @@ typedef struct {
     char* cwd;	  		        ///< Current working directory
     char* pwd;    		        ///< Prior working directory
 
+    bool  clobber;              ///< Clobber variable for file redirection
+
     char* prompt; 		        ///< Prompt prefix string
     pathList* path;		        ///< Path list pointer
     histList* hist;		        ///< History list pointer

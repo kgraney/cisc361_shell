@@ -248,8 +248,10 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
     char* redirect_file = NULL;
     int redirection_type = parse_redirection(&command_line, &redirect_file, 
             line_in);
+
     if(redirection_type >= 0){
 
+        printf("redirecting %s to file %s\n", command_line, redirect_file);
         fid = open(redirect_file, O_WRONLY|O_CREAT|O_TRUNC, 0666);
         close(1);
         dup(fid);
@@ -271,6 +273,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
     }
 
     if(!parse_line(&in_argc, &in_argv, &background, line_in)){
+        reset_redirection(&fid, redirection_type);
         free(in_argv);
         free(line_in);
         return line_length;        // continue if the line is blank
@@ -287,6 +290,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
             int length = process_command_in(new_line_in, global_env, true);
             detokenize(alias_ptr->string, length);
 
+            reset_redirection(&fid, redirection_type);
             free(in_argv);
             free(line_in);
             return line_length;
@@ -302,6 +306,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
         #endif //O_VERBOSE_EXE
         (*BUILT_IN_FUNCS[--builtin_code])(global_env, in_argc, in_argv);
 
+        reset_redirection(&fid, redirection_type);
         free(in_argv);
         free(line_in);
         return line_length;
@@ -317,6 +322,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
         if(access(in_argv[0], X_OK) == 0){
             exec_cmd(in_argv[0], in_argv, background);
 
+            reset_redirection(&fid, redirection_type);
             free(in_argv);
             free(line_in);
             return line_length;
@@ -330,13 +336,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
 
         exec_cmd(exe_path, in_argv, background);
 
-        if(redirection_type != RD_NONE){
-            fid = open("/dev/tty", O_WRONLY);
-            close(1);
-            dup(fid);
-            close(fid);
-        }
-
+        reset_redirection(&fid, redirection_type);
         free(in_argv);
         free(line_in);
         free(exe_path);
@@ -347,6 +347,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
     //## Command not found
     fprintf(stderr, "%s: Command not found.\n", in_argv[0]);
 
+    reset_redirection(&fid, redirection_type);
     free(in_argv);
     free(line_in);
     return line_length;
@@ -459,5 +460,14 @@ void set_environment(kgenv* env, char* name, char* value){
         }
 
         env->path = get_path();
+    }
+}
+
+void reset_redirection(int* fid, enum redirect_opcodes redirection_type){
+    if(redirection_type != RD_NONE && redirection_type != RD_STDIN){
+        *fid = open("/dev/tty", O_WRONLY);
+        close(1);
+        dup(*fid);
+        close(*fid);
     }
 }

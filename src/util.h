@@ -56,5 +56,7 @@ void detokenize(char* str, int length);
 
 void set_environment(kgenv* env, char* name, char* value);
 
+void reset_redirection(int* fid, enum redirect_opcodes redirection_type);
+
 
 #endif //_UTIL_INC

@@ -49,6 +49,7 @@ bic_history	builtins.c	/^void bic_history(kgenv* env, int argc, char* argv[]){$/
 bic_kill	builtins.c	/^void bic_kill(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_list	builtins.c	/^void bic_list(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_lsbuiltins	builtins.c	/^void bic_lsbuiltins(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_noclobber	builtins.c	/^void bic_noclobber(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_pid	builtins.c	/^void bic_pid(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_printenv	builtins.c	/^void bic_printenv(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_prompt	builtins.c	/^void bic_prompt(kgenv* env, int argc, char* argv[]){$/;"	f
@@ -60,6 +61,7 @@ bic_where	builtins.c	/^void bic_where(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_which	builtins.c	/^void bic_which(kgenv* env, int argc, char* argv[]){$/;"	f
 bicfunc	types.h	/^typedef void (*bicfunc)(kgenv*, int, char*);$/;"	t
 bool	types.h	/^typedef char bool;  \/\/\/< Fake boolean in C++ style$/;"	t
+clobber	types.h	/^    bool  clobber;              \/\/\/< Clobber variable for file redirection$/;"	m	struct:__anon1
 command	types.h	/^    char*  command;		\/\/\/< Command string$/;"	m	struct:histelement
 contains_wildcards	wildcard.c	/^bool contains_wildcards(char* line){$/;"	f
 control_watchmail	watchmail.c	/^int control_watchmail(char* file, bool disable, kgenv* env){$/;"	f

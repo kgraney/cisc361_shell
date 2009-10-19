@@ -16,10 +16,10 @@
 
 
 enum redirect_opcodes {
-    RD_STDOUT,          // The >   operator
-    RD_ALL,             // The >&  operator
-    RD_STDOUT_APPEND,   // The >>  operator
     RD_ALL_APPEND,      // The >>& operator
+    RD_STDOUT_APPEND,   // The >>  operator
+    RD_ALL,             // The >&  operator
+    RD_STDOUT,          // The >   operator
     RD_STDIN,           // The <   operator
     RD_NONE = -1        // No redirect operator
 };
