@@ -24,4 +24,7 @@ enum redirect_opcodes {
     RD_NONE = -1        // No redirect operator
 };
 
+enum redirect_opcodes parse_redirection(char** command, char** file, 
+        char* line);
+
 #endif //REDIRECTION_H

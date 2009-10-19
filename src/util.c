@@ -217,6 +217,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
     char** in_argv;                // argv for the command being processed
     int    line_length;         // The length of the input line
     bool   background = false;        // True if the command needs to be backgrounded
+    int fid;
 
     line_length = strlen(line_in);
     if(line_in[line_length - 1] == '\n')      // Remove trailing newline
@@ -239,6 +240,24 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
     if(contains_wildcards(line_in)){
         char* line_in_original = line_in;
         line_in = expand_wildcards(line_in);
+        free(line_in_original);
+    }
+
+    //## Process redirection operators
+    char* command_line = NULL;
+    char* redirect_file = NULL;
+    int redirection_type = parse_redirection(&command_line, &redirect_file, 
+            line_in);
+    if(redirection_type >= 0){
+
+        fid = open(redirect_file, O_WRONLY|O_CREAT|O_TRUNC, 0666);
+        close(1);
+        dup(fid);
+        close(fid);
+
+        // Remove the redirection part of the command before continuing
+        char* line_in_original = line_in;
+        line_in = command_line;
         free(line_in_original);
     }
 
@@ -311,6 +330,13 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
 
         exec_cmd(exe_path, in_argv, background);
 
+        if(redirection_type != RD_NONE){
+            fid = open("/dev/tty", O_WRONLY);
+            close(1);
+            dup(fid);
+            close(fid);
+        }
+
         free(in_argv);
         free(line_in);
         free(exe_path);
@@ -350,18 +376,6 @@ int parse_line(int* argc, char*** argv, bool* background, char* line){
     } else {
         *background = false;
     }
-
-    //## Tokenize the redirection operators
-    char* command_line = NULL;
-    char* redirect_file = NULL;
-    if(parse_redirection(&command_line, &redirect_file, line) >= 0){
-        printf("redirecting output of '%s%' to file %s\n", command_line,
-                redirect_file);
-        //int fid = open(redirect_file, O_WRONLY|O_CREAT|O_TRUNC);
-        //close(1);
-        //dup(fid);
-    }
-
 
     //## Tokenize the command into the argv array
     char* strtok_ptr = NULL;
