@@ -43,7 +43,7 @@ enum redirect_opcodes parse_redirection(char** command, char** file,
     int file_length = strlen(line) - (int)rd_stdout + (int)line;
     char* ptr = strtok(line + command_length, " >&<");
     *file = (char*)malloc(file_length); 
-    memcpy(*file, ptr, strlen(ptr));
+    memcpy(*file, ptr, strlen(ptr) + 1);
 
     return redirect_code;
 }
