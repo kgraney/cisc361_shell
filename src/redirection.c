@@ -93,6 +93,9 @@ void perform_redirection(int* fid, char* redirect_file,
             close(*fid);
             break;
         case RD_STDIN:
+            close(0);
+            dup(*fid);
+            close(*fid);
     }
 
 }
@@ -106,6 +109,11 @@ void reset_redirection(int* fid, enum redirect_opcodes redirection_type){
 
         *fid = open("/dev/tty", O_WRONLY);
         close(1);
+        dup(*fid);
+        close(*fid);
+    } else if(redirection_type == RD_STDIN){
+        *fid = open("/dev/tty", O_RDONLY);
+        close(0);
         dup(*fid);
         close(*fid);
     }
