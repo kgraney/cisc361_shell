@@ -251,11 +251,10 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
 
     if(redirection_type >= 0){
 
-        printf("redirecting %s to file %s\n", command_line, redirect_file);
-        fid = open(redirect_file, O_WRONLY|O_CREAT|O_TRUNC, 0666);
-        close(1);
-        dup(fid);
-        close(fid);
+        printf("redirecting %s of %s to file %s\n", 
+                REDIRECTION_STR[redirection_type], command_line, redirect_file);
+        
+        perform_redirection(&fid, redirect_file, redirection_type);
 
         // Remove the redirection part of the command before continuing
         char* line_in_original = line_in;
@@ -460,14 +459,5 @@ void set_environment(kgenv* env, char* name, char* value){
         }
 
         env->path = get_path();
-    }
-}
-
-void reset_redirection(int* fid, enum redirect_opcodes redirection_type){
-    if(redirection_type != RD_NONE && redirection_type != RD_STDIN){
-        *fid = open("/dev/tty", O_WRONLY);
-        close(1);
-        dup(*fid);
-        close(*fid);
     }
 }

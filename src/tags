@@ -14,6 +14,7 @@ MAX_TOKENS_PER_LINE	util.h	36;"	d
 MAX_WILDCARDS	wildcard.h	24;"	d
 NUM_BUILTINS	builtins.h	34;"	d
 NUM_BUILTINS	builtins.h	36;"	d
+NUM_REDIRECT_OPERATORS	redirection.c	/^const int NUM_REDIRECT_OPERATORS = 5;$/;"	v
 O_VERBOSE_EXE	util.h	32;"	d
 RD_ALL	redirection.h	/^    RD_ALL,             \/\/ The >&  operator$/;"	e	enum:redirect_opcodes
 RD_ALL_APPEND	redirection.h	/^    RD_ALL_APPEND,      \/\/ The >>& operator$/;"	e	enum:redirect_opcodes
@@ -22,7 +23,9 @@ RD_STDIN	redirection.h	/^    RD_STDIN,           \/\/ The <   operator$/;"	e	enu
 RD_STDOUT	redirection.h	/^    RD_STDOUT,          \/\/ The >   operator$/;"	e	enum:redirect_opcodes
 RD_STDOUT_APPEND	redirection.h	/^    RD_STDOUT_APPEND,   \/\/ The >>  operator$/;"	e	enum:redirect_opcodes
 REDIRECTION_H	redirection.h	10;"	d
-REDIRECT_STRS	redirection.c	/^const char* REDIRECT_STRS[] = { ">", ">&", ">>", ">>&", "<" };    $/;"	v
+REDIRECTION_STR	redirection.c	/^const char* REDIRECTION_STR[] = { "standard out and standard error, appending,",$/;"	v
+REDIRECTION_STR	redirection.h	/^const char* REDIRECTION_STR[5];$/;"	v
+REDIRECT_OPERATORS	redirection.c	/^const char* REDIRECT_OPERATORS[] = { ">>&", ">>", ">&", ">", "<" };    $/;"	v
 WILDCARD_CHARS	wildcard.h	25;"	d
 _ALIAS_INC	alias.h	17;"	d
 _BUILTINS_INC	builtins.h	17;"	d
@@ -94,12 +97,14 @@ parse_redirection	redirection.c	/^enum redirect_opcodes parse_redirection(char**
 path	types.h	/^    pathList* path;		        \/\/\/< Path list pointer$/;"	m	struct:__anon1
 pathList	types.h	/^typedef struct pathelement pathList;$/;"	t	typeref:struct:pathelement
 pathelement	get_path.h	/^struct pathelement$/;"	s
+perform_redirection	redirection.c	/^void perform_redirection(int* fid, char* redirect_file, $/;"	f
 process_command_in	util.c	/^int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){ $/;"	f
 prompt	types.h	/^    char* prompt; 		        \/\/\/< Prompt prefix string$/;"	m	struct:__anon1
 pwd	types.h	/^    char* pwd;    		        \/\/\/< Prior working directory$/;"	m	struct:__anon1
 pword_entry	types.h	/^    struct passwd *pword_entry;		\/\/\/< Passwd entry info (not needed?)$/;"	m	struct:__anon1	typeref:struct:__anon1::passwd
 redirect_opcodes	redirection.h	/^enum redirect_opcodes {$/;"	g
 remove_alias	alias.c	/^bool remove_alias(kgenv* env, char* name){$/;"	f
+reset_redirection	util.c	/^void reset_redirection(int* fid, enum redirect_opcodes redirection_type){$/;"	f
 set_environment	util.c	/^void set_environment(kgenv* env, char* name, char* value){$/;"	f
 sig_interrupt	kgsh.c	/^void sig_interrupt(int signal){$/;"	f
 string	types.h	/^    char*  string;		\/\/\/< Command string alias refers to$/;"	m	struct:aliaselement

@@ -13,6 +13,13 @@
 const char* REDIRECT_OPERATORS[] = { ">>&", ">>", ">&", ">", "<" };    
 const int NUM_REDIRECT_OPERATORS = 5;
 
+const char* REDIRECTION_STR[] = { "standard out and standard error, appending,",
+    "standard out, appending,",
+    "standard out and standard error",
+    "standard out",
+    "standard in" };
+
+
 enum redirect_opcodes parse_redirection(char** command, char** file, 
         char* line){
 
@@ -39,4 +46,24 @@ enum redirect_opcodes parse_redirection(char** command, char** file,
     memcpy(*file, ptr, strlen(ptr));
 
     return redirect_code;
+}
+
+void perform_redirection(int* fid, char* redirect_file, 
+        enum redirect_opcodes redirection_type){
+
+    *fid = open(redirect_file, O_WRONLY|O_CREAT|O_TRUNC, 0666);
+    close(1);
+    dup(*fid);
+    close(*fid);
+
+
+}
+
+void reset_redirection(int* fid, enum redirect_opcodes redirection_type){
+    if(redirection_type != RD_NONE && redirection_type != RD_STDIN){
+        *fid = open("/dev/tty", O_WRONLY);
+        close(1);
+        dup(*fid);
+        close(*fid);
+    }
 }
