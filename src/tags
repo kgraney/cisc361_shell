@@ -3,7 +3,7 @@
 !_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
-!_TAG_PROGRAM_VERSION	5.6	//
+!_TAG_PROGRAM_VERSION	5.7	//
 BUILT_IN_COMMANDS	builtins.c	/^const char* BUILT_IN_COMMANDS[] = {$/;"	v
 BUILT_IN_FUNCS	builtins.c	/^void (*BUILT_IN_FUNCS[])(kgenv* env, int argc, char** argv) = {$/;"	v
 BUILT_IN_FUNCS	builtins.h	/^void (*BUILT_IN_FUNCS[NUM_BUILTINS])(kgenv*, int, char**);$/;"	v
@@ -14,13 +14,25 @@ MAX_TOKENS_PER_LINE	util.h	36;"	d
 MAX_WILDCARDS	wildcard.h	24;"	d
 NUM_BUILTINS	builtins.h	34;"	d
 NUM_BUILTINS	builtins.h	36;"	d
+NUM_REDIRECT_OPERATORS	redirection.c	/^const int NUM_REDIRECT_OPERATORS = 5;$/;"	v
 O_VERBOSE_EXE	util.h	32;"	d
+RD_ALL	redirection.h	/^    RD_ALL,             \/\/ The >&  operator$/;"	e	enum:redirect_opcodes
+RD_ALL_APPEND	redirection.h	/^    RD_ALL_APPEND,      \/\/ The >>& operator$/;"	e	enum:redirect_opcodes
+RD_NONE	redirection.h	/^    RD_NONE = -1        \/\/ No redirect operator$/;"	e	enum:redirect_opcodes
+RD_STDIN	redirection.h	/^    RD_STDIN,           \/\/ The <   operator$/;"	e	enum:redirect_opcodes
+RD_STDOUT	redirection.h	/^    RD_STDOUT,          \/\/ The >   operator$/;"	e	enum:redirect_opcodes
+RD_STDOUT_APPEND	redirection.h	/^    RD_STDOUT_APPEND,   \/\/ The >>  operator$/;"	e	enum:redirect_opcodes
+REDIRECTION_H	redirection.h	10;"	d
+REDIRECTION_STR	redirection.c	/^const char* REDIRECTION_STR[] = { "standard out and standard error, appending,",$/;"	v
+REDIRECTION_STR	redirection.h	/^const char* REDIRECTION_STR[5];$/;"	v
+REDIRECT_OPERATORS	redirection.c	/^const char* REDIRECT_OPERATORS[] = { ">>&", ">>", ">&", ">", "<" };    $/;"	v
 WILDCARD_CHARS	wildcard.h	25;"	d
 _ALIAS_INC	alias.h	17;"	d
 _BUILTINS_INC	builtins.h	17;"	d
 _GET_PATH_INC	get_path.h	15;"	d
 _TYPES_INC	types.h	17;"	d
 _UTIL_INC	util.h	17;"	d
+_WATCHMAIL_INC	watchmail.h	17;"	d
 _WILDCARD_H	wildcard.h	17;"	d
 _db_history	builtins.c	/^void _db_history(kgenv* env, int argc, char* argv[]){$/;"	f
 _db_kgenv	builtins.c	/^void _db_kgenv(kgenv* env, int argc, char* argv[]){$/;"	f
@@ -40,18 +52,22 @@ bic_history	builtins.c	/^void bic_history(kgenv* env, int argc, char* argv[]){$/
 bic_kill	builtins.c	/^void bic_kill(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_list	builtins.c	/^void bic_list(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_lsbuiltins	builtins.c	/^void bic_lsbuiltins(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_noclobber	builtins.c	/^void bic_noclobber(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_pid	builtins.c	/^void bic_pid(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_printenv	builtins.c	/^void bic_printenv(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_prompt	builtins.c	/^void bic_prompt(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_pwd	builtins.c	/^void bic_pwd(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_setenv	builtins.c	/^void bic_setenv(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_unalias	builtins.c	/^void bic_unalias(kgenv* env, int argc, char* argv[]){$/;"	f
+bic_watchmail	builtins.c	/^void bic_watchmail(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_where	builtins.c	/^void bic_where(kgenv* env, int argc, char* argv[]){$/;"	f
 bic_which	builtins.c	/^void bic_which(kgenv* env, int argc, char* argv[]){$/;"	f
 bicfunc	types.h	/^typedef void (*bicfunc)(kgenv*, int, char*);$/;"	t
 bool	types.h	/^typedef char bool;  \/\/\/< Fake boolean in C++ style$/;"	t
+clobber	types.h	/^    bool  clobber;              \/\/\/< Clobber variable for file redirection$/;"	m	struct:__anon1
 command	types.h	/^    char*  command;		\/\/\/< Command string$/;"	m	struct:histelement
 contains_wildcards	wildcard.c	/^bool contains_wildcards(char* line){$/;"	f
+control_watchmail	watchmail.c	/^int control_watchmail(char* file, bool disable, kgenv* env){$/;"	f
 cwd	types.h	/^    char* cwd;	  		        \/\/\/< Current working directory$/;"	m	struct:__anon1
 detokenize	util.c	/^void detokenize(char* str, int length){$/;"	f
 element	get_path.h	/^  char *element;			\/* a dir in the path *\/$/;"	m	struct:pathelement
@@ -59,6 +75,7 @@ exec_cmd	util.c	/^int exec_cmd(char* cmd, char** argv, bool background){$/;"	f
 expand_argument	wildcard.c	/^char* expand_argument(char* argument){$/;"	f
 expand_wildcards	wildcard.c	/^char* expand_wildcards(char* line){$/;"	f
 false	types.h	21;"	d
+filename	types.h	/^    char* filename;             \/\/\/< Path to the file being watched$/;"	m	struct:watchmailelement
 get_path	get_path.c	/^struct pathelement *get_path()$/;"	f
 hist	types.h	/^    histList* hist;		        \/\/\/< History list pointer$/;"	m	struct:__anon1
 histList	types.h	/^typedef struct histelement histList;$/;"	t	typeref:struct:histelement
@@ -73,19 +90,29 @@ name	types.h	/^    char*  name;		\/\/\/< The name of the alias$/;"	m	struct:alia
 next	get_path.h	/^  struct pathelement *next;		\/* pointer to next node *\/$/;"	m	struct:pathelement	typeref:struct:pathelement::pathelement
 next	types.h	/^    struct aliaselement* next;	\/\/\/< Pointer to next node$/;"	m	struct:aliaselement	typeref:struct:aliaselement::aliaselement
 next	types.h	/^    struct histelement* next;	\/\/\/< Pointer to next node (previous command)$/;"	m	struct:histelement	typeref:struct:histelement::histelement
+next	types.h	/^    struct watchmailelement* next; \/\/\/< Pointer to next node$/;"	m	struct:watchmailelement	typeref:struct:watchmailelement::watchmailelement
 num	types.h	/^    int	   num;			\/\/\/< Command number$/;"	m	struct:histelement
 parse_line	util.c	/^int parse_line(int* argc, char*** argv, bool* background, char* line){$/;"	f
+parse_redirection	redirection.c	/^enum redirect_opcodes parse_redirection(char** command, char** file, $/;"	f
 path	types.h	/^    pathList* path;		        \/\/\/< Path list pointer$/;"	m	struct:__anon1
 pathList	types.h	/^typedef struct pathelement pathList;$/;"	t	typeref:struct:pathelement
 pathelement	get_path.h	/^struct pathelement$/;"	s
+perform_redirection	redirection.c	/^void perform_redirection(int* fid, char* redirect_file, $/;"	f
 process_command_in	util.c	/^int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){ $/;"	f
 prompt	types.h	/^    char* prompt; 		        \/\/\/< Prompt prefix string$/;"	m	struct:__anon1
 pwd	types.h	/^    char* pwd;    		        \/\/\/< Prior working directory$/;"	m	struct:__anon1
 pword_entry	types.h	/^    struct passwd *pword_entry;		\/\/\/< Passwd entry info (not needed?)$/;"	m	struct:__anon1	typeref:struct:__anon1::passwd
+redirect_opcodes	redirection.h	/^enum redirect_opcodes {$/;"	g
 remove_alias	alias.c	/^bool remove_alias(kgenv* env, char* name){$/;"	f
+reset_redirection	util.c	/^void reset_redirection(int* fid, enum redirect_opcodes redirection_type){$/;"	f
 set_environment	util.c	/^void set_environment(kgenv* env, char* name, char* value){$/;"	f
 sig_interrupt	kgsh.c	/^void sig_interrupt(int signal){$/;"	f
 string	types.h	/^    char*  string;		\/\/\/< Command string alias refers to$/;"	m	struct:aliaselement
+thread	types.h	/^    pthread_t thread;           \/\/\/< ::thread_t structure for ::watchmail_thread$/;"	m	struct:watchmailelement
 true	types.h	22;"	d
 uid	types.h	/^    int uid;			        \/\/\/< User ID $/;"	m	struct:__anon1
+watchmailList	types.h	/^typedef struct watchmailelement watchmailList;$/;"	t	typeref:struct:watchmailelement
+watchmail_thread	watchmail.c	/^void* watchmail_thread(void* param){$/;"	f
+watchmailelement	types.h	/^struct watchmailelement {$/;"	s
+watchmails	types.h	/^    watchmailList* watchmails;	    	\/\/\/< Watchmail list pointer$/;"	m	struct:__anon1
 which	util.c	/^char* which(const char* command, pathList* pathlist){$/;"	f

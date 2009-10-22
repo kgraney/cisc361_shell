@@ -56,5 +56,4 @@ void detokenize(char* str, int length);
 
 void set_environment(kgenv* env, char* name, char* value);
 
-
 #endif //_UTIL_INC

@@ -18,6 +18,7 @@
 #include "builtins.h"
 #include "get_path.h"
 #include "wildcard.h"
+#include "redirection.h"
 
 /** 
  * @brief Returns the location of an executable in the PATH.
@@ -38,52 +39,52 @@ char* which(const char* command, pathList* pathlist){
     // Loop to iterate over every directory in the path
     while(pl != NULL){
 
-	DIR* dirp = opendir(pl->element);
+        DIR* dirp = opendir(pl->element);
 
-	if(dirp == NULL){
+        if(dirp == NULL){
 
-	    perror("Error in which");
-	    return NULL;
+            perror("Error in which");
+            return NULL;
 
-	} else {
+        } else {
 
-	    struct dirent* dp = readdir(dirp);	//TODO: errno check?
+            struct dirent* dp = readdir(dirp);        //TODO: errno check?
 
-	    // Iterate over every file in the directory
-	    while(dp != NULL){
+            // Iterate over every file in the directory
+            while(dp != NULL){
 
-		// Determine if the filename matches the command
-		if(strcmp(dp->d_name, command) == 0){
+                // Determine if the filename matches the command
+                if(strcmp(dp->d_name, command) == 0){
                     closedir(dirp);
 
-		    // Generate an absolute path for the file that was found
-		    char* full_path = malloc(strlen(command) 
-			    + strlen(pl->element) + 2);                
-		    if(full_path == NULL){
-			perror("Error in which");
-			return NULL;
-		    }
+                    // Generate an absolute path for the file that was found
+                    char* full_path = malloc(strlen(command) 
+                            + strlen(pl->element) + 2);                
+                    if(full_path == NULL){
+                        perror("Error in which");
+                        return NULL;
+                    }
 
                     sprintf(full_path, "%s/%s", pl->element, command);
 
-		    // Check for execute permissions on the file found
-		    if(access(full_path, X_OK) == 0){
-			return full_path;
-		    } else {
-			//TODO: Verify we don't need a perror here.  This should
-			//be silent if an error condition occurs.
+                    // Check for execute permissions on the file found
+                    if(access(full_path, X_OK) == 0){
+                        return full_path;
+                    } else {
+                        //TODO: Verify we don't need a perror here.  This should
+                        //be silent if an error condition occurs.
 
-			// Free the memory if we're not returning it
-			free(full_path);
-		    }
-		}
-		dp = readdir(dirp);
-	    }
-	    if(closedir(dirp) == -1){
-		perror("Error in which");
-	    }
-	}
-	pl = pl->next;
+                        // Free the memory if we're not returning it
+                        free(full_path);
+                    }
+                }
+                dp = readdir(dirp);
+            }
+            if(closedir(dirp) == -1){
+                perror("Error in which");
+            }
+        }
+        pl = pl->next;
     }
     return NULL;
 }
@@ -100,23 +101,23 @@ void add_to_history(char* command, kgenv* env){
     histList* new_item;
     new_item = malloc(sizeof(histList));
     if(new_item == NULL){
-	perror("Error adding to history");
-	return;
+        perror("Error adding to history");
+        return;
     }
 
     new_item->command = (char*)malloc(strlen(command) + 1);
     if(new_item->command == NULL){
-	perror("Error adding to history");
-	return;
+        perror("Error adding to history");
+        return;
     }
 
     strcpy(new_item->command, command);
     new_item->next = env->hist;
 
     if(env->hist != NULL){
-	new_item->num = env->hist->num + 1;
+        new_item->num = env->hist->num + 1;
     } else {
-	new_item->num = 1;
+        new_item->num = 1;
     }
 
     env->hist = new_item;
@@ -148,43 +149,43 @@ int exec_cmd(char* cmd, char** argv, bool background){
     pid_t child_pid = fork();
     int child_status;
 
-    if(child_pid == 0){			//** Executed in child process
+    if(child_pid == 0){                        //** Executed in child process
 
-	execve(cmd, argv, environ);	//TODO: switch to using kgenv
-					//environment list
-	
-	// Exec commands only return if there's an error
-	perror("Error in exec");	
-	
-	// We exit since the process image will be replaced with itself here and
-	// we will need to enter "exit" twice to truely exit.
-	exit(0);	
+        execve(cmd, argv, environ);        //TODO: switch to using kgenv
+                                        //environment list
+        
+        // Exec commands only return if there's an error
+        perror("Error in exec");        
+        
+        // We exit since the process image will be replaced with itself here and
+        // we will need to enter "exit" twice to truely exit.
+        exit(0);        
 
-    } else if(child_pid > 0) {		//** Executed in parent process
+    } else if(child_pid > 0) {                //** Executed in parent process
 
-	if(!background){
+        if(!background){
 
-	    // If the job isn't backgrounded, wait for child process to return
-	    if(!waitpid(child_pid, &child_status, 0)){
-		perror("Error in waidpid");
-	    }
+            // If the job isn't backgrounded, wait for child process to return
+            if(!waitpid(child_pid, &child_status, 0)){
+                perror("Error in waidpid");
+            }
 
-	} else {
+        } else {
 
-	    // TODO: determine if anything else needs to be done here
-	    if(!waitpid(child_pid, &child_status, WNOHANG)){
-		perror("Error in backgrounding waitpid");
-	    }
+            // TODO: determine if anything else needs to be done here
+            if(!waitpid(child_pid, &child_status, WNOHANG)){
+                perror("Error in backgrounding waitpid");
+            }
 
-	}
+        }
 
-	// Print out the exit status if it is non-zero
-	if(WEXITSTATUS(child_status) != 0)
-	    printf("Exit %d\n", WEXITSTATUS(child_status));
+        // Print out the exit status if it is non-zero
+        if(WEXITSTATUS(child_status) != 0)
+            printf("Exit %d\n", WEXITSTATUS(child_status));
 
-    } else {				//** Didn't fork properly 
+    } else {                                //** Didn't fork properly 
 
-	perror("Fork failed\n");
+        perror("Fork failed\n");
 
     }
 
@@ -212,33 +213,53 @@ int exec_cmd(char* cmd, char** argv, bool background){
  */
 int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){ 
 
-    int    in_argc;		// argc for the command being processed
-    char** in_argv;	        // argv for the command being processed
-    int    line_length; 	// The length of the input line
-    bool   background = false;	// True if the command needs to be backgrounded
+    int    in_argc;             // argc for the command being processed
+    char** in_argv;             // argv for the command being processed
+    int    line_length;         // The length of the input line
+    bool   background = false;  // True if the command needs to be backgrounded
+    int fid;
 
     line_length = strlen(line_in);
     if(line_in[line_length - 1] == '\n')      // Remove trailing newline
-	line_in[line_length -1] = '\0';
+        line_in[line_length -1] = '\0';
 
     //## Capture an EOF with no prefix 
     if(feof(stdin)){
-	//printf("\nUse \"exit\" to leave kgsh.\n");
-	//TODO: Fix this feature.
+        //printf("\nUse \"exit\" to leave kgsh.\n");
+        //TODO: Fix this feature.
     }
 
     //## Add the line to the history stack
-    if(line_in[0] != '\0'	// don't add blank lines
-	    && !deref_alias){	// don't add the second call for an alias
-	add_to_history(line_in, global_env);
+    if(line_in[0] != '\0'        // don't add blank lines
+            && !deref_alias){        // don't add the second call for an alias
+        add_to_history(line_in, global_env);
     }
     
 
     //## Expand wildcards
     if(contains_wildcards(line_in)){
-	char* line_in_original = line_in;
-	line_in = expand_wildcards(line_in);
-	free(line_in_original);
+        char* line_in_original = line_in;
+        line_in = expand_wildcards(line_in);
+        free(line_in_original);
+    }
+
+    //## Process redirection operators
+    char* command_line = NULL;
+    char* redirect_file = NULL;
+    int redirection_type = parse_redirection(&command_line, &redirect_file, 
+            line_in);
+
+    if(redirection_type >= 0){
+
+        printf("redirecting %s of %s to file %s\n", 
+                REDIRECTION_STR[redirection_type], command_line, redirect_file);
+        
+        perform_redirection(&fid, redirect_file, redirection_type);
+
+        // Remove the redirection part of the command before continuing
+        char* line_in_original = line_in;
+        line_in = command_line;
+        free(line_in_original);
     }
 
 
@@ -246,62 +267,65 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
     //TODO: free in_argv
     in_argv = (char**)calloc(MAX_TOKENS_PER_LINE, sizeof(char*));
     if(in_argv == NULL){
-	perror("Error processing command");
-	return 0;
+        perror("Error processing command");
+        return 0;
     }
 
     if(!parse_line(&in_argc, &in_argv, &background, line_in)){
-
-	free(in_argv);
-	free(line_in);
-	return line_length;	// continue if the line is blank
+        reset_redirection(&fid, redirection_type);
+        free(in_argv);
+        free(line_in);
+        return line_length;        // continue if the line is blank
     }
 
     //## Check for aliases (Do before builtins to allow for aliasing
     //## builtin commands.
     if(!deref_alias){
-	aliasList* alias_ptr = is_alias(global_env, in_argv[0]);
-	if(alias_ptr){
-	    char* new_line_in = (char*)malloc(strlen(alias_ptr->string) + 1);
-	    strcpy(new_line_in, alias_ptr->string);
+        aliasList* alias_ptr = is_alias(global_env, in_argv[0]);
+        if(alias_ptr){
+            char* new_line_in = (char*)malloc(strlen(alias_ptr->string) + 1);
+            strcpy(new_line_in, alias_ptr->string);
 
-	    int length = process_command_in(new_line_in, global_env, true);
-	    detokenize(alias_ptr->string, length);
+            int length = process_command_in(new_line_in, global_env, true);
+            detokenize(alias_ptr->string, length);
 
-	    free(in_argv);
-	    free(line_in);
-	    return line_length;
-	}
+            reset_redirection(&fid, redirection_type);
+            free(in_argv);
+            free(line_in);
+            return line_length;
+        }
     }
 
 
     //## Process built in commands
     int builtin_code = is_builtin(in_argv[0]);
     if(builtin_code){
-	#ifdef O_VERBOSE_EXE
-	printf("Executing builtin %s\n", in_argv[0]);
-	#endif //O_VERBOSE_EXE
-	(*BUILT_IN_FUNCS[--builtin_code])(global_env, in_argc, in_argv);
+        #ifdef O_VERBOSE_EXE
+        printf("Executing builtin %s\n", in_argv[0]);
+        #endif //O_VERBOSE_EXE
+        (*BUILT_IN_FUNCS[--builtin_code])(global_env, in_argc, in_argv);
 
-	free(in_argv);
-	free(line_in);
-	return line_length;
+        reset_redirection(&fid, redirection_type);
+        free(in_argv);
+        free(line_in);
+        return line_length;
     }
 
     //## Process absolute and relative paths
     // TODO: cleanup this logic
     if( (in_argv[0][0] == '/') ||
-	((in_argv[0][0] == '.') && ((in_argv[0][1] == '/') ||
-		 (in_argv[0][1] == '.') && (in_argv[0][2] == '/')))){
+        ((in_argv[0][0] == '.') && ((in_argv[0][1] == '/') ||
+                 (in_argv[0][1] == '.') && (in_argv[0][2] == '/')))){
 
-	// Execute the file if it's executable
-	if(access(in_argv[0], X_OK) == 0){
-	    exec_cmd(in_argv[0], in_argv, background);
+        // Execute the file if it's executable
+        if(access(in_argv[0], X_OK) == 0){
+            exec_cmd(in_argv[0], in_argv, background);
 
-	    free(in_argv);
-	    free(line_in);
-	    return line_length;
-	}
+            reset_redirection(&fid, redirection_type);
+            free(in_argv);
+            free(line_in);
+            return line_length;
+        }
     }
 
 
@@ -309,18 +333,20 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
     char* exe_path = which(in_argv[0], global_env->path);
     if(exe_path != NULL){
 
-	exec_cmd(exe_path, in_argv, background);
+        exec_cmd(exe_path, in_argv, background);
 
-	free(in_argv);
-	free(line_in);
-	free(exe_path);
-	return line_length;
+        reset_redirection(&fid, redirection_type);
+        free(in_argv);
+        free(line_in);
+        free(exe_path);
+        return line_length;
 
     }
 
     //## Command not found
     fprintf(stderr, "%s: Command not found.\n", in_argv[0]);
 
+    reset_redirection(&fid, redirection_type);
     free(in_argv);
     free(line_in);
     return line_length;
@@ -343,28 +369,29 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
 int parse_line(int* argc, char*** argv, bool* background, char* line){
     int line_length = strlen(line);
 
-    // Check if job needs to be backgrounded
+    //## Check if job needs to be backgrounded
     if(line[line_length - 1] == '&'){
-	line[line_length - 1] = '\0';	// Remove the '&' character
-	*background = true;
+        line[line_length - 1] = '\0';        // Remove the '&' character
+        *background = true;
     } else {
-	*background = false;
+        *background = false;
     }
 
+    //## Tokenize the command into the argv array
     char* strtok_ptr = NULL;
     char* token = strtok_r(line, " \n", &strtok_ptr);
 
 
     // If the line is blank, the first token will be the null string.
     if(token == '\0')
-	return 0;	
+        return 0;        
 
-    *argv[0] = token;	// argv[0] is the command name
+    *argv[0] = token;        // argv[0] is the command name
 
     for(int i = 1; token != NULL && i < MAX_TOKENS_PER_LINE; i++){
-	token = strtok_r(NULL, " \t", &strtok_ptr);
-	(*argv)[i] = token;
-	*argc = i;
+        token = strtok_r(NULL, " \t", &strtok_ptr);
+        (*argv)[i] = token;
+        *argc = i;
     }
 
     return 1;
@@ -384,9 +411,9 @@ int parse_line(int* argc, char*** argv, bool* background, char* line){
  */
 void detokenize(char* str, int length){
     for(int i=0; i < length - 1; i++){
-	if(str[i] == '\0'){
-	    str[i] = ' ';
-	}
+        if(str[i] == '\0'){
+            str[i] = ' ';
+        }
     }
 }
 
@@ -413,24 +440,24 @@ void set_environment(kgenv* env, char* name, char* value){
 
     // Handle a change to HOME
     if(strcmp(name, "HOME") == 0){
-	//TODO: improve?
-	env->homedir = str + 5;
+        //TODO: improve?
+        env->homedir = str + 5;
     }
 
     // Handle a change to PATH
     else if(strcmp(name, "PATH") == 0){
-	//TODO: check for memory leaks here
-	pathList* p = env->path;
-	pathList* old;
+        //TODO: check for memory leaks here
+        pathList* p = env->path;
+        pathList* old;
 
-	// Only free the first one since they are malloced together.
-	free(p->element);
-	while(p != NULL){
-	    old = p;
-	    p = p->next;
-	    free(old);
-	}
+        // Only free the first one since they are malloced together.
+        free(p->element);
+        while(p != NULL){
+            old = p;
+            p = p->next;
+            free(old);
+        }
 
-	env->path = get_path();
+        env->path = get_path();
     }
 }

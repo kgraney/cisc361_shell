@@ -48,7 +48,8 @@ const char* BUILT_IN_COMMANDS[] = {
     "history", 
     "setenv",
     "lsbuiltins",
-    "watchmail"
+    "watchmail",
+    "noclobber"
 #ifdef DEBUG		// Various built ins defined for debugging purposes.
 	,
     "_db_tokenizer",
@@ -93,7 +94,8 @@ void (*BUILT_IN_FUNCS[])(kgenv* env, int argc, char** argv) = {
     bic_history, 
     bic_setenv,
     bic_lsbuiltins,
-    bic_watchmail
+    bic_watchmail,
+    bic_noclobber
 #ifdef DEBUG		// various built ins defined for debugging purposes
     	,
     _db_tokenizer,
@@ -756,6 +758,22 @@ void bic_watchmail(kgenv* env, int argc, char* argv[]){
 
     }
 
+}
+
+/** 
+ * @brief Built-in noclobber command.
+ *
+ * Changes the value of the clobber variable.
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.	
+ * @param argv[] The argument values for the command entered.
+ */
+void bic_noclobber(kgenv* env, int argc, char* argv[]){
+    env->clobber = !env->clobber;
+    printf("Clobbering is now %s. (value is %d)\n", 
+            env->clobber ? "on" : "off",
+            env->clobber);
 }
 
 //------------------------------------------------------------------------------
