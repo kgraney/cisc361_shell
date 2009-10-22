@@ -213,10 +213,10 @@ int exec_cmd(char* cmd, char** argv, bool background){
  */
 int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){ 
 
-    int    in_argc;                // argc for the command being processed
-    char** in_argv;                // argv for the command being processed
+    int    in_argc;             // argc for the command being processed
+    char** in_argv;             // argv for the command being processed
     int    line_length;         // The length of the input line
-    bool   background = false;        // True if the command needs to be backgrounded
+    bool   background = false;  // True if the command needs to be backgrounded
     int fid;
 
     line_length = strlen(line_in);
