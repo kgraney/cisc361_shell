@@ -49,18 +49,61 @@ enum redirect_opcodes parse_redirection(char** command, char** file,
 }
 
 void perform_redirection(int* fid, char* redirect_file, 
-        enum redirect_opcodes redirection_type){
+        enum redirect_opcodes rt){
 
-    *fid = open(redirect_file, O_WRONLY|O_CREAT|O_TRUNC, 0666);
-    close(1);
-    dup(*fid);
-    close(*fid);
+    int open_flags = O_CREAT;
 
+    // Assign read/write mode
+    switch(rt){
+        case RD_ALL_APPEND:
+        case RD_STDOUT_APPEND:
+        case RD_ALL:
+        case RD_STDOUT:
+            open_flags |= O_WRONLY;
+            break;
+        case RD_STDIN:
+            open_flags |= O_RDONLY; 
+            break;
+    }
+
+    // Assign append mode
+    switch(rt){
+        case RD_ALL_APPEND:
+        case RD_STDOUT_APPEND:
+            open_flags |= O_APPEND;
+            break;
+        case RD_ALL:
+        case RD_STDOUT:
+        case RD_STDIN:
+    }
+
+    *fid = open(redirect_file, open_flags, 0666);
+
+    // Perform the redirection
+    switch(rt){
+        case RD_ALL_APPEND:
+        case RD_ALL:
+            close(2);
+            dup(*fid);
+            // Fall through (we never redirect only stderr)
+        case RD_STDOUT_APPEND:
+        case RD_STDOUT:
+            close(1);
+            dup(*fid);
+            close(*fid);
+            break;
+        case RD_STDIN:
+    }
 
 }
 
 void reset_redirection(int* fid, enum redirect_opcodes redirection_type){
     if(redirection_type != RD_NONE && redirection_type != RD_STDIN){
+        *fid = open("/dev/tty", O_WRONLY);
+        close(2);
+        dup(*fid);
+        close(*fid);
+
         *fid = open("/dev/tty", O_WRONLY);
         close(1);
         dup(*fid);
