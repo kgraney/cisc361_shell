@@ -20,6 +20,9 @@
 #include "wildcard.h"
 #include "redirection.h"
 
+#include <stdio.h>
+#include <unistd.h>
+
 /** 
  * @brief Returns the location of an executable in the PATH.
  *
@@ -250,13 +253,27 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
             line_in);
 
     if(redirection_type >= 0){
+        // Appending or clobbering, or file doesn't exist
+        if(!global_env->noclobber || redirection_type == RD_ALL_APPEND || 
+                redirection_type == RD_STDOUT_APPEND || 
+                access(redirect_file, F_OK) == -1 ){
 
-        //printf("redirecting %s of %s to file %s\n", 
-        //        REDIRECTION_STR[redirection_type], 
-        //        command_line, redirect_file);
-        //fflush(stdout);
-        
-        perform_redirection(&fid, redirect_file, redirection_type);
+            perform_redirection(&fid, redirect_file, redirection_type);
+
+        // File exists and not appending or clobbering    
+        } else {
+            printf("File %s exists.  Overwrite? (y/n) ", redirect_file);
+            char c = getchar();
+            getchar();
+            if(c == 'y' || c == 'Y'){
+                if(remove(redirect_file) == -1){
+                    perror("Error removing existing redirect file");
+                }
+                perform_redirection(&fid, redirect_file, redirection_type);
+            } else {
+                return line_length;
+            }
+        }
 
         // Remove the redirection part of the command before continuing
         char* line_in_original = line_in;
@@ -437,8 +454,6 @@ void set_environment(kgenv* env, char* name, char* value){
     char* str = malloc(strlen(name) + strlen(value) + 2);
     sprintf(str, "%s=%s", name, value);
     putenv(str);
-    //free(str);    //TODO: confirm this is correct and putenv doesn't alias here
-                    // (apparently it does ...)
 
     // Handle a change to HOME
     if(strcmp(name, "HOME") == 0){

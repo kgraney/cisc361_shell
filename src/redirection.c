@@ -13,13 +13,18 @@
 const char* REDIRECT_OPERATORS[] = { ">>&", ">>", ">&", ">", "<" };    
 const int NUM_REDIRECT_OPERATORS = 5;
 
-const char* REDIRECTION_STR[] = { "standard out and standard error, appending,",
-    "standard out, appending,",
-    "standard out and standard error",
-    "standard out",
-    "standard in" };
-
-
+/** 
+ * @brief Parses a command into seperate parts based on redirection operators.
+ * 
+ * @param command The command that will be executed with output/input
+ * redirection.
+ * @param file The file that needs to opened to properly execute the
+ * redirection.  (May be opened for reading or writing.)
+ * @param line  The command string input to be parsed. 
+ * 
+ * @return Returns an enum value from ::redirect_opcodes indicating the type of
+ * redirection that needs to be performed.
+ */
 enum redirect_opcodes parse_redirection(char** command, char** file, 
         char* line){
 
@@ -48,6 +53,13 @@ enum redirect_opcodes parse_redirection(char** command, char** file,
     return redirect_code;
 }
 
+/** 
+ * @brief Performed the redirection actions.
+ * 
+ * @param fid The file id of the redirect file.
+ * @param redirect_file The path to the redirect file.
+ * @param rt The redirecttion type from ::redirect_opcodes.
+ */
 void perform_redirection(int* fid, char* redirect_file, 
         enum redirect_opcodes rt){
 
@@ -100,6 +112,14 @@ void perform_redirection(int* fid, char* redirect_file,
 
 }
 
+
+/** 
+ * @brief Resets redirection so that stdin, stdout, and stderr all go to the
+ * terminal.
+ * 
+ * @param fid Redirection file.
+ * @param redirection_type Redirection type from ::redirection_opcodes.
+ */
 void reset_redirection(int* fid, enum redirect_opcodes redirection_type){
     if(redirection_type != RD_NONE && redirection_type != RD_STDIN){
         *fid = open("/dev/tty", O_WRONLY);

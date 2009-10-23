@@ -770,10 +770,10 @@ void bic_watchmail(kgenv* env, int argc, char* argv[]){
  * @param argv[] The argument values for the command entered.
  */
 void bic_noclobber(kgenv* env, int argc, char* argv[]){
-    env->clobber = !env->clobber;
+    env->noclobber = !env->noclobber;
     printf("Clobbering is now %s. (value is %d)\n", 
-            env->clobber ? "on" : "off",
-            env->clobber);
+            env->noclobber ? "off" : "on",
+            env->noclobber);
 }
 
 //------------------------------------------------------------------------------
