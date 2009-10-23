@@ -251,8 +251,10 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
 
     if(redirection_type >= 0){
 
-        printf("redirecting %s of %s to file %s\n", 
-                REDIRECTION_STR[redirection_type], command_line, redirect_file);
+        //printf("redirecting %s of %s to file %s\n", 
+        //        REDIRECTION_STR[redirection_type], 
+        //        command_line, redirect_file);
+        //fflush(stdout);
         
         perform_redirection(&fid, redirect_file, redirection_type);
 
