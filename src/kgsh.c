@@ -105,7 +105,7 @@ void initialize_environment(kgenv* env){
     env->hist = NULL;
     env->aliases = NULL;
     env->watchmails = NULL;
-    env->clobber = false;
+    env->noclobber = true;
 }
 
 /** 

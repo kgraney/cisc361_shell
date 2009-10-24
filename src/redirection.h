@@ -14,8 +14,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-const char* REDIRECTION_STR[5];
-
 enum redirect_opcodes {
     RD_ALL_APPEND,      // The >>& operator
     RD_STDOUT_APPEND,   // The >>  operator
