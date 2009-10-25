@@ -256,6 +256,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
         // Appending or clobbering, or file doesn't exist
         if(!global_env->noclobber || redirection_type == RD_ALL_APPEND || 
                 redirection_type == RD_STDOUT_APPEND || 
+                redirection_type == RD_STDIN || 
                 access(redirect_file, F_OK) == -1 ){
 
             perform_redirection(&fid, redirect_file, redirection_type);

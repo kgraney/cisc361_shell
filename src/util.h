@@ -29,11 +29,11 @@
 #include "get_path.h"
 
 
-#define  O_VERBOSE_EXE	// Enable the "Executing ..." messages
+//#define  O_VERBOSE_EXE	// Enable the "Executing ..." messages
 
 #define CWD_BUFFER_SIZE 	1024
 #define LINE_BUFFER_SIZE 	1024
-#define MAX_TOKENS_PER_LINE 	512
+#define MAX_TOKENS_PER_LINE 512
 #define HISTORY_SIZE 		1024
 
 
