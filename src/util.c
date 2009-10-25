@@ -234,7 +234,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
 
     //## Add the line to the history stack
     if(line_in[0] != '\0'        // don't add blank lines
-            && !deref_alias){        // don't add the second call for an alias
+            && !deref_alias){    // don't add the second call for an alias
         add_to_history(line_in, global_env);
     }
     
@@ -280,7 +280,6 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
         line_in = command_line;
         free(line_in_original);
     }
-
 
     //## Tokenize the line
     //TODO: free in_argv
@@ -334,7 +333,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
     // TODO: cleanup this logic
     if( (in_argv[0][0] == '/') ||
         ((in_argv[0][0] == '.') && ((in_argv[0][1] == '/') ||
-                 (in_argv[0][1] == '.') && (in_argv[0][2] == '/')))){
+             (in_argv[0][1] == '.') && (in_argv[0][2] == '/')))){
 
         // Execute the file if it's executable
         if(access(in_argv[0], X_OK) == 0){
@@ -416,6 +415,21 @@ int parse_line(int* argc, char*** argv, bool* background, char* line){
     return 1;
 }
 
+bool contains_ipc(char* line){
+    return strstr(line, "|") || strstr(line, "|&");
+}
+
+void parse_ipc_line(char** left, char** right, char* line){
+
+    char* strtok_ptr = NULL;
+    char* token = strtok_r(line, "|", &strtok_ptr);
+
+    *left = token;
+    token = strtok_r(NULL, "|", &strtok_ptr);
+    *right = token;
+
+    return;
+}
 
 /** 
  * @brief Detokenizes a string that was tokenized using ::strtok.
