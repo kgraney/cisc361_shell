@@ -19,6 +19,7 @@
 #include "get_path.h"
 #include "wildcard.h"
 #include "redirection.h"
+#include "ipc.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -252,6 +253,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
     int redirection_type = parse_redirection(&command_line, &redirect_file, 
             line_in);
 
+    //TODO: free redirect_file
     if(redirection_type >= 0){
         // Appending or clobbering, or file doesn't exist
         if(!global_env->noclobber || redirection_type == RD_ALL_APPEND || 
@@ -280,6 +282,15 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
         char* line_in_original = line_in;
         line_in = command_line;
         free(line_in_original);
+    }
+
+    //## Process IPC
+    if(contains_ipc(line_in)){
+        char* left;
+        char* right;
+        parse_ipc_line(&left, &right, line_in);
+
+        printf("Piping '%s' to '%s'\n", left, right);
     }
 
     //## Tokenize the line
@@ -414,22 +425,6 @@ int parse_line(int* argc, char*** argv, bool* background, char* line){
     }
 
     return 1;
-}
-
-bool contains_ipc(char* line){
-    return strstr(line, "|") || strstr(line, "|&");
-}
-
-void parse_ipc_line(char** left, char** right, char* line){
-
-    char* strtok_ptr = NULL;
-    char* token = strtok_r(line, "|", &strtok_ptr);
-
-    *left = token;
-    token = strtok_r(NULL, "|", &strtok_ptr);
-    *right = token;
-
-    return;
 }
 
 /** 
