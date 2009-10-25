@@ -140,7 +140,7 @@ void add_to_history(char* command, kgenv* env){
  * 
  * @return The exit status of the command.
  */
-int exec_cmd(char* cmd, char** argv, bool background){
+int exec_cmd(char* cmd, char** argv, bool background, bool blocking){
 
     //TODO: Print absolute path even if relative is passed?
     #ifdef O_VERBOSE_EXE
@@ -167,7 +167,7 @@ int exec_cmd(char* cmd, char** argv, bool background){
 
     } else if(child_pid > 0) {                //** Executed in parent process
 
-        if(!background){
+        if(!background && !blocking){
 
             // If the job isn't backgrounded, wait for child process to return
             if(!waitpid(child_pid, &child_status, 0)){
@@ -215,7 +215,8 @@ int exec_cmd(char* cmd, char** argv, bool background){
  * 
  * @return The length of the line processed.
  */
-int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){ 
+int process_command_in(char* line_in, kgenv* global_env, bool deref_alias,
+        bool blocking){ 
 
     int    in_argc;             // argc for the command being processed
     char** in_argv;             // argv for the command being processed
@@ -286,11 +287,17 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
 
     //## Process IPC
     if(contains_ipc(line_in)){
-        char* left;
-        char* right;
-        parse_ipc_line(&left, &right, line_in);
+        char *left, *right;
+        enum ipc_opcodes ipc_type;
+        ipc_type = parse_ipc_line(&left, &right, line_in);
 
         printf("Piping '%s' to '%s'\n", left, right);
+        perform_ipc(left, right, ipc_type, global_env);
+
+        free(left);
+        free(right);
+        return 0;
+
     }
 
     //## Tokenize the line
@@ -316,7 +323,8 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
             char* new_line_in = (char*)malloc(strlen(alias_ptr->string) + 1);
             strcpy(new_line_in, alias_ptr->string);
 
-            int length = process_command_in(new_line_in, global_env, true);
+            int length = process_command_in(new_line_in, global_env, true, 
+                    blocking);
             detokenize(alias_ptr->string, length);
 
             reset_redirection(&fid, redirection_type);
@@ -349,7 +357,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
 
         // Execute the file if it's executable
         if(access(in_argv[0], X_OK) == 0){
-            exec_cmd(in_argv[0], in_argv, background);
+            exec_cmd(in_argv[0], in_argv, background, blocking);
 
             reset_redirection(&fid, redirection_type);
             free(in_argv);
@@ -363,7 +371,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias){
     char* exe_path = which(in_argv[0], global_env->path);
     if(exe_path != NULL){
 
-        exec_cmd(exe_path, in_argv, background);
+        exec_cmd(exe_path, in_argv, background, blocking);
 
         reset_redirection(&fid, redirection_type);
         free(in_argv);
