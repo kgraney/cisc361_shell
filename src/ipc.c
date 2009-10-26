@@ -63,19 +63,22 @@ void perform_ipc(char* left, char* right, enum ipc_opcodes ipc_type,
         return;
     }
 
+    // Redirect stdin
     close(0);
     dup(filedes[0]);
     close(filedes[0]);
 
+    // Redirect stdout
     close(1);
     dup(filedes[1]);
-    close(filedes[1]);
 
+    // Redirect stderr
     if(ipc_type == IPC_ALL){
         close(2);
         dup(filedes[1]);
-        close(filedes[1]);
     }
+
+    close(filedes[1]);
 
     // Run the command on the left
     process_command_in(left, env, true, false);

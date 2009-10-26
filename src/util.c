@@ -140,7 +140,7 @@ void add_to_history(char* command, kgenv* env){
  * 
  * @return The exit status of the command.
  */
-int exec_cmd(char* cmd, char** argv, bool background, bool blocking){
+int exec_cmd(char* cmd, char** argv, bool background){
 
     //TODO: Print absolute path even if relative is passed?
     #ifdef O_VERBOSE_EXE
@@ -167,7 +167,7 @@ int exec_cmd(char* cmd, char** argv, bool background, bool blocking){
 
     } else if(child_pid > 0) {                //** Executed in parent process
 
-        if(!background && !blocking){
+        if(!background){
 
             // If the job isn't backgrounded, wait for child process to return
             if(!waitpid(child_pid, &child_status, 0)){
@@ -177,7 +177,7 @@ int exec_cmd(char* cmd, char** argv, bool background, bool blocking){
         } else {
 
             // TODO: determine if anything else needs to be done here
-            if(!waitpid(child_pid, &child_status, WNOHANG)){
+            if(waitpid(child_pid, &child_status, WNOHANG) == -1){
                 perror("Error in backgrounding waitpid");
             }
 
@@ -291,7 +291,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias,
         enum ipc_opcodes ipc_type;
         ipc_type = parse_ipc_line(&left, &right, line_in);
 
-        printf("Piping '%s' to '%s'\n", left, right);
+        //printf("Piping '%s' to '%s'\n", left, right);
         perform_ipc(left, right, ipc_type, global_env);
 
         free(left);
@@ -357,7 +357,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias,
 
         // Execute the file if it's executable
         if(access(in_argv[0], X_OK) == 0){
-            exec_cmd(in_argv[0], in_argv, background, blocking);
+            exec_cmd(in_argv[0], in_argv, background || !blocking);
 
             reset_redirection(&fid, redirection_type);
             free(in_argv);
@@ -371,7 +371,7 @@ int process_command_in(char* line_in, kgenv* global_env, bool deref_alias,
     char* exe_path = which(in_argv[0], global_env->path);
     if(exe_path != NULL){
 
-        exec_cmd(exe_path, in_argv, background, blocking);
+        exec_cmd(exe_path, in_argv, background || !blocking);
 
         reset_redirection(&fid, redirection_type);
         free(in_argv);
