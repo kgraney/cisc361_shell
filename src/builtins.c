@@ -471,7 +471,7 @@ void bic_kill(kgenv* env, int argc, char* argv[]){
 	return;
     }	
 
-    //sigsend(P_PID, pid, signal);
+    sigsend(P_PID, pid, signal);
     //printf("Sending code %d to pid %d\n", signal, pid);
 
     // Send the kill signal
