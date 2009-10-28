@@ -23,6 +23,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <readline/history.h>
 
 /** 
  * @brief Returns the location of an executable in the PATH.
@@ -102,6 +103,11 @@ char* which(const char* command, pathList* pathlist){
  * global history list.
  */
 void add_to_history(char* command, kgenv* env){
+
+    //## Add the command to readline's history
+    add_history(command);
+
+    //## Add the command to kgsh history
     histList* new_item;
     new_item = malloc(sizeof(histList));
     if(new_item == NULL){

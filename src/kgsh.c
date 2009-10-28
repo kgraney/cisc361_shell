@@ -28,6 +28,9 @@
 #include <sys/wait.h>
 #include <errno.h>
 
+#include <readline/readline.h>
+#include <readline/history.h>
+
 #include "builtins.h"
 #include "util.h"
 #include "get_path.h"
@@ -52,28 +55,17 @@ int main(int argc, char* argv[]){
     // The main loop that is executed once for each command prompt.
     while(1){
 
-	// Free up memory from the previous iteration.
-	//Removed to prevent double free
-	//if(line_in != NULL)
-	//    free(line_in);
-
-	//## Print the shell prompt
-	printf("%s %s> ", global_env.prompt, global_env.cwd);
+        //## Print the shell prompt
+        char* prompt = (char*)calloc(LINE_BUFFER_SIZE, sizeof(char));
+        sprintf(prompt, "%s %s> ", global_env.prompt, global_env.cwd);
 
 
-	//## Read the a line from the shell
-	// NOTE: line_in can not be freed until after the loop is done
-	// executing since in_argv points to memory allocated here.  Memory
-	// allocation is only done _once_ for the input string.
-	line_in = (char*)calloc(LINE_BUFFER_SIZE, sizeof(char));
-	if(!line_in){
-	    perror("Not enough heap");
-	    exit(1);
-	}
-	fgets(line_in, LINE_BUFFER_SIZE, stdin);
+        //## Read the a line from the shell
+        char* line_in = readline(prompt);
 
-	//## Parse the command and execute the appropriate action
-	process_command_in(line_in, &global_env, false, true);
+        //## Parse the command and execute the appropriate action
+        process_command_in(line_in, &global_env, false, true);
+        free(prompt);
     }
 }
 
