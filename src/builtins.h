@@ -31,9 +31,9 @@
 
 //-- Constants to define how many builtins we have
 #ifdef DEBUG
-#define NUM_BUILTINS 23		// Total number of commands, including debug
+#define NUM_BUILTINS 25		// Total number of commands, including debug
 #else
-#define NUM_BUILTINS 17		// Total number of commands, excluding debug
+#define NUM_BUILTINS 19		// Total number of commands, excluding debug
 #endif //DEBUG
 
 short int is_builtin(char* command);
@@ -79,6 +79,10 @@ void bic_lsbuiltins(kgenv* env, int argc, char* argv[]);
 void bic_watchmail(kgenv* env, int argc, char* argv[]);
 
 void bic_noclobber(kgenv* env, int argc, char* argv[]);
+
+void bic_vimode(kgenv* env, int argc, char* argv[]);
+
+void bic_emacsmode(kgenv* env, int argc, char* argv[]);
 
 //------------------------------------------------------------------------------
 //-- The following are functions associated with debugging commands and are

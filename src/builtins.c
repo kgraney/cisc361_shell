@@ -19,6 +19,8 @@
 #include "wildcard.h"
 #include "watchmail.h"
 
+#include <readline/readline.h>
+
 extern int errno;
 
 //------------------------------------------------------------------------------
@@ -49,7 +51,9 @@ const char* BUILT_IN_COMMANDS[] = {
     "setenv",
     "lsbuiltins",
     "watchmail",
-    "noclobber"
+    "noclobber",
+    "vimode",
+    "emacsmode"
 #ifdef DEBUG        // Various built ins defined for debugging purposes.
     ,
     "_db_tokenizer",
@@ -95,7 +99,9 @@ void (*BUILT_IN_FUNCS[])(kgenv* env, int argc, char** argv) = {
     bic_setenv,
     bic_lsbuiltins,
     bic_watchmail,
-    bic_noclobber
+    bic_noclobber,
+    bic_vimode,
+    bic_emacsmode
 #ifdef DEBUG        // various built ins defined for debugging purposes
         ,
     _db_tokenizer,
@@ -774,6 +780,28 @@ void bic_noclobber(kgenv* env, int argc, char* argv[]){
     printf("Clobbering is now %s. (value is %d)\n", 
             env->noclobber ? "off" : "on",
             env->noclobber);
+}
+
+/** 
+ * @brief Sets command line editing to vi mode.
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.    
+ * @param argv[] The argument values for the command entered.
+ */
+void bic_vimode(kgenv* env, int argc, char* argv[]){
+    rl_editing_mode = 0;
+}
+
+/** 
+ * @brief Sets command line editing to emacs mode. 
+ * 
+ * @param env A pointer to the global ::kgenv environment object.
+ * @param argc The argument count for the command entered.    
+ * @param argv[] The argument values for the command entered.
+ */
+void bic_emacsmode(kgenv* env, int argc, char* argv[]){
+    rl_editing_mode = 1;
 }
 
 //------------------------------------------------------------------------------
