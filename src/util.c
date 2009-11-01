@@ -161,8 +161,7 @@ int exec_cmd(char* cmd, char** argv, bool background){
 
     if(child_pid == 0){                        //** Executed in child process
 
-        execve(cmd, argv, environ);        //TODO: switch to using kgenv
-                                        //environment list
+        execve(cmd, argv, environ);
         
         // Exec commands only return if there's an error
         perror("Error in exec");        
@@ -182,16 +181,17 @@ int exec_cmd(char* cmd, char** argv, bool background){
 
         } else {
 
-            // TODO: determine if anything else needs to be done here
-            if(waitpid(child_pid, &child_status, WNOHANG) == -1){
+            // TODO: add signal handler for SIGCHLD
+            if(waitpid(child_pid, &child_status, WNOHANG | WNOWAIT) == -1){
                 perror("Error in backgrounding waitpid");
             }
 
         }
 
         // Print out the exit status if it is non-zero
-        if(WEXITSTATUS(child_status) != 0)
+        if(WEXITSTATUS(child_status) != 0){
             printf("Exit %d\n", WEXITSTATUS(child_status));
+        }
 
     } else {                                //** Didn't fork properly 
 

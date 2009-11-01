@@ -81,7 +81,7 @@ void perform_ipc(char* left, char* right, enum ipc_opcodes ipc_type,
     close(filedes[1]);
 
     // Run the command on the left
-    process_command_in(left, env, true, false);
+    process_command_in(left, env, false, false);
 
     // Return stdout to terminal
     fid = open("/dev/tty", O_WRONLY);
@@ -96,7 +96,7 @@ void perform_ipc(char* left, char* right, enum ipc_opcodes ipc_type,
     close(fid);
 
     // Run the command on the right
-    process_command_in(right, env, true, true);
+    process_command_in(right, env, false, true);
 
     // Return stdin to terminal
     fid = open("/dev/tty", O_RDONLY);

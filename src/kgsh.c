@@ -49,6 +49,7 @@ int main(int argc, char* argv[]){
     sigset(SIGINT, sig_interrupt);	// Interrupt function for Ctrl-C 
     sigignore(SIGTSTP); 		// Ignore Ctrl-Z
     sigignore(SIGTERM);
+    signal(SIGCHLD, SIG_IGN);
 
     char*  line_in = NULL; // Stores the command entered (pointed to by in_argv)
 
