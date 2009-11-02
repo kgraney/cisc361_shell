@@ -1,0 +1,11 @@
+To compile and run:
+
+- Set location of readline and curses include directories and library 
+  directories in Makefile
+
+- Ensure the LD_LIBRARY_PATH environment variable contains a path to the
+  readline and curses libraries
+
+- gmake to build
+
+- Binaries are located in tgt-* directories
