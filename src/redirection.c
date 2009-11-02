@@ -87,6 +87,9 @@ void perform_redirection(int* fid, char* redirect_file,
         case RD_ALL:
         case RD_STDOUT:
         case RD_STDIN:
+            break;
+        default:
+            break;
     }
 
     *fid = open(redirect_file, open_flags, 0666);
@@ -108,6 +111,9 @@ void perform_redirection(int* fid, char* redirect_file,
             close(0);
             dup(*fid);
             close(*fid);
+            break;
+        default:
+            break;
     }
 
 }

@@ -1,8 +1,8 @@
 ARCH	:= $(shell uname -m)
-CC	    := cc
-CFLAGS	:= -g -DDEBUG -v -xcheck -I/usr/local/include -L/usr/local/lib -lreadline -lcurses
-#CC	:= gcc
-#CFLAGS	:= -g -DDEBUG -std=c99 -lpthread
+#CC	    := cc
+#CFLAGS	:= -g -DDEBUG -v -xcheck -I/usr/local/include -L/usr/local/lib -lreadline -lcurses
+CC	:= gcc
+CFLAGS	:= -g -DDEBUG -std=c99 -I/usr/local/include -L/usr/local/lib -lreadline -lcurses -lpthread
 #OBJ	:= kgsh.o builtins.o get_path.o util.o alias.o wildcard.o
 OBJDIR	:= tgt-$(ARCH)
 SOURCES := $(shell ls -t src/*.c | sed 's/src\///g')
