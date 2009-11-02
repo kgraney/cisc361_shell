@@ -189,9 +189,9 @@ int exec_cmd(char* cmd, char** argv, bool background){
         }
 
         // Print out the exit status if it is non-zero
-        if(WEXITSTATUS(child_status) != 0){
-            printf("Exit %d\n", WEXITSTATUS(child_status));
-        }
+        //if(WEXITSTATUS(child_status) != 0){
+        //    printf("Exit %d\n", WEXITSTATUS(child_status));
+        //}
 
     } else {                                //** Didn't fork properly 
 

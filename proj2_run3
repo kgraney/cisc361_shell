@@ -1,0 +1,228 @@
+Script started on Mon Nov 02 13:53:01 2009
+[7morioles[m[31] [~/shell/]> tgt-i86pc/kgsh 
+ /usa/kgraney/shell> pwd
+/usa/kgraney/shell
+ /usa/kgraney/shell> ls &
+ /usa/kgraney/shell> Doxyfile              proj2_run2.pdf        src
+Makefile              proj2_run2.ps         test
+README                proj2_run3            test-1+2
+doc                   proj2_submission.pdf  test-1+2.c
+proj2_run1            proj2_submission.ps   tgt-i86pc
+proj2_run1.ps         proj2_testcases       tgt-sun4u
+proj2_run2            readline_example
+
+ /usa/kgraney/shell> ls -l &
+ /usa/kgraney/shell> total 955
+-rw-r--r--   1 kgraney  kgraney      308 Nov  2 13:47 Doxyfile
+-rw-r--r--   1 kgraney  kgraney      698 Nov  2 13:47 Makefile
+-rw-r--r--   1 kgraney  kgraney      287 Nov  2 13:47 README
+drwxr-xr-x   2 kgraney  kgraney        2 Nov  2 13:47 doc
+-rw-r--r--   1 kgraney  kgraney    14353 Nov  2 13:47 proj2_run1
+-rw-r--r--   1 kgraney  kgraney    30948 Nov  2 13:47 proj2_run1.ps
+-rw-r--r--   1 kgraney  kgraney    16384 Nov  2 13:47 proj2_run2
+-rw-r--r--   1 kgraney  kgraney     8201 Nov  2 13:47 proj2_run2.pdf
+-rw-r--r--   1 kgraney  kgraney    33289 Nov  2 13:47 proj2_run2.ps
+-rw-r-----   1 kgraney  kgraney        0 Nov  2 13:53 proj2_run3
+-rw-r--r--   1 kgraney  kgraney    65104 Nov  2 13:47 proj2_submission.pdf
+-rw-r--r--   1 kgraney  kgraney   131249 Nov  2 13:47 proj2_submission.ps
+-rw-r--r--   1 kgraney  kgraney     1256 Nov  2 13:47 proj2_testcases
+drwxr-xr-x   2 kgraney  kgraney        5 Nov  2 13:47 readline_example
+drwxr-xr-x   2 kgraney  kgraney       21 Nov  2 13:47 src
+drwxr-s---   2 kgraney  kgraney        5 Nov  2 13:52 test
+-rwxr-x---   1 kgraney  kgraney     8364 Nov  2 13:52 test-1+2
+-rw-r--r--   1 kgraney  kgraney      254 Nov  2 13:47 test-1+2.c
+drwxr-s---   2 kgraney  kgraney       12 Nov  2 13:47 tgt-i86pc
+drwxr-xr-x   2 kgraney  kgraney       12 Nov  2 13:47 tgt-sun4u
+
+ /usa/kgraney/shell> sl  cd /
+ /> sleep 20 &
+ /> ls &
+ /> bin       dev       home      m         opt       samba     temp      usb
+cgi       etc       homes     mnt       platform  sbin      tmp       usr
+degas     export    lib       net       proc      system    usa       var
+
+ /> pid
+1151
+ /> tty
+/dev/pts/17
+ /> /bin/ps -lfu kgraney
+ F S      UID   PID  PPID   C PRI NI     ADDR     SZ    WCHAN    STIME TTY         TIME CMD
+ 0 S  kgraney  4962 28049   0  98 20        ?   2498        ?   Oct 29 ?           0:02 gvim rsum.y
+ 0 S  kgraney  5758 28049   0  98 20        ?    903        ?   Oct 30 pts/16      0:00 dbus-launch --autolaunch 6e22de1e29
+ 0 S  kgraney 26901 28049   0  40 20        ?   1845        ? 19:56:05 ?           0:01 /usr/lib/gconfd-2
+ 0 S  kgraney  5734  5732   0  98 20        ?   2016        ?   Oct 30 ?           0:49 /usr/local/sbin/sshd -f /usr/local/
+ 0 S  kgraney 29966 28049   0  40 20        ?    825        ?   Aug 29 ?           0:00 /usr/lib/dbus-daemon --fork --print
+ 0 S  kgraney   814   813   0  98 20        ?   1091        ? 13:37:25 pts/13      0:00 -tcsh
+ 0 S  kgraney  4969  4968   0  98 20        ?   1090        ?   Oct 29 pts/15      0:00 -tcsh
+ 0 S  kgraney  1137   814   0  98 20        ?    393        ? 13:53:01 pts/13      0:00 script proj2_run3
+ 0 S  kgraney   813   811   0  98 20        ?   1853        ? 13:37:25 ?           0:01 /usr/local/sbin/sshd -f /usr/local/
+ 0 S  kgraney  5735  5734   0  98 20        ?   1094        ?   Oct 30 pts/16      0:01 -tcsh
+ 0 S  kgraney  1151  1139   0  98 20        ?    549        ? 13:53:05 pts/17      0:00 tgt-i86pc/kgsh
+ 0 S  kgraney 26908 28049   0  98 20        ?   2508        ? 19:58:35 ?           0:01 gvim ncopy.ys
+ 0 S  kgraney 26898 26748   0  98 20        ?  34040        ? 19:56:05 pts/19      0:22 evince archlab-2009F.pdf
+ 0 S  kgraney  5042  4969   0  98 20        ?   1085        ?   Oct 29 pts/15      0:00 vim examples.c
+ 0 S  kgraney  4934  4932   0  98 20        ?   1894        ?   Oct 29 ?           0:01 /usr/local/sbin/sshd -f /usr/local/
+ 0 S  kgraney 26747  5735   0  98 20        ?   1538        ? 19:54:18 pts/16      0:00 xterm
+ 0 O  kgraney  1157  1151   0  98 20        ?    566          13:53:26 pts/17      0:00 /bin/ps -lfu kgraney
+ 0 S  kgraney  1139  1138   0  98 20        ?   1067        ? 13:53:02 pts/17      0:00 /bin/tcsh -i
+ 0 S  kgraney  4935  4934   0  98 20        ?   1091        ?   Oct 29 pts/14      0:00 -tcsh
+ 0 S  kgraney 26748 26747   0  98 20        ?   1067        ? 19:54:18 pts/19      0:00 tcsh
+ 0 S  kgraney  1138  1137   0  98 20        ?    413        ? 13:53:02 pts/13      0:00 script proj2_run3
+ 0 S  kgraney  1154  1151   0  98 20        ?    969        ? 13:53:19 pts/17      0:00 sleep 20
+ 0 S  kgraney  5759 28049   0  98 20        ?    819        ?   Oct 30 ?           0:00 /usr/lib/dbus-daemon --fork --print
+ 0 S  kgraney  4968  4966   0  98 20        ?   1853        ?   Oct 29 ?           0:00 /usr/local/sbin/sshd -f /usr/local/
+ /> cd
+ /usa/kgraney> cd mail/t      shell/test
+ /usa/kgraney/shell/test> rm *
+ /usa/kgraney/shell/test> ls -    pwdd 
+/usa/kgraney/shell/test
+ /usa/kgraney/shell/test> ls -l
+total 0
+ /usa/kgraney/shell/test> touch mail1
+ /usa/kgraney/shell/test> watchmail mail1
+Starting watchmail for mail1
+ /usa/kgraney/shell/test> echo hi >> mail1
+ /usa/kgraney/shell/test> 
+You have new mail in mail1 at Mon Nov  2 13:53:52 2009
+
+
+ /usa/kgraney/shell/test> echo Hithere >> mail       mail2
+ /usa/kgraney/shell/test> watchmail mail2
+Starting watchmail for mail2
+ /usa/kgraney/shell/test> echo there >> mail1
+ /usa/kgraney/shell/test> echo
+You have new mail in mail1 at Mon Nov  2 13:54:08 2009
+
+ 
+
+ /usa/kgraney/shell/test> echo Subject: < >> mail2
+ /usa/kgraney/shell/test> 
+You have new mail in mail2 at Mon Nov  2 13:54:16 2009
+
+
+ /usa/kgraney/shell/test> cat mail2
+Hithere
+Subject:
+ /usa/kgraney/shell/test> m cat mail1
+hi
+there
+ /usa/kgraney/shell/test> watchmail mail1 off
+Stopping watchmail for mail1
+ /usa/kgraney/shell/test> echo bye >> mail1
+ /usa/kgraney/shell/test> echo bye >> mail1 2
+ /usa/kgraney/shell/test> 
+You have new mail in mail2 at Mon Nov  2 13:54:35 2009
+
+
+ /usa/kgraney/shell/test> ../test-1+2 > test1
+This is to standard error
+ /usa/kgraney/shell/test> ../test-1+2 > test1 2h hh        > test2
+This is to standard error
+ /usa/kgraney/shell/test> ../test-1+2 >> test2       & test3
+ /usa/kgraney/shell/test> ../test-1+2 >& test3       <&    >& test4
+ /usa/kgraney/shell/test> cat test1 test2 test43  3 test4
+This is to standard output
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+ /usa/kgraney/shell/test> cat test1 test2 test3 test4[6P../test-1+2 >>& test4         test1
+File test1 exists.  Overwrite? (y/n) y
+This is to standard error
+ /usa/kgraney/shell/test> ../test-1+2 >> test2
+This is to standard error
+ /usa/kgraney/shell/test> ../test-1+2 >& test3
+File test3 exists.  Overwrite? (y/n) y
+ /usa/kgraney/shell/test> ../test-1+2 >>& test4
+ /usa/kgraney/shell/test> cat test1 test2 test3 test4
+This is to standard output
+This is to standard output
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+ /usa/kgraney/shell/test> noclobber
+Clobbering is now on. (value is 0)
+ /usa/kgraney/shell/test> ../test-1+2 > test5
+This is to standard error
+ /usa/kgraney/shell/test> ../test-1+2 > test5      > test6
+This is to standard error
+ /usa/kgraney/shell/test> ../test-1+2 >> test6       & test7
+ /usa/kgraney/shell/test> ../test-1+2 >& test7[1@>& test7[K../test-1+2 >>& test7 8
+ /usa/kgraney/shell/test> cat test5 test6 test7 test8
+This is to standard output
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+ /usa/kgraney/shell/test> cat test5 test6 test7 test8[6P../test-1+2 >>& test8[1P& test7> test6[1P test5[10Pnoclobber../test-1+2 > test5
+This is to standard error
+ /usa/kgraney/shell/test> ../test-1+2 > test5cat test5 test6 test7 test8[6P../test-1+2 >>& test8[1P& test7> test6
+This is to standard error
+ /usa/kgraney/shell/test> ../test-1+2 >> test6[1P test5cat test5 test6 test7 test8[6P../test-1+2 >>& test8[1P& test7
+ /usa/kgraney/shell/test> ../test-1+2 >& test7> test6[1P test5cat test5 test6 test7 test8[6P../test-1+2 >>& test8
+ /usa/kgraney/shell/test> ../test-1+2 >>& test8[1P& test7> test6[1P test5cat test5 test6 test7 test8
+This is to standard output
+This is to standard output
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+ /usa/kgraney/shell/test> grep hello < test7
+ /usa/kgraney/shell/test> grep hello <         error < test7
+This is to standard error
+ /usa/kgraney/shell/test> rm -r       noclobber
+Clobbering is now off. (value is 1)
+ /usa/kgraney/shell/test> noclobbergrep error < test7hello < test7cat test5 test6 test7 test8[6P../test-1+2 >>& test8[1P& test7> test6[1P test5 i 9
+This is to standard error
+ /usa/kgraney/shell/test> ../test-1+2 > test9[1@i[1@>[1@[[1@CC[1P[1P[1P[1P[1@>[1@[[1@C [1P[1P[1P[1P[1@>[1@i[1P[1@ test9 109 
+This is to standard error
+ /usa/kgraney/shell/test> ../test-1+2 >> test10[1P[1@& test10 1
+ /usa/kgraney/shell/test> ../test-1+2 >& test11[1@>& test11 1 2
+ /usa/kgraney/shell/test> cat test9 test0 10 test11 test12
+This is to standard output
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+ /usa/kgraney/shell/test> ls | grep test
+test1
+test10
+test11
+test12
+test2
+test3
+test4
+test5
+test6
+test7
+test8
+test9
+ /usa/kgraney/shell/test> ../test-1+2 | grep hello
+This is to standard error
+ /usa/kgraney/shell/test> ../test-1+2 |& grep hello
+ /usa/kgraney/shell/test> ../test-1+2 | grep output
+This is to standard error
+This is to standard output
+ /usa/kgraney/shell/test> ../test-1+2 |& grep output
+This is to standard output
+ /usa/kgraney/shell/test> ../test-1+2 |& grep error
+This is to standard error
+ /usa/kgraney/shell/test> pid
+1151
+ /usa/kgraney/shell/test> /bin/ps -lfu kgraney | grep defunct
+ 0 S  kgraney  1217  1151   0  98 20        ?    404        ? 13:59:15 pts/17      0:00 grep defunct
+ /usa/kgraney/shell/test> exit
+[7morioles[m[32] [~/shell/]> exit
+exit
+
+script done on Mon Nov 02 13:59:38 2009
