@@ -1,0 +1,1144 @@
+%!PS-Adobe-3.0
+%%Title: proj2_run2
+%%For: Kevin Graney
+%%Creator: a2ps version 4.13
+%%CreationDate: Sun Nov  1 19:26:32 2009
+%%BoundingBox: 24 24 588 768
+%%DocumentData: Clean7Bit
+%%Orientation: Landscape
+%%Pages: 3
+%%PageOrder: Ascend
+%%DocumentMedia: Letter 612 792 0 () ()
+%%DocumentNeededResources: font Courier
+%%+ font Courier-Bold
+%%+ font Courier-BoldOblique
+%%+ font Courier-Oblique
+%%+ font Helvetica
+%%+ font Helvetica-Bold
+%%+ font Symbol
+%%+ font Times-Bold
+%%+ font Times-Roman
+%%DocumentProcessColors: Black 
+%%DocumentSuppliedResources: procset a2ps-a2ps-hdr
+%%+ procset a2ps-black+white-Prolog
+%%+ encoding ISO-8859-1Encoding
+%%EndComments
+/a2psdict 200 dict def
+a2psdict begin
+%%BeginProlog
+%%Copyright: (c) 1988, 89, 90, 91, 92, 93 Miguel Santana
+%%Copyright: (c) 1995, 96, 97, 98 Akim Demaille, Miguel Santana
+% Check PostScript language level.
+/languagelevel where {
+  pop /gs_languagelevel languagelevel def
+} {
+  /gs_languagelevel 1 def
+} ifelse
+
+% EPSF import as in the Red Book
+/BeginInclude {
+  /b4_Inc_state save def    		% Save state for cleanup
+  /dict_count countdictstack def	% Count objects on dict stack
+  /op_count count 1 sub def		% Count objects on operand stack 
+  userdict begin
+    0 setgray 0 setlinecap
+    1 setlinewidth 0 setlinejoin
+    10 setmiterlimit [ ] 0 setdash newpath
+    gs_languagelevel 1 ne {
+      false setstrokeadjust false setoverprint 
+    } if
+} bind def
+
+/EndInclude {
+  count op_count sub { pos } repeat	% Clean up stacks
+  countdictstack dict_count sub { end } repeat
+  b4_Inc_state restore
+} bind def
+
+/BeginEPSF {
+  BeginInclude
+  /showpage { } def
+} bind def
+
+/EndEPSF {
+  EndInclude
+} bind def
+
+% Page prefeed
+/page_prefeed {         % bool -> -
+  statusdict /prefeed known {
+    statusdict exch /prefeed exch put
+  } {
+    pop
+  } ifelse
+} bind def
+
+/deffont {
+  findfont exch scalefont def
+} bind def
+
+/reencode_font {
+  findfont reencode 2 copy definefont pop def
+} bind def
+
+% Function c-show (str => -)
+% centers text only according to x axis.
+/c-show { 
+  dup stringwidth pop
+  2 div neg 0 rmoveto
+  show
+} bind def
+
+% Function l-show (str => -)
+% prints texts so that it ends at currentpoint
+/l-show {
+  dup stringwidth pop neg 
+  0 
+  rmoveto show
+} bind def
+
+% center-fit show (str w => -)
+% show centered, and scale currentfont so that the width is less than w
+/cfshow {
+  exch dup stringwidth pop
+  % If the title is too big, try to make it smaller
+  3 2 roll 2 copy
+  gt
+  { % if, i.e. too big
+    exch div
+    currentfont exch scalefont setfont
+  } { % ifelse
+    pop pop 
+  }
+  ifelse
+  c-show			% center title
+} bind def
+
+% Return the y size of the current font
+% - => fontsize
+/currentfontsize {
+  currentfont /FontMatrix get 3 get 1000 mul
+} bind def
+
+% reencode the font
+% <encoding-vector> <fontdict> -> <newfontdict>
+/reencode { %def
+  dup length 5 add dict begin
+    { %forall
+      1 index /FID ne 
+      { def }{ pop pop } ifelse
+    } forall
+    /Encoding exch def
+
+    % Use the font's bounding box to determine the ascent, descent,
+    % and overall height; don't forget that these values have to be
+    % transformed using the font's matrix.
+    % We use `load' because sometimes BBox is executable, sometimes not.
+    % Since we need 4 numbers an not an array avoid BBox from being executed
+    /FontBBox load aload pop
+    FontMatrix transform /Ascent exch def pop
+    FontMatrix transform /Descent exch def pop
+    /FontHeight Ascent Descent sub def
+
+    % Define these in case they're not in the FontInfo (also, here
+    % they're easier to get to.
+    /UnderlinePosition 1 def
+    /UnderlineThickness 1 def
+    
+    % Get the underline position and thickness if they're defined.
+    currentdict /FontInfo known {
+      FontInfo
+      
+      dup /UnderlinePosition known {
+	dup /UnderlinePosition get
+	0 exch FontMatrix transform exch pop
+	/UnderlinePosition exch def
+      } if
+      
+      dup /UnderlineThickness known {
+	/UnderlineThickness get
+	0 exch FontMatrix transform exch pop
+	/UnderlineThickness exch def
+      } if
+      
+    } if
+    currentdict 
+  end 
+} bind def
+
+% Function print line number (<string> # -)
+/# {
+  gsave
+    sx cw mul neg 2 div 0 rmoveto
+    f# setfont
+    c-show
+  grestore
+} bind def
+
+% -------- Some routines to enlight plain b/w printings ---------
+
+% Underline
+% width --
+/dounderline {
+  currentpoint
+  gsave
+    moveto
+    0 currentfont /Descent get currentfontsize mul rmoveto
+    0 rlineto
+    stroke
+  grestore
+} bind def
+
+% Underline a string
+% string --
+/dounderlinestring {
+  stringwidth pop
+  dounderline
+} bind def
+
+/UL {
+  /ul exch store
+} bind def
+
+% Draw a box of WIDTH wrt current font
+% width --
+/dobox {
+  currentpoint
+  gsave
+    newpath
+    moveto
+    0 currentfont /Descent get currentfontsize mul rmoveto
+    dup 0 rlineto
+    0 currentfont /FontHeight get currentfontsize mul rlineto
+    neg 0 rlineto
+    closepath
+    stroke
+  grestore
+} bind def
+
+/BX {
+  /bx exch store
+} bind def
+
+% Box a string
+% string --
+/doboxstring {
+  stringwidth pop
+  dobox
+} bind def
+
+%
+% ------------- Color routines ---------------
+%
+/FG /setrgbcolor load def
+
+% Draw the background
+% width --
+/dobackground {
+  currentpoint
+  gsave
+    newpath
+    moveto
+    0 currentfont /Descent get currentfontsize mul rmoveto
+    dup 0 rlineto
+    0 currentfont /FontHeight get currentfontsize mul rlineto
+    neg 0 rlineto
+    closepath
+    bgcolor aload pop setrgbcolor
+    fill
+  grestore
+} bind def
+
+% Draw bg for a string
+% string --
+/dobackgroundstring {
+  stringwidth pop
+  dobackground
+} bind def
+
+
+/BG {
+  dup /bg exch store
+  { mark 4 1 roll ] /bgcolor exch store } if
+} bind def
+
+
+/Show {
+  bg { dup dobackgroundstring } if
+  ul { dup dounderlinestring } if
+  bx { dup doboxstring } if
+  show
+} bind def
+
+% Function T(ab), jumps to the n-th tabulation in the current line
+/T {
+  cw mul x0 add
+  bg { dup currentpoint pop sub dobackground } if
+  ul { dup currentpoint pop sub dounderline } if
+  bx { dup currentpoint pop sub dobox } if
+  y0 moveto
+} bind def
+
+% Function n: move to the next line
+/n {
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+} bind def
+
+% Function N: show and move to the next line
+/N {
+  Show
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+} bind def
+
+/S {
+  Show
+} bind def
+
+%%BeginResource: procset a2ps-a2ps-hdr 2.0 2
+%%Copyright: (c) 1988, 89, 90, 91, 92, 93 Miguel Santana
+%%Copyright: (c) 1995, 96, 97, 98 Akim Demaille, Miguel Santana
+% Function title: prints page header.
+% <ct> <rt> <lt> are passed as argument
+/title { 
+  % 1. Draw the background
+  x v get y v get moveto
+  gsave
+    0 th 2 div neg rmoveto 
+    th setlinewidth
+    0.95 setgray
+    pw 0 rlineto stroke
+  grestore
+  % 2. Border it
+  gsave
+    0.7 setlinewidth
+    pw 0 rlineto
+    0 th neg rlineto
+    pw neg 0 rlineto
+    closepath stroke
+  grestore
+  % stk: ct rt lt
+  x v get y v get th sub 1 add moveto
+%%IncludeResource: font Helvetica
+  fHelvetica fnfs 0.8 mul scalefont setfont
+  % 3. The left title
+  gsave
+    dup stringwidth pop fnfs 0.8 mul add exch % leave space took on stack
+    fnfs 0.8 mul hm rmoveto
+    show			% left title
+  grestore
+  exch
+  % stk: ct ltw rt
+  % 4. the right title
+  gsave
+    dup stringwidth pop fnfs 0.8 mul add exch % leave space took on stack
+    dup
+    pw exch stringwidth pop fnfs 0.8 mul add sub
+    hm
+    rmoveto
+    show			% right title
+  grestore
+  % stk: ct ltw rtw
+  % 5. the center title
+  gsave
+    pw 3 1 roll
+    % stk: ct pw ltw rtw
+    3 copy 
+    % Move to the center of the left room
+    sub add 2 div hm rmoveto
+    % What is the available space in here?
+    add sub fnfs 0.8 mul sub fnfs 0.8 mul sub
+    % stk: ct space_left
+%%IncludeResource: font Helvetica-Bold
+  fHelvetica-Bold fnfs scalefont setfont
+    cfshow
+  grestore
+} bind def
+
+% Function border: prints virtual page border
+/border { %def
+  gsave				% print four sides
+    0 setgray
+    x v get y v get moveto
+    0.7 setlinewidth		% of the square
+    pw 0 rlineto
+    0 ph neg rlineto
+    pw neg 0 rlineto
+    closepath stroke
+  grestore
+} bind def
+
+% Function water: prints a water mark in background
+/water { %def
+  gsave
+    scx scy moveto rotate
+%%IncludeResource: font Times-Bold
+  fTimes-Bold 100 scalefont setfont
+    .97 setgray
+    dup stringwidth pop 2 div neg -50 rmoveto
+    show
+  grestore
+} bind def
+
+% Function rhead: prints the right header
+/rhead {  %def
+  lx ly moveto
+  fHelvetica fnfs 0.8 mul scalefont setfont
+  l-show
+} bind def
+
+% Function footer (cf rf lf -> -)
+/footer {
+  fHelvetica fnfs 0.8 mul scalefont setfont
+  dx dy moveto
+  show
+
+  snx sny moveto
+  l-show
+  
+  fnx fny moveto
+  c-show
+} bind def
+%%EndResource
+%%BeginResource: procset a2ps-black+white-Prolog 2.0 1
+
+% Function T(ab), jumps to the n-th tabulation in the current line
+/T { 
+  cw mul x0 add y0 moveto
+} bind def
+
+% Function n: move to the next line
+/n { %def
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+} bind def
+
+% Function N: show and move to the next line
+/N {
+  Show
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+}  bind def
+
+/S {
+  Show
+} bind def
+
+/p {
+  false UL
+  false BX
+  fCourier bfs scalefont setfont
+  Show
+} bind def
+
+/sy {
+  false UL
+  false BX
+  fSymbol bfs scalefont setfont
+  Show
+} bind def
+
+/k {
+  false UL
+  false BX
+  fCourier-Oblique bfs scalefont setfont
+  Show
+} bind def
+
+/K {
+  false UL
+  false BX
+  fCourier-Bold bfs scalefont setfont
+  Show
+} bind def
+
+/c {
+  false UL
+  false BX
+  fCourier-Oblique bfs scalefont setfont
+  Show
+} bind def
+
+/C {
+  false UL
+  false BX
+  fCourier-BoldOblique bfs scalefont setfont
+  Show 
+} bind def
+
+/l {
+  false UL
+  false BX
+  fHelvetica bfs scalefont setfont
+  Show
+} bind def
+
+/L {
+  false UL
+  false BX
+  fHelvetica-Bold bfs scalefont setfont
+  Show 
+} bind def
+
+/str{
+  false UL
+  false BX
+  fTimes-Roman bfs scalefont setfont
+  Show
+} bind def
+
+/e{
+  false UL
+  true BX
+  fHelvetica-Bold bfs scalefont setfont
+  Show
+} bind def
+
+%%EndResource
+%%EndProlog
+%%BeginSetup
+%%IncludeResource: font Courier
+%%IncludeResource: font Courier-Oblique
+%%IncludeResource: font Courier-Bold
+%%IncludeResource: font Times-Roman
+%%IncludeResource: font Symbol
+%%IncludeResource: font Courier-BoldOblique
+%%BeginResource: encoding ISO-8859-1Encoding
+/ISO-8859-1Encoding [
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quoteright 
+/parenleft /parenright /asterisk /plus /comma /minus /period /slash 
+/zero /one /two /three /four /five /six /seven 
+/eight /nine /colon /semicolon /less /equal /greater /question 
+/at /A /B /C /D /E /F /G 
+/H /I /J /K /L /M /N /O 
+/P /Q /R /S /T /U /V /W 
+/X /Y /Z /bracketleft /backslash /bracketright /asciicircum /underscore 
+/quoteleft /a /b /c /d /e /f /g 
+/h /i /j /k /l /m /n /o 
+/p /q /r /s /t /u /v /w 
+/x /y /z /braceleft /bar /braceright /asciitilde /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/space /exclamdown /cent /sterling /currency /yen /brokenbar /section 
+/dieresis /copyright /ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron 
+/degree /plusminus /twosuperior /threesuperior /acute /mu /paragraph /bullet 
+/cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf /threequarters /questiondown 
+/Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla 
+/Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis 
+/Eth /Ntilde /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply 
+/Oslash /Ugrave /Uacute /Ucircumflex /Udieresis /Yacute /Thorn /germandbls 
+/agrave /aacute /acircumflex /atilde /adieresis /aring /ae /ccedilla 
+/egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis 
+/eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide 
+/oslash /ugrave /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis 
+] def
+%%EndResource
+% Initialize page description variables.
+/sh 612 def
+/sw 792 def
+/llx 24 def
+/urx 768 def
+/ury 588 def
+/lly 24 def
+/#copies 1 def
+/th 15.000000 def
+/fnfs 11 def
+/bfs 7.493857 def
+/cw 4.496314 def
+
+% Dictionary for ISO-8859-1 support
+/iso1dict 8 dict begin
+  /fCourier ISO-8859-1Encoding /Courier reencode_font
+  /fCourier-Bold ISO-8859-1Encoding /Courier-Bold reencode_font
+  /fCourier-BoldOblique ISO-8859-1Encoding /Courier-BoldOblique reencode_font
+  /fCourier-Oblique ISO-8859-1Encoding /Courier-Oblique reencode_font
+  /fHelvetica ISO-8859-1Encoding /Helvetica reencode_font
+  /fHelvetica-Bold ISO-8859-1Encoding /Helvetica-Bold reencode_font
+  /fTimes-Bold ISO-8859-1Encoding /Times-Bold reencode_font
+  /fTimes-Roman ISO-8859-1Encoding /Times-Roman reencode_font
+currentdict end def
+/bgcolor [ 0 0 0 ] def
+/bg false def
+/ul false def
+/bx false def
+% The font for line numbering
+/f# /Helvetica findfont bfs .6 mul scalefont def
+/fSymbol /Symbol findfont def
+/hm fnfs 0.25 mul def
+/pw
+   cw 81.400000 mul
+def
+/ph
+   522.321860 th add
+def
+/pmw urx llx sub pw 2 mul sub 1 div def
+/pmh 0 def
+/v 0 def
+/x [
+  0
+  dup pmw add pw add
+] def
+/y [
+  pmh ph add 0 mul ph add
+  dup
+] def
+/scx sw 2 div def
+/scy sh 2 div def
+/snx urx def
+/sny lly 2 add def
+/dx llx def
+/dy sny def
+/fnx scx def
+/fny dy def
+/lx snx def
+/ly ury fnfs 0.8 mul sub def
+/sx 0 def
+/tab 8 def
+/x0 0 def
+/y0 0 def
+%%EndSetup
+
+%%Page: (1-2) 1
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(Script started on Sun Nov 01 19:16:37 2009) p n
+(^[[1mbern^[[m[~/shell]% tgt-sun4u/kgsh) N
+() N
+( /export/home/kgraney/shell> pwd) N
+(/export/home/kgraney/shell) N
+( /export/home/kgraney/shell> ls &) N
+(Doxyfile         proj2_run1.ps~   rl.o             test2) N
+(Makefile         proj2_run2       src              tests) N
+(doc              proj2_testcases  test             tgt-sun4u) N
+(proj2_run1       rl               test-1+2) N
+(proj2_run1.ps    rl.c             test-1+2.c) N
+(Error in backgrounding waitpid: No child processes) N
+( /export/home/kgraney/shell> ) N
+( /export/home/kgraney/shell> ls -l &) N
+( /export/home/kgraney/shell> total 174) N
+(-rw-r--r--   1 kgraney  user         308 Sep 30 22:51 Doxyfile) N
+(-rw-r--r--   1 kgraney  user         632 Oct 28 07:53 Makefile) N
+(drwxr-xr-x   2 kgraney  user         512 Oct 29 14:17 doc) N
+(-rw-r--r--   1 kgraney  user       14353 Oct 27 12:11 proj2_run1) N
+(-rw-r--r--   1 kgraney  user       30948 Oct 27 14:20 proj2_run1.ps) N
+(-rw-r--r--   1 kgraney  user           0 Oct 27 14:19 proj2_run1.ps~) N
+(-rw-r--r--   1 kgraney  user           0 Nov  1 19:16 proj2_run2) N
+(-rw-r--r--   1 kgraney  user        1256 Oct 22 13:33 proj2_testcases) N
+(-rwxr-xr-x   1 kgraney  user       10100 Oct 27 20:14 rl) N
+(-rw-r--r--   1 kgraney  user        3317 Oct 27 20:30 rl.c) N
+(-rw-r--r--   1 kgraney  user        4876 Oct 27 20:13 rl.o) N
+(drwxr-xr-x   2 kgraney  user         512 Nov  1 18:47 src) N
+(-rw-r--r--   1 kgraney  user        1070 Oct 29 14:14 test) N
+(-rwxr-xr-x   1 kgraney  user        9464 Oct 22 12:26 test-1+2) N
+(-rw-r--r--   1 kgraney  user         254 Mar 18  2008 test-1+2.c) N
+(-rw-r--r--   1 kgraney  user           7 Oct 28 07:47 test2) N
+(drwxr-xr-x   2 kgraney  user         512 Nov  1 19:16 tests) N
+(drwxr-xr-x   2 kgraney  user         512 Nov  1 18:47 tgt-sun4u) N
+() N
+( /export/home/kgraney/shell> cd /) N
+( /> sleep 20 &) N
+( /> ls &) N
+( /> TT_DB           devices         lib             opt             tmp) N
+(bin             etc             lost+found      platform        usr) N
+(boot            export          mnt             proc            var) N
+(cdrom           home            net             sbin            vol) N
+(dev             kernel          noautoshutdown  system) N
+() N
+( /> pid) N
+(26242) N
+( /> tty) N
+(/dev/pts/7) N
+( /> /bin/ps -lfu kgraney) N
+( F S      UID   PID  PPID   C PRI NI     ADDR     SZ    WCHAN    STIME TTY      ) N
+(   TIME CMD) N
+( 0 S  kgraney 24217     1   0  70 30        ?   9368        ?   Oct 29 ?        ) N
+(   1:06 /usr/lib/wnck-applet --oaf-activate) N
+( 0 S  kgraney 26160 26159   0  50 20        ?    209        ? 18:47:26 pts/6    ) N
+(   0:00 /bin/sh -c dtpad -server) N
+( 0 S  kgraney 24226 24225   0  70 30        ?    395        ?   Oct 29 ?        ) N
+(   0:00 gnome-pty-helper) N
+( 0 S  kgraney 24158 24145   0  70 30        ?    393        ?   Oct 29 ?        ) N
+(   0:00 - -c gnome-session) N
+( 0 S  kgraney 24706     1   0  40 20        ?  10162        ?   Oct 30 ?        ) N
+(   0:19 nautilus --no-default-window --sm-c) N
+( 0 S  kgraney 24221     1   1  70 30        ?   8978        ?   Oct 29 ?        ) N
+(  44:37 /usr/lib/mixer_applet2 --oaf-activa) N
+( 0 S  kgraney 25882 24778   0  50 20        ?    508        ? 18:24:19 pts/6    ) N
+(   0:00 tcsh) N
+( 0 S  kgraney 24229 24225   0  70 30        ?    428        ?   Oct 29 pts/2    ) N
+(   0:00 tcsh) N
+( 0 S  kgraney 24230 24229   0  70 30        ?    814        ?   Oct 29 pts/2    ) N
+(   0:04 ssh -X kgraney@orioles.acad.ece.ude) N
+( 0 S  kgraney 24717     1   1  60 20        ?   8962        ?   Oct 30 ?        ) N
+(proj2_run2) (Page 1/5) (Nov 01, 09 19:23) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(  11:40 /usr/lib/mixer_applet2 --oaf-activa) p n
+( 0 S  kgraney 24529   750   6  54 20        ?   6525        ?   Oct 30 ?        ) N
+(  13:29 /usr/openwin/bin/Xsun :0 -defdepth ) N
+( 0 S  kgraney 24170     1   1  70 30        ?   1945        ?   Oct 29 ?        ) N
+(  30:11 /usr/lib/gconfd-2 15) N
+( 0 S  kgraney 24797 24778   0  40 20        ?    444        ?   Oct 30 pts/5    ) N
+(   0:00 tcsh) N
+( 0 S  kgraney 24145 24102   1  70 30        ?   2519        ?   Oct 29 ?        ) N
+(  16:24 /usr/NX/bin/nxnode) N
+( 0 S  kgraney 24096 24095   0  40 20        ?    924        ?   Oct 29 ?        ) N
+(   0:07 /usr/lib/ssh/sshd) N
+( 0 S  kgraney 24225     1   0  70 30        ?  10996        ?   Oct 29 ?        ) N
+(   1:42 gnome-terminal) N
+( 0 S  kgraney 24238 24225   0  70 30        ?    428        ?   Oct 29 pts/3    ) N
+(   0:00 tcsh) N
+( 0 S  kgraney 24677     1   0  40 20        ?    417        ?   Oct 30 pts/4    ) N
+(   0:00 /usr/bin/gnome-keyring-daemon) N
+( 0 S  kgraney 24239 24238   0  70 30        ?    782        ?   Oct 29 pts/3    ) N
+(   0:00 ssh -X kgraney@orioles.acad.ece.ude) N
+( 0 R  kgraney 24205     1   0  70 30        ?  10622            Oct 29 ?        ) N
+(   0:19 nautilus --no-default-window --sm-c) N
+( 0 S  kgraney 24683     1   0  40 20        ?   9027        ?   Oct 30 ?        ) N
+(   0:01 /usr/lib/gnome-settings-daemon --oa) N
+( 0 S  kgraney 24812 24797   0  40 20        ?    902        ?   Oct 30 pts/5    ) N
+(   0:37 ssh -X kgraney@orioles.acad.ece.ude) N
+( 0 S  kgraney 24704     1   1  40 20        ?   9989        ?   Oct 30 ?        ) N
+(  24:50 gnome-panel --sm-client-id default2) N
+( 0 S  kgraney 24178     1   0  70 30        ?    999        ?   Oct 29 ?        ) N
+(   0:01 /usr/lib/bonobo-activation-server -) N
+( 0 S  kgraney 24180     1   0  70 30        ?   9026        ?   Oct 29 ?        ) N
+(   0:01 /usr/lib/gnome-settings-daemon --oa) N
+( 0 S  kgraney 24724     1   0  40 20        ?   8878        ?   Oct 30 ?        ) N
+(   0:01 /usr/lib/notification-area-applet -) N
+( 0 S  kgraney 24698     1   0  40 20        ?   1492        ?   Oct 30 ?        ) N
+(   0:52 gnome-smproxy --sm-client-id defaul) N
+( 0 S  kgraney 24203     1   1  70 30        ?  10452        ?   Oct 29 ?        ) N
+(  25:30 gnome-panel --sm-client-id default2) N
+( 0 R  kgraney 24778     1   5  60 20        ?  11045            Oct 30 ?        ) N
+(   3:31 gnome-terminal) N
+( 0 S  kgraney 24708     1   0  40 20        ?   8875        ?   Oct 30 ?        ) N
+(   0:01 gnome-volcheck -i 30 -z 3 -m cdrom,) N
+( 0 S  kgraney 24663 24661   0  40 20        ?   9870        ?   Oct 30 pts/4    ) N
+(   0:02 /usr/bin/gnome-session) N
+( 0 S  kgraney 24219     1   0  70 30        ?   9042        ?   Oct 29 ?        ) N
+(   6:16 /usr/lib/gnome-netstatus-applet --o) N
+( 0 S  kgraney 24794 24778   0  40 20        ?    395        ?   Oct 30 ?        ) N
+(   0:00 gnome-pty-helper) N
+( 0 S  kgraney 24650 24585   0  40 20        ?    668        ?   Oct 30 pts/4    ) N
+(   0:00 /usr/dt/bin/sdt_shell -c unsetenv _) N
+( 0 S  kgraney 24168 24158   0  70 30        ?   9824        ?   Oct 29 ?        ) N
+(   0:02 gnome-session) N
+( 0 S  kgraney 24711     1   0  50 20        ?   9106        ?   Oct 30 ?        ) N
+(   0:15 /usr/lib/clock-applet --oaf-activat) N
+( 0 S  kgraney 24132 24102   1  40 20        ?   7647        ?   Oct 29 ?        ) N
+(  23:14 /usr/NX/bin/nxagent -D -options /ex) N
+( 0 S  kgraney 24652 24650   0  40 20        ?    410        ?   Oct 30 pts/4    ) N
+(   0:00 tcsh -c unsetenv _ PWD;     ;      ) N
+( 0 S  kgraney 26238 25882   0  50 20        ?    197        ? 19:16:38 pts/6    ) N
+(   0:00 script proj2_run2) N
+( 0 S  kgraney 24102 24101   0  70 30        ?   2519        ?   Oct 29 ?        ) N
+(   0:28 /usr/NX/bin/nxnode) N
+( 0 S  kgraney 24700     1   0  40 20        ?   8481        ?   Oct 30 ?        ) N
+(   2:48 /bin/metacity --sm-client-id=defaul) N
+( 0 S  kgraney 24209     1   0  70 30        ?   1270        ?   Oct 29 ?        ) N
+(   0:20 /usr/lib/gnome-vfs-daemon --oaf-act) N
+( 0 S  kgraney 24715     1   0  50 20        ?   9026        ?   Oct 30 ?        ) N
+(   5:29 /usr/lib/gnome-netstatus-applet --o) N
+( 0 S  kgraney 24668     1   0  40 20        ?    459        ?   Oct 30 ?        ) N
+(   0:33 /usr/dt/bin/dsdm) N
+(proj2_run2) (Page 2/5) (Nov 01, 09 19:23) title
+grestore
+(Printed by Kevin Graney) rhead
+(proj2_run2) (1/3) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (3-4) 2
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+( 0 S  kgraney 24713     1   0  50 20        ?   9354        ?   Oct 30 ?        ) p n
+(   1:13 /usr/lib/wnck-applet --oaf-activate) N
+( 0 S  kgraney 24173     1   0  70 30        ?    416        ?   Oct 29 ?        ) N
+(   0:00 /usr/bin/gnome-keyring-daemon) N
+( 0 S  kgraney 24585 24553   0  40 20        ?    235        ?   Oct 30 ?        ) N
+(   0:00 /bin/ksh /usr/dt/bin/Xsession) N
+( 0 S  kgraney 24742     1   0  50 20        ?  12942        ?   Oct 30 ?        ) N
+(  18:02 /usr/jdk/latest/bin/java -version:1) N
+( 0 S  kgraney 24199     1   0  70 30        ?   8430        ?   Oct 29 ?        ) N
+(   3:14 /bin/metacity --sm-client-id=defaul) N
+( 0 S  kgraney 24709 24708   0  40 20        ?   8782        ?   Oct 30 ?        ) N
+(   0:00 gnome-volcheck -i 30 -z 3 -m cdrom,) N
+( 0 S  kgraney 24175     1   0  70 30        ?   1017        ?   Oct 29 ?        ) N
+(   0:19 xscreensaver -nosplash) N
+( 0 S  kgraney 24661 24652   0  40 20        ?    224        ?   Oct 30 pts/4    ) N
+(   0:00 /bin/ksh /usr/dt/config/Xsession2.j) N
+( 0 S  kgraney 24223     1   0  70 30        ?   8876        ?   Oct 29 ?        ) N
+(   0:01 /usr/lib/notification-area-applet -) N
+( 0 S  kgraney 21871 21870   0  40 20        ?    459        ?   Oct 28 ?        ) N
+(   0:00 /usr/lib/esd -terminate -nobeeps -a) N
+( 0 S  kgraney 24213     1   0  70 30        ?    383        ?   Oct 29 ?        ) N
+(   0:05 /usr/lib/mapping-daemon) N
+( 0 S  kgraney 21870     1   0  40 20        ?    209        ?   Oct 28 ?        ) N
+(   0:00 /bin/sh -c /usr/lib/esd -terminate ) N
+( 0 S  kgraney 24679     1   0  40 20        ?   1066        ?   Oct 30 pts/4    ) N
+(   1:44 xscreensaver -nosplash) N
+( 0 S  kgraney 24215     1   0  70 30        ?   9058        ?   Oct 29 ?        ) N
+(   0:15 /usr/lib/clock-applet --oaf-activat) N
+( 0 S  kgraney 26159     1   0  50 20        ?    750        ? 18:47:26 pts/6    ) N
+(   0:00 ttsession -s -d :0.0) N
+( 0 S  kgraney 24194     1   0  70 30        ?   1483        ?   Oct 29 ?        ) N
+(   0:47 gnome-smproxy --sm-client-id defaul) N
+( 0 S  kgraney 24101 24096   0  40 20        ?    408        ?   Oct 29 ?        ) N
+(   0:00 tcsh -c /usr/NX/bin/nxnode) N
+( 0 S  kgraney 26240 26239   0  50 20        ?    436        ? 19:16:38 pts/7    ) N
+(   0:00 sh -i) N
+( 0 S  kgraney 26242 26240   0  50 20        ?    282        ? 19:16:42 pts/7    ) N
+(   0:00 tgt-sun4u/kgsh) N
+( 0 O  kgraney 26248 26242   1  55 20        ?    233          19:17:07 pts/7    ) N
+(   0:00 /bin/ps -lfu kgraney) N
+( 0 S  kgraney 26245 26242   0  50 20        ?    197        ? 19:16:55 pts/7    ) N
+(   0:00 sleep 20) N
+( 0 S  kgraney 26239 26238   0  50 20        ?    208        ? 19:16:38 pts/6    ) N
+(   0:00 script proj2_run2) N
+( 0 S  kgraney 26161 26160   0  50 20        ?   1094        ? 18:47:26 pts/6    ) N
+(   0:00 dtpad -server) N
+( /> cd) N
+( /export/home/kgraney> cd shell) N
+( /export/home/kgraney/shell> cd tests) N
+( /export/home/kgraney/shell/tests> ls -l) N
+(total 4) N
+(-rw-r--r--   1 kgraney  user           9 Nov  1 19:16 mail1) N
+(-rw-r--r--   1 kgraney  user           8 Nov  1 19:16 mail2) N
+( /export/home/kgraney/shell/tests> rm -r^H ^Hf mail1 mail2) N
+( /export/home/kgraney/shell/tests> o^H ^Htouch mail1) N
+( /export/home/kgraney/shell/tests> watchmail mail1) N
+(Starting watchmail for mail1) N
+( /export/home/kgraney/shell/tests> echo hi >> mail1) N
+( /export/home/kgraney/shell/tests> ) N
+(^GYou have new mail in mail1 at Sun Nov  1 19:17:42 2009) N
+() N
+(echo) S
+( ) K
+(^H^H ^H^H ^H^H ^H^H ^H) p n
+( /export/home/kgraney/shell/tests> ) N
+( /export/home/kgraney/shell/tests> echo HiThere > mail2) N
+( /export/home/kgraney/shell/tests> watchmail mail2) N
+(Starting watchmail for mail2) N
+( /export/home/kgraney/shell/tests> echo there >> mail1) N
+( /export/home/kgraney/shell/tests> ) N
+(^GYou have new mail in mail1 at Sun Nov  1 19:18:10 2009) N
+(proj2_run2) (Page 3/5) (Nov 01, 09 19:23) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+() p n
+() N
+( /export/home/kgraney/shell/tests> echo Subject) S
+( ) K
+(^H: >> mail2) p n
+( /export/home/kgraney/shell/tests> ) N
+(^GYou have new mail in mail2 at Sun Nov  1 19:18:18 2009) N
+() N
+() N
+( /export/home/kgraney/shell/tests> cat mail1) N
+(hi) N
+(there) N
+( /export/home/kgraney/shell/tests> cat mail2) N
+(HiThere) N
+(Subject:) N
+() N
+(^GYou have new mail in mail2 at Sun Nov  1 19:18:17 2009) N
+() N
+( /export/home/kgraney/shell/tests> watchmail mail1 off) N
+(Stopping watchmail for mail1) N
+( /export/home/kgraney/shell/tests> echo bye >> mail1) N
+( /export/home/kgraney/shell/tests> echo bye >> mail2) N
+( /export/home/kgraney/shell/tests> ) N
+(^GYou have new mail in mail2 at Sun Nov  1 19:18:47 2009) N
+() N
+() N
+( /export/home/kgraney/shell/tests> rm -f test1 test2 test3 test4 test5 test6 tes) N
+( ) N
+(t7 test8) N
+( /export/home/kgraney/shell/tests> ../test-1+2 > test1) N
+(This is to standard error) N
+( /export/home/kgraney/shell/tests> ../test-1+2 > test1^H ^H2) S
+(^H) K
+(^H^[[1@i^[[1@>) p n
+(This is to standard error) N
+( /export/home/kgraney/shell/tests> ../test-1+2 >i> test2) S
+(^H) K
+(^H^[[1@x^H^[[1P^G^[[1@) p n
+([^[[1@C^H^[[1P^H^[[1P^G^[[1@x^H^[[1Pi^H^[[1P) N
+(This is to standard error) N
+( /export/home/kgraney/shell/tests> ../test-1+2 >& test3) N
+( /export/home/kgraney/shell/tests> ../test^G-1+2 >>& test4) N
+( /export/home/kgraney/shell/tests> cat test1 test2 test3 test4) N
+(This is to standard output) N
+(This is to standard output) N
+(This is to standard error) N
+(This is to standard output) N
+(This is to standard error) N
+(This is to standard output) N
+( /export/home/kgraney/shell/tests> ls) N
+(i      mail1  mail2  test1  test2  test3  test4) N
+( /export/home/kgraney/shell/tests> rm i) N
+( /export/home/kgraney/shell/tests> noclobber) N
+(Clobbering is now on. \(value is 0\)) N
+( /export/home/kgraney/shell/tests> noclobber) S
+(^H) L
+(^[[5Prm i) p
+(^H) K
+(^H^[[2Pls^H^Hcat test1) p n
+( test2 test3 test4) S
+(^H^H^H) L
+(^[[6P../test-1+2 >>& test4) p
+(^H) K
+(^H^[[1P& test3) p
+(^H) K
+(> test2) p
+(^H) K
+(^[) p n
+([1@i> test2) S
+(^H) K
+(^H^[[2P test1^H ^H5) p n
+(This is to standard error) N
+( /export/home/kgraney/shell/tests> ../test-1+2 > test5^Gh^H ^H^H ^H6^Ghh^H ^H^H ) N
+(^H^Gh^H ) S
+(^H) K
+(^[[1@>) p n
+(This is to standard error) N
+( /export/home/kgraney/shell/tests> vimode) N
+( /export/home/kgraney/shell/tests> vimode) S
+(^H) K
+(^H../test-1+2 >> test6^Hr6^H76^H^H^[[) p n
+(1P6^H^H^[[1P6^H^Ht7) S
+(^H) K
+(&^H) p n
+( /export/home/kgraney/shell/tests> ../test-1+2 >& test7^Hr7^H87^H^H^[[1P7^H^H^[[) N
+(1P7^H^Ht8) S
+(^H) K
+(^[[1@) p
+(>) K
+(^[[1P ^H^[[1@&) p n
+( /export/home/kgraney/shell/tests> ../test-1+2 >>& test8) S
+(^H) K
+(^H^[[1P& test7) p
+(^H^H) L
+(^H) p n
+(^Hvimode^[[K) S
+(^H) K
+(^H../test-1+2 >> test6) p
+(^H) K
+(^[[1P test5) p
+(^H^H) L
+(^H^[[10Pnoclobber) p
+(^H) L
+(^[[5Prm) p n
+( i) S
+(^H) K
+(^H^[[2Pls^H^Hcat test1 test2 test3 test4) p
+(^H^H) L
+(^H^[[1@r^[[1@51) p
+(^H) K
+(^Ht^[[1P5^[[1P) p n
+( test) S
+(6) K
+( test) p
+(7) K
+( test8^H) p n
+(This is to standard output) N
+(This is to standard output) N
+(This is to standard error) N
+(This is to standard output) N
+(This is to standard error) N
+(proj2_run2) (Page 4/5) (Nov 01, 09 19:23) title
+grestore
+(Printed by Kevin Graney) rhead
+(proj2_run2) (2/3) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (5) 3
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(This is to standard output) p n
+( /export/home/kgraney/shell/tests> cat test5 test6 test7 test8) S
+(^H^H^H) L
+(^[[6P../tes) p n
+(t-1+2 >>& test8) S
+(^H) K
+(^H^[[1P& test7) p
+(^H^H) L
+(^H^Hvimode^[[K) p
+(^H) K
+(^H../test-1+2 >> test6h^H ^H) p n
+(^H ^H5) S
+(^H) K
+(^[[1P) p n
+(This is to standard error) N
+( /export/home/kgraney/shell/tests> ../test-1+2 > test5) S
+(^H) K
+(^H^[[1@) p
+(>) K
+( test6This is to) p n
+( standard error) N
+( /export/home/kgraney/shell/tests> ../test-1+2 >> test6^H7) S
+(^H) K
+(^H^[[1@&^H^H^[[1P) p n
+( /export/home/kgraney/shell/tests> ../test-1+2 >& test7hh^H ^H^H ^H^H8^H^G) S
+(^H) K
+(^H^[) p n
+([1@>) N
+( /export/home/kgraney/shell/tests> cat^H^[[K^H^[[K^H^[[K../test-1+2 >>& test8) S
+(^H) L n
+(^H) S
+(^H) K
+(../test-1+2 >^[[1P& test7) p
+(^H^H) L
+(^H^H../test-1+2 >> test6) p
+(^H^H) L
+(^H^H../test-1+2 >) p n
+(^[[1P test5) S
+(^H^H) L
+(^Hcat test5 test6 test7 test8) p
+(^H^H^H) L
+(^[[6P../test-1+2 >>&) p
+(^H) L
+(^H) K
+(^H..) p n
+(/test-1+2 >^[[1P& test7) S
+(^H^H) L
+(^H^H../test-1+2 >>& test8) p
+(^H^H) L
+(^H) K
+(^[[6@cat test5 test6 ) p n
+(test7) S
+(^H^H) L
+(^H) K n
+(This is to standard output) p n
+(This is to standard output) N
+(This is to standard output) N
+(This is to standard error) N
+(This is to standard output) N
+(This is to standard error) N
+(This is to standard output) N
+(This is to standard error) N
+(This is to standard output) N
+( /export/home/kgraney/shell/tests> grep hello < test7) N
+( /export/home/kgraney/shell/tests> grep error < test7) N
+(This is to standard error) N
+( /export/home/kgraney/shell/tests> rm -f test9 test10 test) S
+( ) K
+(^H11 test12) p n
+( /export/home/kgraney/shell/tests> noclobber) N
+(Clobbering is now off. \(value is 1\)) N
+( /export/home/kgraney/shell/tests> ../test-1+2 > test9) N
+(This is to standard error) N
+( /export/home/kgraney/shell/tests> ../test-1+2 > test9^H^Ht^[[K^HAt^H1t^H^H^[[1P) N
+(t^H^H^[[1Pt^H^Hst10) S
+(^H) K
+(^[[1@>) p n
+(This is to standard error) N
+( /export/home/kgraney/shell/tests> ../test-1+2 >> test10) S
+(^H^H) L
+(^H) K
+(../test-1+2 >) p
+(&) K
+( te) p n
+(st11^H) N
+( /export/home/kgraney/shell/tests> k^H ^H../test-1+2 >& test11) S
+(^H^H) L
+(^H) K
+(../test-1+2) p n
+( >& test1^G) S
+(^H) K
+(^[[1@) p
+(>) K
+(& test12^H) p n
+( /export/home/kgraney/shell/tests> cat test9 test10 test11 test12) N
+(This is to standard output) N
+(This is to standard output) N
+(This is to standard error) N
+(This is to standard output) N
+(This is to standard error) N
+(This is to standard output) N
+( /export/home/kgraney/shell/tests> ls | grep test) N
+(test1) N
+(test10) N
+(test11) N
+(test12) N
+(test2) N
+(test3) N
+(test4) N
+(test5) N
+(test6) N
+(test7) N
+(test8) N
+(test9) N
+( /export/home/kgraney/shell/tests> ../test-1+2 | grep hello) N
+(This is to standard error) N
+( /export/home/kgraney/shell/tests>  grep hello) S
+(^H) L
+(^H^H../test-1+2) p
+(^H) L
+(^H^H../test-1+) p n
+(2 | grep hello) S
+(^H^H) L
+(^H) K
+(^H../test-1+2^[[K) p
+(^H) L
+(^H^H grep hello) p
+(^H) L
+(^H^H^[[K^G grep hello) p
+(^H) L
+() p n
+(^H^H../test-1+2) S
+(^H) L
+(^H^H../test-1+2 | grep hello) p
+(^H) L
+(^H^H) p
+(proj2_run2) (Page 5/5) (Nov 01, 09 19:23) title
+grestore
+(Printed by Kevin Graney) rhead
+(proj2_run2) (3/3) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+
+%%Trailer
+end
+%%EOF

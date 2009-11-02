@@ -1,0 +1,248 @@
+Script started on Sun Nov 01 19:16:37 2009
+[1mbern[m[~/shell]% tgt-sun4u/kgsh
+ /export/home/kgraney/shell> pwd
+/export/home/kgraney/shell
+ /export/home/kgraney/shell> ls &
+Doxyfile         proj2_run1.ps~   rl.o             test2
+Makefile         proj2_run2       src              tests
+doc              proj2_testcases  test             tgt-sun4u
+proj2_run1       rl               test-1+2
+proj2_run1.ps    rl.c             test-1+2.c
+Error in backgrounding waitpid: No child processes
+ /export/home/kgraney/shell> 
+ /export/home/kgraney/shell> ls -l &
+ /export/home/kgraney/shell> total 174
+-rw-r--r--   1 kgraney  user         308 Sep 30 22:51 Doxyfile
+-rw-r--r--   1 kgraney  user         632 Oct 28 07:53 Makefile
+drwxr-xr-x   2 kgraney  user         512 Oct 29 14:17 doc
+-rw-r--r--   1 kgraney  user       14353 Oct 27 12:11 proj2_run1
+-rw-r--r--   1 kgraney  user       30948 Oct 27 14:20 proj2_run1.ps
+-rw-r--r--   1 kgraney  user           0 Oct 27 14:19 proj2_run1.ps~
+-rw-r--r--   1 kgraney  user           0 Nov  1 19:16 proj2_run2
+-rw-r--r--   1 kgraney  user        1256 Oct 22 13:33 proj2_testcases
+-rwxr-xr-x   1 kgraney  user       10100 Oct 27 20:14 rl
+-rw-r--r--   1 kgraney  user        3317 Oct 27 20:30 rl.c
+-rw-r--r--   1 kgraney  user        4876 Oct 27 20:13 rl.o
+drwxr-xr-x   2 kgraney  user         512 Nov  1 18:47 src
+-rw-r--r--   1 kgraney  user        1070 Oct 29 14:14 test
+-rwxr-xr-x   1 kgraney  user        9464 Oct 22 12:26 test-1+2
+-rw-r--r--   1 kgraney  user         254 Mar 18  2008 test-1+2.c
+-rw-r--r--   1 kgraney  user           7 Oct 28 07:47 test2
+drwxr-xr-x   2 kgraney  user         512 Nov  1 19:16 tests
+drwxr-xr-x   2 kgraney  user         512 Nov  1 18:47 tgt-sun4u
+
+ /export/home/kgraney/shell> cd /
+ /> sleep 20 &
+ /> ls &
+ /> TT_DB           devices         lib             opt             tmp
+bin             etc             lost+found      platform        usr
+boot            export          mnt             proc            var
+cdrom           home            net             sbin            vol
+dev             kernel          noautoshutdown  system
+
+ /> pid
+26242
+ /> tty
+/dev/pts/7
+ /> /bin/ps -lfu kgraney
+ F S      UID   PID  PPID   C PRI NI     ADDR     SZ    WCHAN    STIME TTY         TIME CMD
+ 0 S  kgraney 24217     1   0  70 30        ?   9368        ?   Oct 29 ?           1:06 /usr/lib/wnck-applet --oaf-activate
+ 0 S  kgraney 26160 26159   0  50 20        ?    209        ? 18:47:26 pts/6       0:00 /bin/sh -c dtpad -server
+ 0 S  kgraney 24226 24225   0  70 30        ?    395        ?   Oct 29 ?           0:00 gnome-pty-helper
+ 0 S  kgraney 24158 24145   0  70 30        ?    393        ?   Oct 29 ?           0:00 - -c gnome-session
+ 0 S  kgraney 24706     1   0  40 20        ?  10162        ?   Oct 30 ?           0:19 nautilus --no-default-window --sm-c
+ 0 S  kgraney 24221     1   1  70 30        ?   8978        ?   Oct 29 ?          44:37 /usr/lib/mixer_applet2 --oaf-activa
+ 0 S  kgraney 25882 24778   0  50 20        ?    508        ? 18:24:19 pts/6       0:00 tcsh
+ 0 S  kgraney 24229 24225   0  70 30        ?    428        ?   Oct 29 pts/2       0:00 tcsh
+ 0 S  kgraney 24230 24229   0  70 30        ?    814        ?   Oct 29 pts/2       0:04 ssh -X kgraney@orioles.acad.ece.ude
+ 0 S  kgraney 24717     1   1  60 20        ?   8962        ?   Oct 30 ?          11:40 /usr/lib/mixer_applet2 --oaf-activa
+ 0 S  kgraney 24529   750   6  54 20        ?   6525        ?   Oct 30 ?          13:29 /usr/openwin/bin/Xsun :0 -defdepth 
+ 0 S  kgraney 24170     1   1  70 30        ?   1945        ?   Oct 29 ?          30:11 /usr/lib/gconfd-2 15
+ 0 S  kgraney 24797 24778   0  40 20        ?    444        ?   Oct 30 pts/5       0:00 tcsh
+ 0 S  kgraney 24145 24102   1  70 30        ?   2519        ?   Oct 29 ?          16:24 /usr/NX/bin/nxnode
+ 0 S  kgraney 24096 24095   0  40 20        ?    924        ?   Oct 29 ?           0:07 /usr/lib/ssh/sshd
+ 0 S  kgraney 24225     1   0  70 30        ?  10996        ?   Oct 29 ?           1:42 gnome-terminal
+ 0 S  kgraney 24238 24225   0  70 30        ?    428        ?   Oct 29 pts/3       0:00 tcsh
+ 0 S  kgraney 24677     1   0  40 20        ?    417        ?   Oct 30 pts/4       0:00 /usr/bin/gnome-keyring-daemon
+ 0 S  kgraney 24239 24238   0  70 30        ?    782        ?   Oct 29 pts/3       0:00 ssh -X kgraney@orioles.acad.ece.ude
+ 0 R  kgraney 24205     1   0  70 30        ?  10622            Oct 29 ?           0:19 nautilus --no-default-window --sm-c
+ 0 S  kgraney 24683     1   0  40 20        ?   9027        ?   Oct 30 ?           0:01 /usr/lib/gnome-settings-daemon --oa
+ 0 S  kgraney 24812 24797   0  40 20        ?    902        ?   Oct 30 pts/5       0:37 ssh -X kgraney@orioles.acad.ece.ude
+ 0 S  kgraney 24704     1   1  40 20        ?   9989        ?   Oct 30 ?          24:50 gnome-panel --sm-client-id default2
+ 0 S  kgraney 24178     1   0  70 30        ?    999        ?   Oct 29 ?           0:01 /usr/lib/bonobo-activation-server -
+ 0 S  kgraney 24180     1   0  70 30        ?   9026        ?   Oct 29 ?           0:01 /usr/lib/gnome-settings-daemon --oa
+ 0 S  kgraney 24724     1   0  40 20        ?   8878        ?   Oct 30 ?           0:01 /usr/lib/notification-area-applet -
+ 0 S  kgraney 24698     1   0  40 20        ?   1492        ?   Oct 30 ?           0:52 gnome-smproxy --sm-client-id defaul
+ 0 S  kgraney 24203     1   1  70 30        ?  10452        ?   Oct 29 ?          25:30 gnome-panel --sm-client-id default2
+ 0 R  kgraney 24778     1   5  60 20        ?  11045            Oct 30 ?           3:31 gnome-terminal
+ 0 S  kgraney 24708     1   0  40 20        ?   8875        ?   Oct 30 ?           0:01 gnome-volcheck -i 30 -z 3 -m cdrom,
+ 0 S  kgraney 24663 24661   0  40 20        ?   9870        ?   Oct 30 pts/4       0:02 /usr/bin/gnome-session
+ 0 S  kgraney 24219     1   0  70 30        ?   9042        ?   Oct 29 ?           6:16 /usr/lib/gnome-netstatus-applet --o
+ 0 S  kgraney 24794 24778   0  40 20        ?    395        ?   Oct 30 ?           0:00 gnome-pty-helper
+ 0 S  kgraney 24650 24585   0  40 20        ?    668        ?   Oct 30 pts/4       0:00 /usr/dt/bin/sdt_shell -c unsetenv _
+ 0 S  kgraney 24168 24158   0  70 30        ?   9824        ?   Oct 29 ?           0:02 gnome-session
+ 0 S  kgraney 24711     1   0  50 20        ?   9106        ?   Oct 30 ?           0:15 /usr/lib/clock-applet --oaf-activat
+ 0 S  kgraney 24132 24102   1  40 20        ?   7647        ?   Oct 29 ?          23:14 /usr/NX/bin/nxagent -D -options /ex
+ 0 S  kgraney 24652 24650   0  40 20        ?    410        ?   Oct 30 pts/4       0:00 tcsh -c unsetenv _ PWD;     ;      
+ 0 S  kgraney 26238 25882   0  50 20        ?    197        ? 19:16:38 pts/6       0:00 script proj2_run2
+ 0 S  kgraney 24102 24101   0  70 30        ?   2519        ?   Oct 29 ?           0:28 /usr/NX/bin/nxnode
+ 0 S  kgraney 24700     1   0  40 20        ?   8481        ?   Oct 30 ?           2:48 /bin/metacity --sm-client-id=defaul
+ 0 S  kgraney 24209     1   0  70 30        ?   1270        ?   Oct 29 ?           0:20 /usr/lib/gnome-vfs-daemon --oaf-act
+ 0 S  kgraney 24715     1   0  50 20        ?   9026        ?   Oct 30 ?           5:29 /usr/lib/gnome-netstatus-applet --o
+ 0 S  kgraney 24668     1   0  40 20        ?    459        ?   Oct 30 ?           0:33 /usr/dt/bin/dsdm
+ 0 S  kgraney 24713     1   0  50 20        ?   9354        ?   Oct 30 ?           1:13 /usr/lib/wnck-applet --oaf-activate
+ 0 S  kgraney 24173     1   0  70 30        ?    416        ?   Oct 29 ?           0:00 /usr/bin/gnome-keyring-daemon
+ 0 S  kgraney 24585 24553   0  40 20        ?    235        ?   Oct 30 ?           0:00 /bin/ksh /usr/dt/bin/Xsession
+ 0 S  kgraney 24742     1   0  50 20        ?  12942        ?   Oct 30 ?          18:02 /usr/jdk/latest/bin/java -version:1
+ 0 S  kgraney 24199     1   0  70 30        ?   8430        ?   Oct 29 ?           3:14 /bin/metacity --sm-client-id=defaul
+ 0 S  kgraney 24709 24708   0  40 20        ?   8782        ?   Oct 30 ?           0:00 gnome-volcheck -i 30 -z 3 -m cdrom,
+ 0 S  kgraney 24175     1   0  70 30        ?   1017        ?   Oct 29 ?           0:19 xscreensaver -nosplash
+ 0 S  kgraney 24661 24652   0  40 20        ?    224        ?   Oct 30 pts/4       0:00 /bin/ksh /usr/dt/config/Xsession2.j
+ 0 S  kgraney 24223     1   0  70 30        ?   8876        ?   Oct 29 ?           0:01 /usr/lib/notification-area-applet -
+ 0 S  kgraney 21871 21870   0  40 20        ?    459        ?   Oct 28 ?           0:00 /usr/lib/esd -terminate -nobeeps -a
+ 0 S  kgraney 24213     1   0  70 30        ?    383        ?   Oct 29 ?           0:05 /usr/lib/mapping-daemon
+ 0 S  kgraney 21870     1   0  40 20        ?    209        ?   Oct 28 ?           0:00 /bin/sh -c /usr/lib/esd -terminate 
+ 0 S  kgraney 24679     1   0  40 20        ?   1066        ?   Oct 30 pts/4       1:44 xscreensaver -nosplash
+ 0 S  kgraney 24215     1   0  70 30        ?   9058        ?   Oct 29 ?           0:15 /usr/lib/clock-applet --oaf-activat
+ 0 S  kgraney 26159     1   0  50 20        ?    750        ? 18:47:26 pts/6       0:00 ttsession -s -d :0.0
+ 0 S  kgraney 24194     1   0  70 30        ?   1483        ?   Oct 29 ?           0:47 gnome-smproxy --sm-client-id defaul
+ 0 S  kgraney 24101 24096   0  40 20        ?    408        ?   Oct 29 ?           0:00 tcsh -c /usr/NX/bin/nxnode
+ 0 S  kgraney 26240 26239   0  50 20        ?    436        ? 19:16:38 pts/7       0:00 sh -i
+ 0 S  kgraney 26242 26240   0  50 20        ?    282        ? 19:16:42 pts/7       0:00 tgt-sun4u/kgsh
+ 0 O  kgraney 26248 26242   1  55 20        ?    233          19:17:07 pts/7       0:00 /bin/ps -lfu kgraney
+ 0 S  kgraney 26245 26242   0  50 20        ?    197        ? 19:16:55 pts/7       0:00 sleep 20
+ 0 S  kgraney 26239 26238   0  50 20        ?    208        ? 19:16:38 pts/6       0:00 script proj2_run2
+ 0 S  kgraney 26161 26160   0  50 20        ?   1094        ? 18:47:26 pts/6       0:00 dtpad -server
+ /> cd
+ /export/home/kgraney> cd shell
+ /export/home/kgraney/shell> cd tests
+ /export/home/kgraney/shell/tests> ls -l
+total 4
+-rw-r--r--   1 kgraney  user           9 Nov  1 19:16 mail1
+-rw-r--r--   1 kgraney  user           8 Nov  1 19:16 mail2
+ /export/home/kgraney/shell/tests> rm -r f mail1 mail2
+ /export/home/kgraney/shell/tests> o touch mail1
+ /export/home/kgraney/shell/tests> watchmail mail1
+Starting watchmail for mail1
+ /export/home/kgraney/shell/tests> echo hi >> mail1
+ /export/home/kgraney/shell/tests> 
+You have new mail in mail1 at Sun Nov  1 19:17:42 2009
+
+echo      
+ /export/home/kgraney/shell/tests> 
+ /export/home/kgraney/shell/tests> echo HiThere > mail2
+ /export/home/kgraney/shell/tests> watchmail mail2
+Starting watchmail for mail2
+ /export/home/kgraney/shell/tests> echo there >> mail1
+ /export/home/kgraney/shell/tests> 
+You have new mail in mail1 at Sun Nov  1 19:18:10 2009
+
+
+ /export/home/kgraney/shell/tests> echo Subject  : >> mail2
+ /export/home/kgraney/shell/tests> 
+You have new mail in mail2 at Sun Nov  1 19:18:18 2009
+
+
+ /export/home/kgraney/shell/tests> cat mail1
+hi
+there
+ /export/home/kgraney/shell/tests> cat mail2
+HiThere
+Subject:
+
+You have new mail in mail2 at Sun Nov  1 19:18:17 2009
+
+ /export/home/kgraney/shell/tests> watchmail mail1 off
+Stopping watchmail for mail1
+ /export/home/kgraney/shell/tests> echo bye >> mail1
+ /export/home/kgraney/shell/tests> echo bye >> mail2
+ /export/home/kgraney/shell/tests> 
+You have new mail in mail2 at Sun Nov  1 19:18:47 2009
+
+
+ /export/home/kgraney/shell/tests> rm -f test1 test2 test3 test4 test5 test6 tes t7 test8
+ /export/home/kgraney/shell/tests> ../test-1+2 > test1
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 > test1 2[1@i[1@>
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 >i> test2[1@x[1P[1@[[1@C[1P[1P[1@x[1Pi[1P
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 >& test3
+ /export/home/kgraney/shell/tests> ../test-1+2 >>& test4
+ /export/home/kgraney/shell/tests> cat test1 test2 test3 test4
+This is to standard output
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+ /export/home/kgraney/shell/tests> ls
+i      mail1  mail2  test1  test2  test3  test4
+ /export/home/kgraney/shell/tests> rm i
+ /export/home/kgraney/shell/tests> noclobber
+Clobbering is now on. (value is 0)
+ /export/home/kgraney/shell/tests> noclobber[5Prm i[2Plscat test1 test2 test3 test4[6P../test-1+2 >>& test4[1P& test3> test2[1@i> test2[2P test1 5
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 > test5h  6hh  h [1@>
+This is to standard error
+ /export/home/kgraney/shell/tests> vimode
+ /export/home/kgraney/shell/tests> vimode../test-1+2 >> test6r676[1P6[1P6t7&
+ /export/home/kgraney/shell/tests> ../test-1+2 >& test7r787[1P7[1P7t8[1@>>[1P [1@&
+ /export/home/kgraney/shell/tests> ../test-1+2 >>& test8[1P& test7vimode[K../test-1+2 >> test6[1P test5[10Pnoclobber[5Prm i[2Plscat test1 test2 test3 test4[1@r[1@51t[1P5[1P test66 test77 test8
+This is to standard output
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+ /export/home/kgraney/shell/tests> cat test5 test6 test7 test8[6P../test-1+2 >>& test8[1P& test7vimode[K../test-1+2 >> test6h  5[1P
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 > test5[1@>> test6
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 >> test67[1@&[1P
+ /export/home/kgraney/shell/tests> ../test-1+2 >& test7hh  8[1@>
+ /export/home/kgraney/shell/tests> cat[K[K[K../test-1+2 >>& test8../test-1+2 >[1P& test7../test-1+2 >> test6../test-1+2 >[1P test5cat test5 test6 test7 test8[6P../test-1+2 >>&../test-1+2 >[1P& test7../test-1+2 >>& test8[6@cat test5 test6 test7
+This is to standard output
+This is to standard output
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+ /export/home/kgraney/shell/tests> grep hello < test7
+ /export/home/kgraney/shell/tests> grep error < test7
+This is to standard error
+ /export/home/kgraney/shell/tests> rm -f test9 test10 test  11 test12
+ /export/home/kgraney/shell/tests> noclobber
+Clobbering is now off. (value is 1)
+ /export/home/kgraney/shell/tests> ../test-1+2 > test9
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 > test9t[KAt1t[1Pt[1Ptst10[1@>
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 >> test10../test-1+2 >&& test11
+ /export/home/kgraney/shell/tests> k ../test-1+2 >& test11../test-1+2 >& test1[1@>>& test12
+ /export/home/kgraney/shell/tests> cat test9 test10 test11 test12
+This is to standard output
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+ /export/home/kgraney/shell/tests> ls | grep test
+test1
+test10
+test11
+test12
+test2
+test3
+test4
+test5
+test6
+test7
+test8
+test9
+ /export/home/kgraney/shell/tests> ../test-1+2 | grep hello
+This is to standard error
+ /export/home/kgraney/shell/tests>  grep hello../test-1+2../test-1+2 | grep hello../test-1+2[K grep hello[K grep hello../test-1+2../test-1+2 | grep hello

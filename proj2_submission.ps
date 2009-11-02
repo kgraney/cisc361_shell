@@ -1,0 +1,6375 @@
+%!PS-Adobe-3.0
+%%Title: alias.c, builtins.c, get_path.c, ipc.c, kgsh.c, redirection.c, util.c, watchmail.c, wildcard.c, alias.h
+%%For: Kevin Graney
+%%Creator: a2ps version 4.13
+%%CreationDate: Sun Nov  1 19:31:00 2009
+%%BoundingBox: 24 24 588 768
+%%DocumentData: Clean7Bit
+%%Orientation: Landscape
+%%Pages: 30
+%%PageOrder: Ascend
+%%DocumentMedia: Letter 612 792 0 () ()
+%%DocumentNeededResources: font Courier
+%%+ font Courier-Bold
+%%+ font Courier-BoldOblique
+%%+ font Courier-Oblique
+%%+ font Helvetica
+%%+ font Helvetica-Bold
+%%+ font Symbol
+%%+ font Times-Bold
+%%+ font Times-Roman
+%%DocumentProcessColors: Black 
+%%DocumentSuppliedResources: procset a2ps-a2ps-hdr
+%%+ procset a2ps-black+white-Prolog
+%%+ encoding ISO-8859-1Encoding
+%%EndComments
+/a2psdict 200 dict def
+a2psdict begin
+%%BeginProlog
+%%Copyright: (c) 1988, 89, 90, 91, 92, 93 Miguel Santana
+%%Copyright: (c) 1995, 96, 97, 98 Akim Demaille, Miguel Santana
+% Check PostScript language level.
+/languagelevel where {
+  pop /gs_languagelevel languagelevel def
+} {
+  /gs_languagelevel 1 def
+} ifelse
+
+% EPSF import as in the Red Book
+/BeginInclude {
+  /b4_Inc_state save def    		% Save state for cleanup
+  /dict_count countdictstack def	% Count objects on dict stack
+  /op_count count 1 sub def		% Count objects on operand stack 
+  userdict begin
+    0 setgray 0 setlinecap
+    1 setlinewidth 0 setlinejoin
+    10 setmiterlimit [ ] 0 setdash newpath
+    gs_languagelevel 1 ne {
+      false setstrokeadjust false setoverprint 
+    } if
+} bind def
+
+/EndInclude {
+  count op_count sub { pos } repeat	% Clean up stacks
+  countdictstack dict_count sub { end } repeat
+  b4_Inc_state restore
+} bind def
+
+/BeginEPSF {
+  BeginInclude
+  /showpage { } def
+} bind def
+
+/EndEPSF {
+  EndInclude
+} bind def
+
+% Page prefeed
+/page_prefeed {         % bool -> -
+  statusdict /prefeed known {
+    statusdict exch /prefeed exch put
+  } {
+    pop
+  } ifelse
+} bind def
+
+/deffont {
+  findfont exch scalefont def
+} bind def
+
+/reencode_font {
+  findfont reencode 2 copy definefont pop def
+} bind def
+
+% Function c-show (str => -)
+% centers text only according to x axis.
+/c-show { 
+  dup stringwidth pop
+  2 div neg 0 rmoveto
+  show
+} bind def
+
+% Function l-show (str => -)
+% prints texts so that it ends at currentpoint
+/l-show {
+  dup stringwidth pop neg 
+  0 
+  rmoveto show
+} bind def
+
+% center-fit show (str w => -)
+% show centered, and scale currentfont so that the width is less than w
+/cfshow {
+  exch dup stringwidth pop
+  % If the title is too big, try to make it smaller
+  3 2 roll 2 copy
+  gt
+  { % if, i.e. too big
+    exch div
+    currentfont exch scalefont setfont
+  } { % ifelse
+    pop pop 
+  }
+  ifelse
+  c-show			% center title
+} bind def
+
+% Return the y size of the current font
+% - => fontsize
+/currentfontsize {
+  currentfont /FontMatrix get 3 get 1000 mul
+} bind def
+
+% reencode the font
+% <encoding-vector> <fontdict> -> <newfontdict>
+/reencode { %def
+  dup length 5 add dict begin
+    { %forall
+      1 index /FID ne 
+      { def }{ pop pop } ifelse
+    } forall
+    /Encoding exch def
+
+    % Use the font's bounding box to determine the ascent, descent,
+    % and overall height; don't forget that these values have to be
+    % transformed using the font's matrix.
+    % We use `load' because sometimes BBox is executable, sometimes not.
+    % Since we need 4 numbers an not an array avoid BBox from being executed
+    /FontBBox load aload pop
+    FontMatrix transform /Ascent exch def pop
+    FontMatrix transform /Descent exch def pop
+    /FontHeight Ascent Descent sub def
+
+    % Define these in case they're not in the FontInfo (also, here
+    % they're easier to get to.
+    /UnderlinePosition 1 def
+    /UnderlineThickness 1 def
+    
+    % Get the underline position and thickness if they're defined.
+    currentdict /FontInfo known {
+      FontInfo
+      
+      dup /UnderlinePosition known {
+	dup /UnderlinePosition get
+	0 exch FontMatrix transform exch pop
+	/UnderlinePosition exch def
+      } if
+      
+      dup /UnderlineThickness known {
+	/UnderlineThickness get
+	0 exch FontMatrix transform exch pop
+	/UnderlineThickness exch def
+      } if
+      
+    } if
+    currentdict 
+  end 
+} bind def
+
+% Function print line number (<string> # -)
+/# {
+  gsave
+    sx cw mul neg 2 div 0 rmoveto
+    f# setfont
+    c-show
+  grestore
+} bind def
+
+% -------- Some routines to enlight plain b/w printings ---------
+
+% Underline
+% width --
+/dounderline {
+  currentpoint
+  gsave
+    moveto
+    0 currentfont /Descent get currentfontsize mul rmoveto
+    0 rlineto
+    stroke
+  grestore
+} bind def
+
+% Underline a string
+% string --
+/dounderlinestring {
+  stringwidth pop
+  dounderline
+} bind def
+
+/UL {
+  /ul exch store
+} bind def
+
+% Draw a box of WIDTH wrt current font
+% width --
+/dobox {
+  currentpoint
+  gsave
+    newpath
+    moveto
+    0 currentfont /Descent get currentfontsize mul rmoveto
+    dup 0 rlineto
+    0 currentfont /FontHeight get currentfontsize mul rlineto
+    neg 0 rlineto
+    closepath
+    stroke
+  grestore
+} bind def
+
+/BX {
+  /bx exch store
+} bind def
+
+% Box a string
+% string --
+/doboxstring {
+  stringwidth pop
+  dobox
+} bind def
+
+%
+% ------------- Color routines ---------------
+%
+/FG /setrgbcolor load def
+
+% Draw the background
+% width --
+/dobackground {
+  currentpoint
+  gsave
+    newpath
+    moveto
+    0 currentfont /Descent get currentfontsize mul rmoveto
+    dup 0 rlineto
+    0 currentfont /FontHeight get currentfontsize mul rlineto
+    neg 0 rlineto
+    closepath
+    bgcolor aload pop setrgbcolor
+    fill
+  grestore
+} bind def
+
+% Draw bg for a string
+% string --
+/dobackgroundstring {
+  stringwidth pop
+  dobackground
+} bind def
+
+
+/BG {
+  dup /bg exch store
+  { mark 4 1 roll ] /bgcolor exch store } if
+} bind def
+
+
+/Show {
+  bg { dup dobackgroundstring } if
+  ul { dup dounderlinestring } if
+  bx { dup doboxstring } if
+  show
+} bind def
+
+% Function T(ab), jumps to the n-th tabulation in the current line
+/T {
+  cw mul x0 add
+  bg { dup currentpoint pop sub dobackground } if
+  ul { dup currentpoint pop sub dounderline } if
+  bx { dup currentpoint pop sub dobox } if
+  y0 moveto
+} bind def
+
+% Function n: move to the next line
+/n {
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+} bind def
+
+% Function N: show and move to the next line
+/N {
+  Show
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+} bind def
+
+/S {
+  Show
+} bind def
+
+%%BeginResource: procset a2ps-a2ps-hdr 2.0 2
+%%Copyright: (c) 1988, 89, 90, 91, 92, 93 Miguel Santana
+%%Copyright: (c) 1995, 96, 97, 98 Akim Demaille, Miguel Santana
+% Function title: prints page header.
+% <ct> <rt> <lt> are passed as argument
+/title { 
+  % 1. Draw the background
+  x v get y v get moveto
+  gsave
+    0 th 2 div neg rmoveto 
+    th setlinewidth
+    0.95 setgray
+    pw 0 rlineto stroke
+  grestore
+  % 2. Border it
+  gsave
+    0.7 setlinewidth
+    pw 0 rlineto
+    0 th neg rlineto
+    pw neg 0 rlineto
+    closepath stroke
+  grestore
+  % stk: ct rt lt
+  x v get y v get th sub 1 add moveto
+%%IncludeResource: font Helvetica
+  fHelvetica fnfs 0.8 mul scalefont setfont
+  % 3. The left title
+  gsave
+    dup stringwidth pop fnfs 0.8 mul add exch % leave space took on stack
+    fnfs 0.8 mul hm rmoveto
+    show			% left title
+  grestore
+  exch
+  % stk: ct ltw rt
+  % 4. the right title
+  gsave
+    dup stringwidth pop fnfs 0.8 mul add exch % leave space took on stack
+    dup
+    pw exch stringwidth pop fnfs 0.8 mul add sub
+    hm
+    rmoveto
+    show			% right title
+  grestore
+  % stk: ct ltw rtw
+  % 5. the center title
+  gsave
+    pw 3 1 roll
+    % stk: ct pw ltw rtw
+    3 copy 
+    % Move to the center of the left room
+    sub add 2 div hm rmoveto
+    % What is the available space in here?
+    add sub fnfs 0.8 mul sub fnfs 0.8 mul sub
+    % stk: ct space_left
+%%IncludeResource: font Helvetica-Bold
+  fHelvetica-Bold fnfs scalefont setfont
+    cfshow
+  grestore
+} bind def
+
+% Function border: prints virtual page border
+/border { %def
+  gsave				% print four sides
+    0 setgray
+    x v get y v get moveto
+    0.7 setlinewidth		% of the square
+    pw 0 rlineto
+    0 ph neg rlineto
+    pw neg 0 rlineto
+    closepath stroke
+  grestore
+} bind def
+
+% Function water: prints a water mark in background
+/water { %def
+  gsave
+    scx scy moveto rotate
+%%IncludeResource: font Times-Bold
+  fTimes-Bold 100 scalefont setfont
+    .97 setgray
+    dup stringwidth pop 2 div neg -50 rmoveto
+    show
+  grestore
+} bind def
+
+% Function rhead: prints the right header
+/rhead {  %def
+  lx ly moveto
+  fHelvetica fnfs 0.8 mul scalefont setfont
+  l-show
+} bind def
+
+% Function footer (cf rf lf -> -)
+/footer {
+  fHelvetica fnfs 0.8 mul scalefont setfont
+  dx dy moveto
+  show
+
+  snx sny moveto
+  l-show
+  
+  fnx fny moveto
+  c-show
+} bind def
+%%EndResource
+%%BeginResource: procset a2ps-black+white-Prolog 2.0 1
+
+% Function T(ab), jumps to the n-th tabulation in the current line
+/T { 
+  cw mul x0 add y0 moveto
+} bind def
+
+% Function n: move to the next line
+/n { %def
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+} bind def
+
+% Function N: show and move to the next line
+/N {
+  Show
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+}  bind def
+
+/S {
+  Show
+} bind def
+
+/p {
+  false UL
+  false BX
+  fCourier bfs scalefont setfont
+  Show
+} bind def
+
+/sy {
+  false UL
+  false BX
+  fSymbol bfs scalefont setfont
+  Show
+} bind def
+
+/k {
+  false UL
+  false BX
+  fCourier-Oblique bfs scalefont setfont
+  Show
+} bind def
+
+/K {
+  false UL
+  false BX
+  fCourier-Bold bfs scalefont setfont
+  Show
+} bind def
+
+/c {
+  false UL
+  false BX
+  fCourier-Oblique bfs scalefont setfont
+  Show
+} bind def
+
+/C {
+  false UL
+  false BX
+  fCourier-BoldOblique bfs scalefont setfont
+  Show 
+} bind def
+
+/l {
+  false UL
+  false BX
+  fHelvetica bfs scalefont setfont
+  Show
+} bind def
+
+/L {
+  false UL
+  false BX
+  fHelvetica-Bold bfs scalefont setfont
+  Show 
+} bind def
+
+/str{
+  false UL
+  false BX
+  fTimes-Roman bfs scalefont setfont
+  Show
+} bind def
+
+/e{
+  false UL
+  true BX
+  fHelvetica-Bold bfs scalefont setfont
+  Show
+} bind def
+
+%%EndResource
+%%EndProlog
+%%BeginSetup
+%%IncludeResource: font Courier
+%%IncludeResource: font Courier-Oblique
+%%IncludeResource: font Courier-Bold
+%%IncludeResource: font Times-Roman
+%%IncludeResource: font Symbol
+%%IncludeResource: font Courier-BoldOblique
+%%BeginResource: encoding ISO-8859-1Encoding
+/ISO-8859-1Encoding [
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quoteright 
+/parenleft /parenright /asterisk /plus /comma /minus /period /slash 
+/zero /one /two /three /four /five /six /seven 
+/eight /nine /colon /semicolon /less /equal /greater /question 
+/at /A /B /C /D /E /F /G 
+/H /I /J /K /L /M /N /O 
+/P /Q /R /S /T /U /V /W 
+/X /Y /Z /bracketleft /backslash /bracketright /asciicircum /underscore 
+/quoteleft /a /b /c /d /e /f /g 
+/h /i /j /k /l /m /n /o 
+/p /q /r /s /t /u /v /w 
+/x /y /z /braceleft /bar /braceright /asciitilde /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/space /exclamdown /cent /sterling /currency /yen /brokenbar /section 
+/dieresis /copyright /ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron 
+/degree /plusminus /twosuperior /threesuperior /acute /mu /paragraph /bullet 
+/cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf /threequarters /questiondown 
+/Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla 
+/Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis 
+/Eth /Ntilde /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply 
+/Oslash /Ugrave /Uacute /Ucircumflex /Udieresis /Yacute /Thorn /germandbls 
+/agrave /aacute /acircumflex /atilde /adieresis /aring /ae /ccedilla 
+/egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis 
+/eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide 
+/oslash /ugrave /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis 
+] def
+%%EndResource
+% Initialize page description variables.
+/sh 612 def
+/sw 792 def
+/llx 24 def
+/urx 768 def
+/ury 588 def
+/lly 24 def
+/#copies 1 def
+/th 15.000000 def
+/fnfs 11 def
+/bfs 7.493857 def
+/cw 4.496314 def
+
+% Dictionary for ISO-8859-1 support
+/iso1dict 8 dict begin
+  /fCourier ISO-8859-1Encoding /Courier reencode_font
+  /fCourier-Bold ISO-8859-1Encoding /Courier-Bold reencode_font
+  /fCourier-BoldOblique ISO-8859-1Encoding /Courier-BoldOblique reencode_font
+  /fCourier-Oblique ISO-8859-1Encoding /Courier-Oblique reencode_font
+  /fHelvetica ISO-8859-1Encoding /Helvetica reencode_font
+  /fHelvetica-Bold ISO-8859-1Encoding /Helvetica-Bold reencode_font
+  /fTimes-Bold ISO-8859-1Encoding /Times-Bold reencode_font
+  /fTimes-Roman ISO-8859-1Encoding /Times-Roman reencode_font
+currentdict end def
+/bgcolor [ 0 0 0 ] def
+/bg false def
+/ul false def
+/bx false def
+% The font for line numbering
+/f# /Helvetica findfont bfs .6 mul scalefont def
+/fSymbol /Symbol findfont def
+/hm fnfs 0.25 mul def
+/pw
+   cw 81.400000 mul
+def
+/ph
+   522.321860 th add
+def
+/pmw urx llx sub pw 2 mul sub 1 div def
+/pmh 0 def
+/v 0 def
+/x [
+  0
+  dup pmw add pw add
+] def
+/y [
+  pmh ph add 0 mul ph add
+  dup
+] def
+/scx sw 2 div def
+/scy sh 2 div def
+/snx urx def
+/sny lly 2 add def
+/dx llx def
+/dy sny def
+/fnx scx def
+/fny dy def
+/lx snx def
+/ly ury fnfs 0.8 mul sub def
+/sx 0 def
+/tab 8 def
+/x0 0 def
+/y0 0 def
+%%EndSetup
+
+%%Page: (1-2) 1
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/** ) c n
+( * @file alias.c) N
+( * @brief Definition of alias functions.) N
+( * @author Kevin Graney) N
+( * @version v0.1) N
+( * @date 2009-08-02) N
+( */) N
+(#include) K
+( ") p
+(alias.h) str
+(") p n
+(#include) K
+( ") p
+(util.h) str
+(") p n
+() N
+(/** ) c n
+( * @brief Adds an alias to the alias list.) N
+( *) N
+( * Inserts an alias into the linked list structure that stores aliases) N
+( * \(::aliasList\).  A call to detokenize\(\) is made since aliases are stored as) N
+( * unparsed commands.  Any existing alias with the same name will be overwritten) N
+( * when this function is called.) N
+( * ) N
+( * @param env           A pointer to the global ::kgenv object.) N
+( * @param name          The name of the alias.) N
+( * @param cmd_argc      The argument count for the command the alias points to. ) N
+( * @param cmd_argv[]    The argument values for the command the alias points to.) N
+( */) N
+(void) k
+( add_alias\(kgenv* env, ) p
+(char) k
+(* name, ) p
+(int) k
+( cmd_argc, ) p
+(char) k
+(* cmd_argv[]\){) p n
+() N
+(    ) S
+(// Allocate space for the new alias) c n
+(    aliasList* new_alias = malloc\() p
+(sizeof) K
+(\(aliasList\)\);) p n
+(    ) S
+(if) K
+(\(new_alias == ) p
+(NULL) K
+(\){) p n
+() S 8 T (perror\(") S
+(Failed to add alias) str
+("\);) p n
+() S 8 T () S
+(return) K
+(;) p n
+(    }) N
+() N
+(    ) S
+(// Delete any existing alias with the same name) c n
+(    remove_alias\(env, name\);) p n
+() N
+(    ) S
+(// Copy over the alias name) c n
+(    new_alias->name = \() p
+(char) k
+(*\)malloc\(strlen\(name\) + 1\);) p n
+(    ) S
+(if) K
+(\(new_alias->name == ) p
+(NULL) K
+(\){) p n
+() S 8 T (perror\(") S
+(Failed to add alias) str
+("\);) p n
+() S 8 T () S
+(return) K
+(;) p n
+(    }) N
+(    strcpy\(new_alias->name, name\);) N
+() N
+(    ) S
+(// Copy over the argv arrray and reconstruct the command line string so) c n
+(    ) p
+(// the recursive calls work out correctly when processing the alias.  We're) c n
+(    ) p
+(// doing some unecessary processing using this method, but the) c n
+(    ) p
+(// implementation is neater.) c n
+(    ) p
+(int) k
+( line_length = 0;) p n
+(    ) S
+(for) K
+(\() p
+(int) k
+( i=0; i < cmd_argc; i++\){) p n
+(        line_length += strlen\(cmd_argv[i]\);) N
+(        line_length++;) S 24 T () S
+(// For null character) c n
+(    }) p n
+(    ) N
+(    new_alias->string = malloc\(line_length\);) N
+(    ) S
+(if) K
+(\(new_alias->string == ) p
+(NULL) K
+(\){) p n
+() S 8 T (perror\(") S
+(Failed to add alias) str
+("\);) p n
+() S 8 T () S
+(return) K
+(;) p n
+(    }) N
+() N
+(    memcpy\(new_alias->string , *cmd_argv, line_length\);) N
+() N
+(alias.c) (Page 1/3) (Oct 27, 09 17:15) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(    detokenize\(new_alias->string, line_length\);) p n
+() N
+(    ) S
+(// Add the link to the next node) c n
+(    new_alias->next = env->aliases;) p n
+(   ) N
+() N
+(    env->aliases = new_alias;) N
+(}) N
+() N
+() N
+() N
+(/** ) c n
+( * @brief Checks if a command entered is an alias.) N
+( * ) N
+( * @param env   A pointer to the global ::kgenv object.) N
+( * @param name  The name to check.  This should be argv[0] of the command that's) N
+( * been entered.  This function does not parse an entire command line.) N
+( * ) N
+( * @return  If an alias exists with the name, a pointer to the ::aliasList node) N
+( * where the alias is stored is returned.  Otherwise NULL is returned if the) N
+( * alias does not exist.) N
+( */) N
+(aliasList* is_alias\(kgenv* env, ) p
+(char) k
+(* name\){) p n
+(    aliasList* a = env->aliases;) N
+() N
+(    ) S
+(while) K
+(\(a != ) p
+(NULL) K
+(\){) p n
+() N
+(        ) S
+(if) K
+(\(strcmp\(name, a->name\) == 0\){) p n
+(            ) S
+(return) K
+( a;) p n
+(        }) N
+() N
+(        a = a->next;) N
+(    }) N
+(    ) S
+(return) K
+( ) p
+(NULL) K
+(;) p n
+(}) N
+() N
+(/** ) c n
+( * @brief Removes an alias if it exists.) N
+( *) N
+( * Steps through the alias list \(::aliasList\) stored in the global ::kgenv) N
+( * object.  If an alias of the specified name is found, it is removed from the) N
+( * list.  No action is taken if an alias with the name is not found.) N
+( * ) N
+( * @param env   The global ::kgenv environment object.) N
+( * @param name  The name of the alias to remove.) N
+( *) N
+( * @return  True if an alias was removed.  False otherwise.) N
+( */) N
+(bool remove_alias\(kgenv* env, ) p
+(char) k
+(* name\){) p n
+() N
+(    aliasList* a = env->aliases;) N
+(    aliasList* prev = ) S
+(NULL) K
+(;) p n
+() N
+(    ) S
+(while) K
+(\(a != ) p
+(NULL) K
+(\){) p n
+() N
+(        ) S
+(if) K
+(\(strcmp\(name, a->name\) == 0\){) p n
+() N
+(            ) S
+(if) K
+(\(prev != ) p
+(NULL) K
+(\){) p n
+(                prev->next = a->next;) N
+(            } ) S
+(else) K
+( {) p n
+(                env->aliases = a->next;) N
+(            }) N
+() N
+(            free\(a->name\);) N
+(            free\(a->string\);) N
+(            free\(a\);) N
+(            ) S
+(return) K
+( true;) p n
+() N
+(        }) N
+(alias.c) (Page 2/3) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/alias.c) (1/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (3) 2
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+() p n
+(        prev = a;) N
+(        a = a->next;) N
+(    }) N
+() N
+(    ) S
+(return) K
+( false;) p n
+(}) N
+(alias.c) (Page 3/3) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/alias.c) (2/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1-2) 3
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/** ) c n
+( * @file builtins.c) N
+( * @brief Definitions of builtin functions.) N
+( * @author Kevin Graney) N
+( * @version v0.1) N
+( * @date 2009-08-02) N
+( */) N
+(#include) K
+( ") p
+(builtins.h) str
+(") p n
+(#include) K
+( ") p
+(get_path.h) str
+(") p n
+(#include) K
+( ") p
+(alias.h) str
+(") p n
+(#include) K
+( ") p
+(wildcard.h) str
+(") p n
+(#include) K
+( ") p
+(watchmail.h) str
+(") p n
+() N
+(#include) K
+( <readline/readline.h>) p n
+() N
+(extern) K
+( ) p
+(int) k
+( errno;) p n
+() N
+(//------------------------------------------------------------------------------) c n
+(//-- The following constants define the built-in commands.  The commands are) N
+(//-- matched to the function pointers with a one-to-one matching done in order.) N
+(//------------------------------------------------------------------------------) N
+() p n
+(/** ) c n
+( * @brief Stores the commands that map to the built-in functions.) N
+( *) N
+( * These strings are what, if entered as the zeroth argument \(argv[0]\) in a) N
+( * command will execute a built-in function.) N
+( */) N
+(const) K
+( ) p
+(char) k
+(* BUILT_IN_COMMANDS[] = {) p n
+(    ") S
+(exit) str
+(",) p n
+(    ") S
+(which) str
+(",) p n
+(    ") S
+(where) str
+(",) p n
+(    ") S
+(cd) str
+(",) p n
+(    ") S
+(pwd) str
+(",) p n
+(    ") S
+(list) str
+(",) p n
+(    ") S
+(pid) str
+(",) p n
+(    ") S
+(kill) str
+(", ) p n
+(    ") S
+(prompt) str
+(",) p n
+(    ") S
+(printenv) str
+(",) p n
+(    ") S
+(alias) str
+(",) p n
+(    ") S
+(unalias) str
+(",         ) p
+(// Not a requirement, but easy to add. ) c n
+(    ") p
+(history) str
+(", ) p n
+(    ") S
+(setenv) str
+(",) p n
+(    ") S
+(lsbuiltins) str
+(",) p n
+(    ") S
+(watchmail) str
+(",) p n
+(    ") S
+(noclobber) str
+(",) p n
+(    ") S
+(vimode) str
+(",) p n
+(    ") S
+(emacsmode) str
+(") p n
+(#ifdef) K
+( DEBUG        ) p
+(// Various built ins defined for debugging purposes.) c n
+(    ,) p n
+(    ") S
+(_db_tokenizer) str
+(",) p n
+(    ") S
+(_db_kgenv) str
+(",) p n
+(    ") S
+(_db_path) str
+(",) p n
+(    ") S
+(_db_history) str
+(",) p n
+(    ") S
+(_db_wc_contains) str
+(",) p n
+(    ") S
+(_db_wc_expand) str
+(") p n
+(#endif) K
+( ) p
+(//DEBUG) c n
+(};) p n
+() N
+() N
+(/** ) c n
+(builtins.c) (Page 1/14) (Oct 28, 09 7:53) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+( * @brief An array of function pointers for built-in commands.) c n
+( ) N
+( * These function pointers map one-to-one in order with the command strings in ) N
+( * ::BUILT_IN_COMMANDS.  Each built-in command function has the same prototype.) N
+( * Setting the prototypes up in this way allows us to write each built-in as if) N
+( * it were a "main" functions of a seperate program with access to the ::kgenv) N
+( * structure.  Adding new built-ins is very easy.) N
+( * ) N
+( * @param env The global ::kgenv structure is the first argument to every ) N
+( * built-in command.) N
+( * @param argc The second argument is always the argument count of the command ) N
+( * being proccessed. ) N
+( * @param argv The third argument is always the argument value array of the ) N
+( * command being processed.) N
+( */) N
+(void) k
+( \(*BUILT_IN_FUNCS[]\)\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(** argv\) = {) p n
+(    bic_exit, ) N
+(    bic_which, ) N
+(    bic_where, ) N
+(    bic_cd,) N
+(    bic_pwd, ) N
+(    bic_list,) N
+(    bic_pid, ) N
+(    bic_kill, ) N
+(    bic_prompt, ) N
+(    bic_printenv, ) N
+(    bic_alias,) N
+(    bic_unalias,) N
+(    bic_history, ) N
+(    bic_setenv,) N
+(    bic_lsbuiltins,) N
+(    bic_watchmail,) N
+(    bic_noclobber,) N
+(    bic_vimode,) N
+(    bic_emacsmode) N
+(#ifdef) K
+( DEBUG        ) p
+(// various built ins defined for debugging purposes) c n
+(        ,) p n
+(    _db_tokenizer,) N
+(    _db_kgenv,) N
+(    _db_path,) N
+(    _db_history,) N
+(    _db_wc_contains,) N
+(    _db_wc_expand) N
+(#endif) K
+( ) p
+(//DEBUG) c n
+(};) p n
+() N
+() N
+(/** ) c n
+( * @brief Checks if a command is a built-in command.) N
+( * ) N
+( * Loops through ::BUILT_IN_COMMANDS comparing the command parameter to each) N
+( * string of ::BUILT_IN_COMMANDS.  When a match is found the index plus one is) N
+( * returned.) N
+( *) N
+( * @param command The command to check.) N
+( * ) N
+( * @return Returns 0 if the command is not built-in, and a positive value that) N
+( * is one greather than the index of the function in the built-in definitions) N
+( * arrays \(::BUILT_IN_COMMANDS and ::BUILT_IN_FUNCS\) if the command is built-in.) N
+( */) N
+(short) k
+( ) p
+(int) k
+( is_builtin\() p
+(char) k
+(* command\){) p n
+(    ) S
+(for) K
+(\() p
+(int) k
+( i=0; i < NUM_BUILTINS; i++\){) p n
+(    ) S
+(int) k
+( result = strcmp\(command, BUILT_IN_COMMANDS[i]\);) p n
+(    ) S
+(if) K
+(\(result == 0\)) p n
+(        ) S
+(return) K
+( i + 1;) p n
+(    }) N
+(    ) N
+(    ) S
+(return) K
+( 0;) p n
+(}) N
+(builtins.c) (Page 2/14) (Oct 28, 09 7:53) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/builtins.c) (3/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (3-4) 4
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+() p n
+(//------------------------------------------------------------------------------) c n
+(//-- Definitions of the various built in functions.) N
+(//------------------------------------------------------------------------------) N
+() p n
+(/** ) c n
+( * @brief Built-in exit command.) N
+( *) N
+( * Exits with status 0;) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_exit\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    exit\(0\);) N
+(}) N
+() N
+(/** ) c n
+( * @brief Built-in which command.) N
+( *) N
+( * Displays the full path to the executable that will be executed for each) N
+( * command that is given as an argument.  The path printed is the first one that) N
+( * occurs in the PATH environment variable that contains a file of the correct) N
+( * name with execute permissions.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_which\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    ) S
+(if) K
+(\(argc == 1\){) p n
+(    fprintf\(stderr, ") S
+(which: too few arguments\\n) str
+("\);) p n
+(    ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    ) S
+(// Loop through each argument and display the path) c n
+(    ) p
+(for) K
+(\() p
+(int) k
+( i = 1; i < argc; i++\){) p n
+(    ) S
+(char) k
+(* path = which\(argv[i], env->path\);) p n
+() N
+(    ) S
+(if) K
+(\(path != ) p
+(NULL) K
+(\){) p n
+(        printf\(") S
+(%s\\n) str
+(", path\);) p n
+(        free\(path\);) N
+(    }) N
+(    }) N
+(}) N
+() N
+(/** ) c n
+( * @brief Built-in where command.) N
+( *) N
+( * Same as the which command, but displays all of the possible paths where a) N
+( * file of the correct name with executable permissions exist within the PATH) N
+( * envrionment variable list of paths.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_where\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    ) S
+(if) K
+(\(argc == 1\){) p n
+(    fprintf\(stderr, ") S
+(where: Too few arguments.\\n) str
+("\);) p n
+(    ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    ) S
+(// For loop executed once for each argument) c n
+(    ) p
+(for) K
+(\() p
+(int) k
+( i = 1; i < argc; i++\){) p n
+(    pathList* pl = env->path;) N
+(    ) S
+(char) k
+(* cmd = argv[i];) p n
+(    ) N
+(builtins.c) (Page 3/14) (Oct 28, 09 7:53) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(    ) p
+(// While loop executed once for ach directory in the path) c n
+(    ) p
+(while) K
+(\(pl != ) p
+(NULL) K
+(\){) p n
+(        DIR* dirp = opendir\(pl->element\);) N
+(        ) S
+(if) K
+(\(dirp == ) p
+(NULL) K
+(\){) p n
+(        perror\(") S
+(Error in where) str
+("\);) p n
+(        ) S
+(return) K
+(;) p n
+(        } ) S
+(else) K
+( {) p n
+(        ) S
+(struct) k
+( dirent* dp = readdir\(dirp\); ) p
+(//TODO: check errno?) c n
+() p n
+(        ) S
+(// While loop executed once for each file in directory) c n
+(        ) p
+(while) K
+(\(dp != ) p
+(NULL) K
+(\){) p n
+(            ) S
+(if) K
+(\(strcmp\(dp->d_name, cmd\) == 0\){) p n
+(            printf\(") S
+(%s/%s\\n) str
+(", pl->element, cmd\);) p n
+(            }) N
+(            dp = readdir\(dirp\);) N
+(        }) N
+() N
+(        ) S
+(if) K
+(\(closedir\(dirp\) == -1\){) p n
+(            perror\(") S
+(Error in where) str
+("\);) p n
+(            ) S
+(return) K
+(;) p n
+(        }) N
+(        }) N
+(        pl = pl->next;) N
+(    }) N
+(    }) N
+(}) N
+() N
+(/** ) c n
+( * @brief Built-in cd command.) N
+( *) N
+( * Changes the current working directory using the chdir library function.  When) N
+( * called with no arguments, changes to the user's home directory.  When called) N
+( * as "cd -", changes to the previous directory. ) N
+( *) N
+( * Before switching, the previous directory and the current directory are set in) N
+( * the global ::kgenv environment object.  The user's home directory is also) N
+( * retrievable from this object.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_cd\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    ) S
+(//** Does nothing if executed with more than one argument ) c n
+(    ) p
+(if) K
+(\(argc > 2\){) p n
+(    fprintf\(stderr, ") S
+(cd: Too many arguments.\\n) str
+("\);) p n
+(    ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    ) S
+(//** When called with no arguments cd to home directory) c n
+(    ) p
+(if) K
+(\(argc == 1\){) p n
+() N
+(    ) S
+(// Free up the previous directory and set previous to current ) c n
+(    ) p
+(if) K
+(\(env->pwd != ) p
+(NULL) K
+(\) free\(env->pwd\);) p n
+(    env->pwd = env->cwd;) N
+() N
+(    ) S
+(// Set the current directory to the home directory) c n
+(    env->cwd = \() p
+(char) k
+(*\)malloc\(strlen\(env->homedir\) + 1\);) p n
+(    ) S
+(if) K
+(\(env->cwd == ) p
+(NULL) K
+(\){) p n
+(        perror\(") S
+(Error in cd) str
+("\);) p n
+(        ) S
+(return) K
+(;) p n
+(    }) N
+(    strcpy\(env->cwd, env->homedir\);) N
+(    ) N
+(    ) S
+(// Use chdir to change the working directory) c n
+(    ) p
+(if) K
+(\(chdir\(env->cwd\) != 0\) {) p n
+(        perror\(") S
+(Error in chdir) str
+("\);) p n
+(    }) N
+() N
+(builtins.c) (Page 4/14) (Oct 28, 09 7:53) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/builtins.c) (4/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (5-6) 5
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(    } ) p n
+(    ) N
+(    ) S
+(else) K
+( ) p n
+() N
+(    ) S
+(//** If called as "cd -", cd to the previous directory \(pwd in kgenv\)) c n
+(    ) p
+(if) K
+(\(strcmp\(argv[1], ") p
+(-) str
+("\) == 0\){) p n
+() N
+(    ) S
+(// Swap the current working directory with the previous working) c n
+(    ) p
+(// directory) c n
+(    ) p
+(char) k
+(* temp = env->cwd;) p n
+(    env->cwd = env->pwd;) N
+(    env->pwd = temp;) N
+() N
+(    ) S
+(// Use chdir to change the working directory) c n
+(    ) p
+(if) K
+(\(chdir\(env->cwd\) != 0\) {) p n
+(        perror\(") S
+(Error in chdir) str
+("\);) p n
+(    }) N
+() N
+(    }) N
+() N
+(    ) S
+(else) K n
+() p n
+(    ) S
+(//** Otherwise we have either a relative or absolute path to a directory) c n
+(    {) p n
+(    ) S
+(// Change to the path specified in the argument) c n
+(    ) p
+(if) K
+(\(chdir\(argv[1]\) != 0\){) p n
+(        perror\(") S
+(Error in chdir) str
+("\);) p n
+(        ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    ) S
+(// Free up the previous directory and set previous to current ) c n
+(    ) p
+(if) K
+(\(env->pwd != ) p
+(NULL) K
+(\) free\(env->pwd\);) p n
+(    env->pwd = env->cwd;) N
+() N
+(    ) S
+(// Set the current working directory string.  Using getcwd allows us to) c n
+(    ) p
+(// avoid having to resolve an absolute path if the argument is relative.) c n
+(    env->cwd = getcwd\() p
+(NULL) K
+(, CWD_BUFFER_SIZE\);) p n
+(    }) N
+(}) N
+() N
+(/** ) c n
+( * @brief Built-in pwd command.) N
+( *) N
+( * Prints the current working directory to stdout.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_pwd\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+() N
+(    ) S
+(// Print the current working directory) c n
+(    printf\(") p
+(%s\\n) str
+(", env->cwd\);) p n
+() N
+(}) N
+() N
+(/** ) c n
+( * @brief Built-in list command.) N
+( *) N
+( * Lists files in the directores specified as arguments.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(// TODO: reverse order of printout) N
+(void) k
+( bic_list\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    DIR* dirp;            ) S
+(// directory pointer) c n
+(    bool cwd_mode = false;    ) p
+(// true if passed with no args) c n
+(builtins.c) (Page 5/14) (Oct 28, 09 7:53) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+() p n
+(    ) S
+(// If called with no arguments we just add an argument that is the current) c n
+(    ) p
+(// working directory.) c n
+(    ) p
+(if) K
+(\(argc == 1\){    ) p n
+(    argc++;) N
+(    argv[1] = env->cwd;) N
+(    cwd_mode = true;) N
+(    }) N
+() N
+() N
+(    ) S
+(// Loop over the argument list and print each directory listing.) c n
+(    ) p
+(for) K
+(\() p
+(int) k
+( i=1; i < argc; i++\){) p n
+(    ) S
+(// Only print the directory name if we are processing arguments.) c n
+(    ) p
+(if) K
+(\(!cwd_mode\)) p n
+(        printf\(") S
+(\\n%s:\\n) str
+(", argv[i]\);) p n
+() N
+(    dirp = opendir\(argv[i]\);) N
+(    ) S
+(if) K
+(\(dirp == ) p
+(NULL) K
+(\){) p n
+(        perror\(") S
+(Error in list) str
+("\);) p n
+(        ) S
+(return) K
+(;) p n
+() N
+(    } ) S
+(else) K
+( {) p n
+() N
+(        ) S
+(// This loop iterates through the directory stream.) c n
+(        ) p
+(struct) k
+( dirent* dp = readdir\(dirp\);    ) p
+(//TODO: check errno?) c n
+(        ) p
+(while) K
+(\(dp != ) p
+(NULL) K
+(\){) p n
+(        printf\(") S
+(%s\\n) str
+(", dp->d_name\);) p n
+(        dp = readdir\(dirp\);) N
+(        }) N
+() N
+(        ) S
+(if) K
+(\(closedir\(dirp\) == -1\){) p n
+(        perror\(") S
+(Error in list) str
+("\);) p n
+(        ) S
+(return) K
+(;) p n
+(        }) N
+(    }) N
+() N
+(    }) N
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Built-in pid command.) N
+( *) N
+( * Prints the process id \(pid\) of the shell.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_pid\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    pid_t pid = getpid\(\);) N
+(    ) S
+(if) K
+(\(pid == -1\){        ) p
+(//TODO: check error condition) c n
+(    perror\(") p
+(Error in pid) str
+("\);) p n
+(    ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    printf\(") S
+(%d\\n) str
+(", pid\);) p n
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Built-in kill command.) N
+( * ) N
+( * Sends a SIGTERM signal to the pid specified in the arguments.  If a -n is) N
+( * passed, the signal number n is passed to the specified process.) N
+( *) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+(builtins.c) (Page 6/14) (Oct 28, 09 7:53) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/builtins.c) (5/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (7-8) 6
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+( */) c n
+(void) k
+( bic_kill\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    ) S
+(int) k
+( pid;            ) p
+(///< PID of the process to send signal to) c n
+(    ) p
+(int) k
+( signal = SIGTERM;    ) p
+(///< Default signal is SIGTERM) c n
+() p n
+(    errno = 0;) N
+() N
+(    ) S
+(// Called with no arguments) c n
+(    ) p
+(if) K
+(\(argc == 1\){) p n
+(    fprintf\(stderr, ") S
+(kill: Too few arguments.\\n) str
+("\);) p n
+(    ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    ) S
+(if) K
+(\(argc == 2\){        ) p
+(// Called with just a pid) c n
+() p n
+(        pid = atoi\(argv[1]\);) N
+() N
+(    ) S
+(if) K
+(\(errno != 0\){) p n
+(        perror\(") S
+(Error in kill) str
+("\);) p n
+(        ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    } ) S
+(else) K
+( ) p
+(if) K
+(\(argc == 3\){    ) p
+(// Called with a signal specified) c n
+() p n
+(        pid = atoi\(argv[2]\);) N
+(        signal = atoi\(argv[1] + 1\);    ) S
+(// Add one to remove hyphen) c n
+() p n
+(        ) S
+(if) K
+(\(errno != 0\){) p n
+(            perror\(") S
+(Error in kill) str
+("\);) p n
+(            ) S
+(return) K
+(;) p n
+(        }) N
+() N
+(    } ) S
+(else) K
+( {            ) p
+(// Called with too many arguments) c n
+(        fprintf\(stderr, ") p
+(kill: Too many arguments.\\n) str
+("\);) p n
+(        ) S
+(return) K
+(;) p n
+(    }    ) N
+() N
+(    sigsend\(P_PID, pid, signal\);) N
+(    ) S
+(//printf\("Sending code %d to pid %d\\n", signal, pid\);) c n
+() p n
+(    ) S
+(// Send the kill signal) c n
+(    ) p
+(if) K
+(\(kill\(pid, signal\) == -1\){) p n
+(        perror\(") S
+(Error in kill) str
+("\);) p n
+(    }) N
+() N
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Built-in prompt command.) N
+( *) N
+( * Changes the prompt prefix to the specified argument.  If no argument is) N
+( * passed, prompts the user for a prefix.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_prompt\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    ) S
+(char) k
+(* new_prompt;        ) p
+(// the new prompt string) c n
+() p n
+(    ) S
+(// Case where we are passed arguments.) c n
+(    ) p
+(if) K
+(\(argc > 1\){    ) p n
+(    new_prompt = argv[1];) N
+(    strcpy\(env->prompt, new_prompt\);) N
+(    ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    ) S
+(// Case where we prompt user for input.) c n
+(builtins.c) (Page 7/14) (Oct 28, 09 7:53) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(    printf\(") p
+(New prompt prefix: ) str
+("\);) p n
+(    ) S
+(char) k
+(* prompt_in = \() p
+(char) k
+(*\)malloc\(LINE_BUFFER_SIZE\);) p n
+(    ) S
+(if) K
+(\(prompt_in == ) p
+(NULL) K
+(\){) p n
+(    perror\(") S
+(Error in prompt) str
+("\);) p n
+(    ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    fgets\(prompt_in, LINE_BUFFER_SIZE, stdin\);) N
+() N
+(    ) S
+(// Need to remove trailing newline from input.) c n
+(    ) p
+(if) K
+(\(prompt_in[strlen\(prompt_in\) - 1] == ') p
+(\\n) str
+('\){) p n
+(    prompt_in[strlen\(prompt_in\) - 1] = ') S
+(\\0) str
+(';) p n
+(    }) N
+() N
+(    ) S
+(// Save some heap by re-allocating only what's needed.) c n
+(    new_prompt = \() p
+(char) k
+(*\)malloc\(strlen\(prompt_in\) + 1\);) p n
+(    ) S
+(if) K
+(\(new_prompt == ) p
+(NULL) K
+(\){) p n
+(    perror\(") S
+(Error in prompt) str
+("\);) p n
+(    ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    strcpy\(new_prompt, prompt_in\);) N
+(    env->prompt = new_prompt;) N
+(    free\(prompt_in\);) N
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Built-in printenv command.) N
+( *) N
+( * Prints out a list of environment variables and their values.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_printenv\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+() N
+(    ) S
+(// Called with no arguments, print entire environment) c n
+(    ) p
+(if) K
+(\(argc == 1\){) p n
+(    ) S
+(char) k
+(** i = environ;) p n
+(    ) S
+(while) K
+(\(*i != ) p
+(NULL) K
+(\){) p n
+(        printf\(") S
+(%s\\n) str
+(", *i\);) p n
+(        i++;) N
+(    }) N
+(    }) N
+() N
+(    ) S
+(// Called with one argument, print the value) c n
+(    ) p
+(else) K
+( ) p
+(if) K
+(\(argc == 2\){) p n
+(    ) S
+(char) k
+(* value = getenv\(argv[1]\);) p n
+(    ) S
+(if) K
+(\(value != ) p
+(NULL) K
+(\){) p n
+(        printf\(") S
+(%s\\n) str
+(", value\);) p n
+(    } ) S
+(else) K
+( {) p n
+(        fprintf\(stderr, ") S
+(%s was not found in the current environment\\n) str
+(",) p n
+(            argv[1]\);) N
+(    }) N
+(    }) N
+() N
+() N
+(    ) S
+(// Called with more than one argument) c n
+(    ) p
+(else) K
+( {) p n
+(    fprintf\(stderr, ") S
+(printenv: Too many arguments.\\n) str
+("\);) p n
+(    }) N
+() N
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Built-in alias command.) N
+(builtins.c) (Page 8/14) (Oct 28, 09 7:53) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/builtins.c) (6/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (9-10) 7
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+( *) c n
+( * When run with no arguments prints a list of aliases currently in the alias) N
+( * list.  When ran with arguments sets the alias name in the first argument to) N
+( * the command specified in subsequent arguments.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_alias\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+() N
+(    ) S
+(// If no arguments are passed print the alias list) c n
+(    ) p
+(if) K
+(\(argc == 1\){) p n
+(    aliasList* a = env->aliases;) N
+(    ) S
+(while) K
+(\(a != ) p
+(NULL) K
+(\){) p n
+(        ) S
+(//TODO: update to print entire argv array) c n
+(        printf\(") p
+(%s\\t\(%s\)\\n) str
+(", a->name, a->string\);) p n
+(        a = a->next;) N
+(    }) N
+(    ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    ) S
+(// Add the alias to the list.  We need to decrement argc by 2 \(command and) c n
+(    ) p
+(// alias name\).) c n
+(    add_alias\(env, argv[1], argc - 2, &argv[2]\);) p n
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Built-in unalias command.) N
+( *) N
+( * Removes an alias from the alias list. ) N
+( *) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_unalias\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    ) S
+(//TODO: support multiple arguments) c n
+(    ) p
+(if) K
+(\(argc == 2\){) p n
+(    remove_alias\(env, argv[1]\);) N
+(    }) N
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Built-in history command.) N
+( * ) N
+( * When run with no arguments, prints out the last 10 commands run.  When an) N
+( * argument is passed, that number of commands is printed.) N
+( *) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(//TODO: fix history) N
+(void) k
+( bic_history\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    ) S
+(int) k
+( num_items = 0;    ) p
+(// Number of commands to print) c n
+() p n
+(    ) S
+(// We default to printing 10 commands if no argument is passed) c n
+(    ) p
+(if) K
+(\(argc == 1\){) p n
+(        num_items = 10;) N
+(    } ) S
+(else) K
+( {) p n
+(        errno = 0;) N
+(        num_items = atoi\(argv[1]\);) N
+(        ) S
+(if) K
+(\(errno != 0\){) p n
+(            perror\(") S
+(Error in history) str
+("\);) p n
+(            ) S
+(return) K
+(;) p n
+(        }) N
+(builtins.c) (Page 9/14) (Oct 28, 09 7:53) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(    }) p n
+() N
+(    ) S
+(// Output ordered pointers; we allocate space for num_items pointers even) c n
+(    ) p
+(// if they aren't all going to be used.  Point to the histelement struct for) c n
+(    ) p
+(// the given command.) c n
+(    histList* outbuf[num_items];    ) p n
+() N
+(    histList* h = env->hist;) N
+(    ) S
+(int) k
+( j=num_items - 1;) p n
+() N
+(    ) S
+(// Loop through the last ) c n
+(    ) p
+(while) K
+(\(h != ) p
+(NULL) K
+( && j >= 0\){) p n
+(    outbuf[j] = h;) N
+(    h = h->next;) N
+(        j--;) N
+(    }) N
+(    ) N
+(    j++;    ) S
+(// Need to increment j to adjust for final decrement) c n
+(    ) p
+(for) K
+(\() p
+(int) k
+( i=j; i < num_items; i++\){) p n
+(    printf\(") S
+(%d: %s\\n) str
+(", outbuf[i]->num, outbuf[i]->command\);) p n
+(    }) N
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Built-in setenv command.) N
+( *) N
+( * When run with no arguments prints a list of environment variables and values.) N
+( * When run with two arguments, sets the variable in the first argument equal to) N
+( * the value in the second argument.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_setenv\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+() N
+(    ) S
+(// Called with no arguments, print entire environment) c n
+(    ) p
+(if) K
+(\(argc == 1\){) p n
+(    ) S
+(char) k
+(** i = environ;) p n
+(        ) S
+(while) K
+(\(*i != ) p
+(NULL) K
+(\){) p n
+(            printf\(") S
+(%s\\n) str
+(", *i\);) p n
+(            i++;) N
+(        }) N
+(    }) N
+() N
+(    ) S
+(// Called with one argument, set variable to null) c n
+(    ) p
+(else) K
+( ) p
+(if) K
+(\(argc == 2\){) p n
+(        set_environment\(env, argv[1], ""\);) N
+(    }) N
+() N
+(    ) S
+(// Called with two arguments, set variable to 2nd argument) c n
+(    ) p
+(else) K
+( ) p
+(if) K
+(\(argc == 3\){) p n
+(        set_environment\(env, argv[1], argv[2]\);) N
+(    }) N
+() N
+(    ) S
+(// Called with too many arguments) c n
+(    ) p
+(else) K
+( {) p n
+(        fprintf\(stderr, ") S
+(setenv: Too many arguments.\\n) str
+("\);) p n
+(    }) N
+(    ) N
+(}) N
+() N
+(/** ) c n
+( * @brief Built-in lsbuiltins command.) N
+( *) N
+( * Lists all built-in functions.  Ignores any arguments passed.) N
+( * \(Not a project requirement.\)) N
+( * ) N
+(builtins.c) (Page 10/14) (Oct 28, 09 7:53) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/builtins.c) (7/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (11-12) 8
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+( * @param env A pointer to the global ::kgenv environment object.) c n
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_lsbuiltins\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+() N
+(    ) S
+(for) K
+(\() p
+(int) k
+( i=0; i < NUM_BUILTINS; i++\){) p n
+(        printf\(") S
+(%s\\n) str
+(", BUILT_IN_COMMANDS[i]\);) p n
+(    }) N
+() N
+(}) N
+() N
+(/** ) c n
+( * @brief Built-in watchmail command.) N
+( *) N
+( * Watches for new mail in the specified file.  Prints a message and beeps when) N
+( * mail is received.) N
+( * //TODO: add more detailed documentation) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_watchmail\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+() N
+(    ) S
+(char) k
+(* file;            ) p
+(//<< The file to watch) c n
+() p n
+(    ) S
+(int) k
+( action;            ) p
+(//<< The new stop/start action on the file) c n
+(    ) p
+(enum) k
+( { START, STOP };    ) p
+(//<< Two states for the action variable) c n
+() p n
+() N
+(    ) S
+(//## Print out the help message if run with no arguments) c n
+(    ) p
+(if) K
+(\(argc == 1 || argc > 3\){) p n
+(        printf\(") S
+(watchmail:\\n\\n\\twatchmail [file] [on/off]\\n\\n) str
+("\);) p n
+(        ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    file = \() S
+(char) k
+(*\)malloc\(strlen\(argv[1]\) + 1\);    ) p
+(// Aliased in watchmails list ) c n
+(                        ) p
+(// \(watch free\)) c n
+(    strcpy\(file, argv[1]\);) p n
+() N
+(    ) S
+(//## If run with only one argument, we're starting a watchmail on the file) c n
+(    ) p
+(if) K
+(\(argc == 2\){) p n
+(        action = START;) N
+(    }) N
+(    ) N
+(    ) S
+(//## If run with two arguments, parse the second to find action needed    ) c n
+(    ) p
+(else) K
+( ) p
+(if) K
+(\(argc == 3\){) p n
+() N
+(    ) S
+(if) K
+(\(strcmp\(argv[2], ") p
+(off) str
+("\) == 0\){) p n
+(        action = STOP;) N
+(    } ) S
+(else) K
+( ) p
+(if) K
+(\(strcmp\(argv[2], ") p
+(on) str
+("\) == 0\){) p n
+(        action = START;) N
+(    } ) S
+(else) K
+( {) p n
+(        fprintf\(stderr, ") S
+(watchmail: Invalid command.\\n) str
+("\);) p n
+(        ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    }) N
+() N
+() N
+(    ) S
+(//## Take the action to start/stop watchmail    ) c n
+(    ) p
+(if) K
+(\(action == START\){) p n
+() N
+(        ) S
+(// Start watching the file) c n
+(    printf\(") p
+(Starting watchmail for %s\\n) str
+(", file\);) p n
+(        control_watchmail\(file, false, env\);) N
+() N
+(    } ) S
+(else) K
+( ) p
+(if) K
+(\(action == STOP\){) p n
+(builtins.c) (Page 11/14) (Oct 28, 09 7:53) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+() p n
+(        ) S
+(// Stop watching the file) c n
+(    printf\(") p
+(Stopping watchmail for %s\\n) str
+(", file\);) p n
+(        control_watchmail\(file, true, env\);) N
+() N
+(    }) N
+() N
+(}) N
+() N
+(/** ) c n
+( * @brief Built-in noclobber command.) N
+( *) N
+( * Changes the value of the clobber variable.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_noclobber\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    env->noclobber = !env->noclobber;) N
+(    printf\(") S
+(Clobbering is now %s. \(value is %d\)\\n) str
+(", ) p n
+(            env->noclobber ? ") S
+(off) str
+(" : ") p
+(on) str
+(",) p n
+(            env->noclobber\);) N
+(}) N
+() N
+(/** ) c n
+( * @brief Sets command line editing to vi mode.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_vimode\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    rl_editing_mode = 0;) N
+(}) N
+() N
+(/** ) c n
+( * @brief Sets command line editing to emacs mode. ) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( bic_emacsmode\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    rl_editing_mode = 1;) N
+(}) N
+() N
+(//------------------------------------------------------------------------------) c n
+(//-- Definitions of debug functions) N
+(//------------------------------------------------------------------------------) N
+() p n
+(#ifdef) K
+( DEBUG) p n
+() N
+(/** ) c n
+( * @brief Debugs the tokenizer by showing argument count and argument values for) N
+( * the arguments passed to ::_db_tokenizer.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( _db_tokenizer\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    printf\(") S
+(argc = %d\\n) str
+(", argc\);) p n
+(    ) S
+(for) K
+(\() p
+(int) k
+( i=0; i<argc; i++\){) p n
+(        printf\(") S
+(argv[%d] = %s\\n) str
+(", i, argv[i]\);) p n
+(    }) N
+(}) N
+() N
+() N
+(builtins.c) (Page 12/14) (Oct 28, 09 7:53) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/builtins.c) (8/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (13-14) 9
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/** ) c n
+( * @brief Prints out some of the variables in the global ::kgenv environment) N
+( * object for debugging purposes.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( _db_kgenv\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+() N
+(    printf\(") S
+(uid=%d\\n) str
+(", env->uid\);) p n
+(    printf\(") S
+(homedir=%s\\n) str
+(", env->homedir\);) p n
+() N
+(    printf\(") S
+(cwd=%s\\n) str
+(", env->cwd\);) p n
+(    printf\(") S
+(pwd=%s\\n) str
+(", env->pwd\);) p n
+(    ) N
+(    printf\(") S
+(prompt=%s\\n) str
+(", env->prompt\);) p n
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Prints out path list for debugging purposes.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( _db_path\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    pathList* p = env->path;) N
+(    ) S
+(while) K
+( \(p != ) p
+(NULL) K
+(\){) p n
+(        printf\(") S
+(%s\\n) str
+(", p->element\);) p n
+(        p = p->next;) N
+(    }) N
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Prints out entire history list for debugging purposes.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( _db_history\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    histList* h = env->hist;) N
+(    ) S
+(while) K
+( \(h != ) p
+(NULL) K
+(\){) p n
+(        printf\(") S
+(%d: %s\\n) str
+(", h->num, h->command\);) p n
+(        h = h->next;) N
+(    }) N
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Prints "true" if the first argument contains a wildcard and "false" if) N
+( * it does not.  Used to debug ::contains_wildcards.) N
+( * ) N
+( * @param env A pointer to the global ::kgenv environment object.) N
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( _db_wc_contains\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    printf\(") S
+(%s\\n) str
+(", contains_wildcards\(argv[1]\) ? ") p
+(true) str
+(":") p
+(false) str
+("\);) p n
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Prints the expanded version of the first argument.  Used to debug) N
+( * ::expand_argument.) N
+( * ) N
+(builtins.c) (Page 13/14) (Oct 28, 09 7:53) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+( * @param env A pointer to the global ::kgenv environment object.) c n
+( * @param argc The argument count for the command entered.    ) N
+( * @param argv[] The argument values for the command entered.) N
+( */) N
+(void) k
+( _db_wc_expand\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+(    printf\(") S
+(%s\\n) str
+(", expand_argument\(argv[1]\)\);) p n
+(}) N
+() N
+(#endif) K
+( ) p
+(//DEBUG) c n
+(builtins.c) (Page 14/14) (Oct 28, 09 7:53) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/builtins.c) (9/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1) 10
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/*) c n
+(  get_path.c) N
+(  Ben Miller) N
+() N
+(  Just a little sample function that gets the PATH env var, parses it and) N
+(  puts it into a linked list, which is returned.) N
+(*/) N
+(#include) K
+( ") p
+(get_path.h) str
+(") p n
+() N
+(struct) k
+( pathelement *get_path\(\)) p n
+({) N
+(  ) S
+(/* path is a copy of the PATH and p is a temp pointer */) c n
+(  ) p
+(char) k
+( *path, *p;) p n
+() N
+(  ) S
+(/* tmp is a temp point used to create a linked list and pathlist is a) c n
+(     pointer to the head of the list */) N
+(  ) p
+(struct) k
+( pathelement *tmp, *pathlist = ) p
+(NULL) K
+(;) p n
+() N
+(  p = getenv\(") S
+(PATH) str
+("\);) p 24 T () S
+(/* get a pointer to the PATH env var.) c n
+() S 8 T () S 16 T () S 24 T (   make a copy of it, since strtok modifies the) N
+() S 8 T () S 16 T () S 24 T (   string that it is working with... */) N
+(  path = malloc\(\(strlen\(p\)+1\)*) p
+(sizeof) K
+(\() p
+(char) k
+(\)\);) p 48 T () S
+(/* use malloc\(3C\) this time */) c n
+(  strncpy\(path, p, strlen\(p\)\);) p n
+(  path[strlen\(p\)] = ') S
+(\\0) str
+(';) p n
+() N
+(  p = strtok\(path, ") S
+(:) str
+("\); ) p 32 T () S
+(/* PATH is : delimited */) c n
+(  ) p
+(do) K
+() p 8 T () S 16 T () S 24 T () S 32 T () S
+(/* loop through the PATH */) c n
+(  {) p 8 T () S 16 T () S 24 T () S 32 T () S
+(/* to build a linked list of dirs */) c n
+(    ) p
+(if) K
+( \( !pathlist \)) p 24 T () S 32 T () S
+(/* create head of list */) c n
+(    {) p n
+(      tmp = calloc\(1, ) S
+(sizeof) K
+(\() p
+(struct) k
+( pathelement\)\);) p n
+(      pathlist = tmp;) N
+(    }) N
+(    ) S
+(else) K
+() p 16 T () S 24 T () S 32 T () S
+(/* add on next element */) c n
+(    {) p n
+(      tmp->next = calloc\(1, ) S
+(sizeof) K
+(\() p
+(struct) k
+( pathelement\)\);) p n
+(      tmp = tmp->next;) N
+(    }) N
+(    tmp->element = p;) S 24 T () N
+(    tmp->next = ) S
+(NULL) K
+(;) p n
+(  } ) S
+(while) K
+( \( p = strtok\() p
+(NULL) K
+(, ") p
+(:) str
+("\) \);) p n
+() N
+(  ) S
+(return) K
+( pathlist;) p n
+(} ) S
+(/* end get_path\(\) */) c n
+() p n
+() N
+(get_path.c) (Page 1/1) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/get_path.c) (10/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1-2) 11
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/** ) c n
+( * @file ipc.c ) N
+( * @brief Implementations of IPC functions.) N
+( * @author Kevin Graney) N
+( * @version v0.1) N
+( * @date 2009-10-25) N
+( */) N
+() p n
+(#include) K
+( ") p
+(ipc.h) str
+(") p n
+(#include) K
+( ") p
+(types.h) str
+(") p n
+(#include) K
+( ") p
+(util.h) str
+(") p n
+() N
+(#include) K
+( <sys/types.h>) p n
+(#include) K
+( <sys/stat.h>) p n
+(#include) K
+( <fcntl.h>) p n
+() N
+(const) K
+( ) p
+(char) k
+(* IPC_OPERATORS[] = { ") p
+(|&) str
+(", ") p
+(|) str
+(" };    ) p n
+(const) K
+( ) p
+(int) k
+( NUM_IPC_OPERATORS = 5;) p n
+() N
+(bool contains_ipc\() S
+(char) k
+(* line\){) p n
+(    ) S
+(return) K
+( strstr\(line, ") p
+(|) str
+("\) || strstr\(line, ") p
+(|&) str
+("\);) p n
+(}) N
+() N
+(enum) k
+( ipc_opcodes parse_ipc_line\() p
+(char) k
+(** left, ) p
+(char) k
+(** right, ) p
+(char) k
+(* line\){) p n
+() N
+(    ) S
+(char) k
+(* p = ) p
+(NULL) K
+(;) p n
+(    ) S
+(enum) k
+( ipc_opcodes ipc_code;) p n
+(    ) S
+(for) K
+(\() p
+(int) k
+( i=0; i < NUM_IPC_OPERATORS && p == ) p
+(NULL) K
+(; i++\){) p n
+(        p = strstr\(line, IPC_OPERATORS[i]\);) N
+(        ipc_code = i;) N
+(    }) N
+() N
+(    ) S
+(int) k
+( left_length = \() p
+(int) k
+(\)p - \() p
+(int) k
+(\)line;) p n
+(    *left = \() S
+(char) k
+(*\)malloc\(left_length + 1\);) p n
+(    memcpy\(*left, line, left_length + 1\);) N
+(    \(*left\)[left_length - 1] = ') S
+(\\0) str
+(';) p n
+() N
+(    ) S
+(char) k
+(* ptr = strtok\(line + left_length, ") p
+(|&) str
+("\);) p n
+(    ) S
+(int) k
+( right_length = strlen\(line\) - \() p
+(int) k
+(\)p + \() p
+(int) k
+(\)line;) p n
+(    *right = \() S
+(char) k
+(*\)malloc\(right_length + 1\);) p n
+(    memcpy\(*right, ptr, right_length + 1\);) N
+() N
+(    ) S
+(return) K
+( ipc_code;) p n
+(}) N
+() N
+(void) k
+( perform_ipc\() p
+(char) k
+(* left, ) p
+(char) k
+(* right, ) p
+(enum) k
+( ipc_opcodes ipc_type, ) p n
+(        kgenv* env\){) N
+() N
+(    ) S
+(int) k
+( fid;) p n
+(    ) S
+(int) k
+( filedes[2];     ) p
+(//<< Index 0 will be a dup of stdin and index 1 a dup of) c n
+(                        ) p
+(//<< stdout/stderr) c n
+() p n
+(    ) S
+(if) K
+(\(pipe\(filedes\) == -1\){) p n
+(        perror\(") S
+(Error creating pipe) str
+("\);) p n
+(        ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    ) S
+(// Redirect stdin) c n
+(    close\(0\);) p n
+(    dup\(filedes[0]\);) N
+(    close\(filedes[0]\);) N
+(ipc.c) (Page 1/2) (Nov 01, 09 18:32) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+() p n
+(    ) S
+(// Redirect stdout) c n
+(    close\(1\);) p n
+(    dup\(filedes[1]\);) N
+() N
+(    ) S
+(// Redirect stderr) c n
+(    ) p
+(if) K
+(\(ipc_type == IPC_ALL\){) p n
+(        close\(2\);) N
+(        dup\(filedes[1]\);) N
+(    }) N
+() N
+(    close\(filedes[1]\);) N
+() N
+(    ) S
+(// Run the command on the left) c n
+(    process_command_in\(left, env, false, false\);) p n
+() N
+(    ) S
+(// Return stdout to terminal) c n
+(    fid = open\(") p
+(/dev/tty) str
+(", O_WRONLY\);) p n
+(    close\(1\);) N
+(    dup\(fid\);) N
+(    close\(fid\);) N
+() N
+(    ) S
+(// Return sterr to terminal) c n
+(    fid = open\(") p
+(/dev/tty) str
+(", O_WRONLY\);) p n
+(    close\(2\);) N
+(    dup\(fid\);) N
+(    close\(fid\);) N
+() N
+(    ) S
+(// Run the command on the right) c n
+(    process_command_in\(right, env, false, true\);) p n
+() N
+(    ) S
+(// Return stdin to terminal) c n
+(    fid = open\(") p
+(/dev/tty) str
+(", O_RDONLY\);) p n
+(    close\(0\);) N
+(    dup\(fid\);) N
+(    close\(fid\);) N
+(}) N
+(ipc.c) (Page 2/2) (Nov 01, 09 18:32) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/ipc.c) (11/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1-2) 12
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/** ) c n
+( * @file kgsh.c) N
+( * @brief kgsh main file) N
+( * @author Kevin Graney) N
+( * @version v0.1) N
+( * @date 2009-08-02) N
+( */) N
+(#include) K
+( <stdlib.h>) p n
+(#include) K
+( <stdio.h>) p n
+(#include) K
+( <string.h>) p n
+(#include) K
+( <strings.h>) p n
+(#include) K
+( <limits.h>) p n
+() N
+(#include) K
+( <unistd.h>) p 24 T () S
+(// for access) c n
+(#include) K
+( <signal.h>) p n
+() N
+(#include) K
+( <pwd.h>) p n
+(#include) K
+( <dirent.h>) p n
+(#include) K
+( <sys/types.h>) p n
+(#include) K
+( <sys/wait.h>) p n
+(#include) K
+( <errno.h>) p n
+() N
+(#include) K
+( <readline/readline.h>) p n
+(#include) K
+( <readline/history.h>) p n
+() N
+(#include) K
+( ") p
+(builtins.h) str
+(") p n
+(#include) K
+( ") p
+(util.h) str
+(") p n
+(#include) K
+( ") p
+(get_path.h) str
+(") p n
+() N
+(void) k
+( initialize_environment\(kgenv* env\);) p n
+() N
+(void) k
+( sig_interrupt\() p
+(int) k
+( signal\);) p n
+() N
+(int) k
+( main\() p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\){) p n
+() N
+(    kgenv global_env; ) S
+(// The global environment structure) c n
+(    ) p n
+(    ) S
+(// Populate the global environment for the first time) c n
+(    initialize_environment\(&global_env\);) p n
+() N
+(    sigset\(SIGINT, sig_interrupt\);) S 40 T () S
+(// Interrupt function for Ctrl-C ) c n
+(    sigignore\(SIGTSTP\); ) p 32 T () S 40 T () S
+(// Ignore Ctrl-Z) c n
+(    sigignore\(SIGTERM\);) p n
+(    signal\(SIGCHLD, SIG_IGN\);) N
+() N
+(    ) S
+(char) k
+(*  line_in = ) p
+(NULL) K
+(; ) p
+(// Stores the command entered \(pointed to by in_argv\)) c n
+() p n
+(    ) S
+(// The main loop that is executed once for each command prompt.) c n
+(    ) p
+(while) K
+(\(1\){) p n
+() N
+(        ) S
+(//## Print the shell prompt) c n
+(        ) p
+(char) k
+(* prompt = \() p
+(char) k
+(*\)calloc\(LINE_BUFFER_SIZE, ) p
+(sizeof) K
+(\() p
+(char) k
+(\)\);) p n
+(        sprintf\(prompt, ") S
+(%s %s> ) str
+(", global_env.prompt, global_env.cwd\);) p n
+() N
+() N
+(        ) S
+(//## Read the a line from the shell) c n
+(        ) p
+(char) k
+(* line_in = readline\(prompt\);) p n
+() N
+(        ) S
+(//## Parse the command and execute the appropriate action) c n
+(        process_command_in\(line_in, &global_env, false, true\);) p n
+(        free\(prompt\);) N
+(kgsh.c) (Page 1/2) (Nov 01, 09 18:47) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(    }) p n
+(}) N
+() N
+(/** ) c n
+( * @brief Initializes the kgenv global environment.) N
+( *) N
+( * This function is only called once at startup to populate the singleton) N
+( * instance of the kgenv stuct.) N
+( * ) N
+( * @param env A pointer to the global environment instance.) N
+( */) N
+(void) k
+( initialize_environment\(kgenv* env\){) p n
+() N
+(    ) S
+(char) k
+(* cwd;) p n
+(    cwd = getcwd\() S
+(NULL) K
+( , CWD_BUFFER_SIZE\);) p n
+() N
+(    ) S
+(if) K
+(\(cwd == ) p
+(NULL) K
+(\){) p n
+() S 8 T (perror\(") S
+(Can't get current working directory\\n) str
+("\);) p n
+() S 8 T (exit\(2\);) N
+(    }) N
+() N
+(    env->cwd = cwd;) N
+(    env->pwd = ) S
+(NULL) K
+(;) p n
+(    env->prompt = "";) N
+(    env->uid = getuid\(\);) N
+(    env->pword_entry = getpwuid\(env->uid\);) N
+(    env->homedir = env->pword_entry->pw_dir;) N
+(    env->path = get_path\(\);) N
+(    env->hist = ) S
+(NULL) K
+(;) p n
+(    env->aliases = ) S
+(NULL) K
+(;) p n
+(    env->watchmails = ) S
+(NULL) K
+(;) p n
+(    env->noclobber = true;) N
+(}) N
+() N
+(/** ) c n
+( * @brief Function executed when SIGINT \(Ctrl-C\) is caught. ) N
+( * ) N
+( * @param signal Signal passed in.  Currently it's always SIGINT.) N
+( */) N
+(void) k
+( sig_interrupt\() p
+(int) k
+( signal\){) p n
+(    printf\(") S
+(\\n) str
+("\);) p n
+(    ) S
+(// TODO: determine if anything special needs to be done to forward SIGINT to) c n
+(    ) p
+(// a child process) c n
+(}) p n
+(kgsh.c) (Page 2/2) (Nov 01, 09 18:47) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/kgsh.c) (12/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1-2) 13
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+(#include) K
+( <stdlib.h>) p n
+(#include) K
+( <stdio.h>) p n
+(#include) K
+( <string.h>) p n
+(#include) K
+( ") p
+(redirection.h) str
+(") p n
+() N
+(const) K
+( ) p
+(char) k
+(* REDIRECT_OPERATORS[] = { ") p
+(>>&) str
+(", ") p
+(>>) str
+(", ") p
+(>&) str
+(", ") p
+(>) str
+(", ") p
+(<) str
+(" };    ) p n
+(const) K
+( ) p
+(int) k
+( NUM_REDIRECT_OPERATORS = 5;) p n
+() N
+(/** ) c n
+( * @brief Parses a command into seperate parts based on redirection operators.) N
+( * ) N
+( * @param command The command that will be executed with output/input) N
+( * redirection.) N
+( * @param file The file that needs to opened to properly execute the) N
+( * redirection.  \(May be opened for reading or writing.\)) N
+( * @param line  The command string input to be parsed. ) N
+( * ) N
+( * @return Returns an enum value from ::redirect_opcodes indicating the type of) N
+( * redirection that needs to be performed.) N
+( */) N
+(enum) k
+( redirect_opcodes parse_redirection\() p
+(char) k
+(** command, ) p
+(char) k
+(** file, ) p n
+(        ) S
+(char) k
+(* line\){) p n
+() N
+(    ) S
+(char) k
+(* rd_stdout = ) p
+(NULL) K
+(;) p n
+(    ) S
+(enum) k
+( redirect_opcodes redirect_code;) p n
+() N
+(    ) S
+(for) K
+(\() p
+(int) k
+( i=0; i < NUM_REDIRECT_OPERATORS && rd_stdout == ) p
+(NULL) K
+(; i++\){) p n
+(        rd_stdout = strstr\(line, REDIRECT_OPERATORS[i]\);) N
+(        redirect_code = i;) N
+(    }) N
+() N
+(    ) S
+(if) K
+(\(rd_stdout == ) p
+(NULL) K
+(\){) p n
+(        ) S
+(return) K
+( RD_NONE;) p n
+(    }) N
+() N
+(    ) S
+(int) k
+( command_length = \() p
+(int) k
+(\)rd_stdout - \() p
+(int) k
+(\)line;) p n
+(    *command = \() S
+(char) k
+(*\)malloc\(command_length + 1\);) p n
+(    memcpy\(*command, line, command_length\);) N
+(    \(*command\)[command_length - 1] = ') S
+(\\0) str
+(';) p n
+(    ) N
+(    ) S
+(int) k
+( file_length = strlen\(line\) - \() p
+(int) k
+(\)rd_stdout + \() p
+(int) k
+(\)line;) p n
+(    ) S
+(char) k
+(* ptr = strtok\(line + command_length, ") p
+( >&<) str
+("\);) p n
+(    *file = \() S
+(char) k
+(*\)malloc\(file_length\); ) p n
+(    memcpy\(*file, ptr, strlen\(ptr\) + 1\);) N
+() N
+(    ) S
+(return) K
+( redirect_code;) p n
+(}) N
+() N
+(/** ) c n
+( * @brief Performed the redirection actions.) N
+( * ) N
+( * @param fid The file id of the redirect file.) N
+( * @param redirect_file The path to the redirect file.) N
+( * @param rt The redirecttion type from ::redirect_opcodes.) N
+( */) N
+(void) k
+( perform_redirection\() p
+(int) k
+(* fid, ) p
+(char) k
+(* redirect_file, ) p n
+(        ) S
+(enum) k
+( redirect_opcodes rt\){) p n
+() N
+(    ) S
+(int) k
+( open_flags = O_CREAT;) p n
+() N
+(    ) S
+(// Assign read/write mode) c n
+(    ) p
+(switch) K
+(\(rt\){) p n
+(redirection.c) (Page 1/3) (Oct 27, 09 17:15) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(        ) p
+(case) K
+( RD_ALL_APPEND:) p n
+(        ) S
+(case) K
+( RD_STDOUT_APPEND:) p n
+(        ) S
+(case) K
+( RD_ALL:) p n
+(        ) S
+(case) K
+( RD_STDOUT:) p n
+(            open_flags |= O_WRONLY;) N
+(            ) S
+(break) K
+(;) p n
+(        ) S
+(case) K
+( RD_STDIN:) p n
+(            open_flags |= O_RDONLY; ) N
+(            ) S
+(break) K
+(;) p n
+(    }) N
+() N
+(    ) S
+(// Assign append mode) c n
+(    ) p
+(switch) K
+(\(rt\){) p n
+(        ) S
+(case) K
+( RD_ALL_APPEND:) p n
+(        ) S
+(case) K
+( RD_STDOUT_APPEND:) p n
+(            open_flags |= O_APPEND;) N
+(            ) S
+(break) K
+(;) p n
+(        ) S
+(case) K
+( RD_ALL:) p n
+(        ) S
+(case) K
+( RD_STDOUT:) p n
+(        ) S
+(case) K
+( RD_STDIN:) p n
+(    }) N
+() N
+(    *fid = open\(redirect_file, open_flags, 0666\);) N
+() N
+(    ) S
+(// Perform the redirection) c n
+(    ) p
+(switch) K
+(\(rt\){) p n
+(        ) S
+(case) K
+( RD_ALL_APPEND:) p n
+(        ) S
+(case) K
+( RD_ALL:) p n
+(            close\(2\);) N
+(            dup\(*fid\);) N
+(            ) S
+(// Fall through \(we never redirect only stderr\)) c n
+(        ) p
+(case) K
+( RD_STDOUT_APPEND:) p n
+(        ) S
+(case) K
+( RD_STDOUT:) p n
+(            close\(1\);) N
+(            dup\(*fid\);) N
+(            close\(*fid\);) N
+(            ) S
+(break) K
+(;) p n
+(        ) S
+(case) K
+( RD_STDIN:) p n
+(            close\(0\);) N
+(            dup\(*fid\);) N
+(            close\(*fid\);) N
+(    }) N
+() N
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Resets redirection so that stdin, stdout, and stderr all go to the) N
+( * terminal.) N
+( * ) N
+( * @param fid Redirection file.) N
+( * @param redirection_type Redirection type from ::redirection_opcodes.) N
+( */) N
+(void) k
+( reset_redirection\() p
+(int) k
+(* fid, ) p
+(enum) k
+( redirect_opcodes redirection_type\){) p n
+(    ) S
+(if) K
+(\(redirection_type != RD_NONE && redirection_type != RD_STDIN\){) p n
+(        *fid = open\(") S
+(/dev/tty) str
+(", O_WRONLY\);) p n
+(        close\(2\);) N
+(        dup\(*fid\);) N
+(        close\(*fid\);) N
+() N
+(        *fid = open\(") S
+(/dev/tty) str
+(", O_WRONLY\);) p n
+(        close\(1\);) N
+(        dup\(*fid\);) N
+(        close\(*fid\);) N
+(    } ) S
+(else) K
+( ) p
+(if) K
+(\(redirection_type == RD_STDIN\){) p n
+(        *fid = open\(") S
+(/dev/tty) str
+(", O_RDONLY\);) p n
+(        close\(0\);) N
+(        dup\(*fid\);) N
+(        close\(*fid\);) N
+(redirection.c) (Page 2/3) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/redirection.c) (13/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (3) 14
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(    }) p n
+(}) N
+(redirection.c) (Page 3/3) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/redirection.c) (14/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1-2) 15
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/** ) c n
+( * @file util.c) N
+( * @brief Definitions of utility functions.) N
+( * @author Kevin Graney) N
+( * @version v0.1) N
+( * @date 2009-08-02) N
+( */) N
+(#include) K
+( ") p
+(util.h) str
+(") p n
+(#include) K
+( ") p
+(alias.h) str
+(") p n
+(#include) K
+( ") p
+(builtins.h) str
+(") p n
+(#include) K
+( ") p
+(get_path.h) str
+(") p n
+(#include) K
+( ") p
+(wildcard.h) str
+(") p n
+(#include) K
+( ") p
+(redirection.h) str
+(") p n
+(#include) K
+( ") p
+(ipc.h) str
+(") p n
+() N
+(#include) K
+( <stdio.h>) p n
+(#include) K
+( <unistd.h>) p n
+(#include) K
+( <readline/history.h>) p n
+() N
+(/** ) c n
+( * @brief Returns the location of an executable in the PATH.) N
+( *) N
+( * Loops through the path linked list and returns the location of the first) N
+( * file named command in the path directories with execute permissions.  Does) N
+( * not go into sub-directories in search of an executable.) N
+( * ) N
+( * @param command Name of the executable to search for.) N
+( * @param pathlist The path list to search.  Usually the one stored in the) N
+( * global ::kgenv environment structure.) N
+( * ) N
+( * @return ) N
+( */) N
+(char) k
+(* which\() p
+(const) K
+( ) p
+(char) k
+(* command, pathList* pathlist\){) p n
+(    pathList* pl = pathlist;) N
+() N
+(    ) S
+(// Loop to iterate over every directory in the path) c n
+(    ) p
+(while) K
+(\(pl != ) p
+(NULL) K
+(\){) p n
+() N
+(        DIR* dirp = opendir\(pl->element\);) N
+() N
+(        ) S
+(if) K
+(\(dirp == ) p
+(NULL) K
+(\){) p n
+() N
+(            perror\(") S
+(Error in which) str
+("\);) p n
+(            ) S
+(return) K
+( ) p
+(NULL) K
+(;) p n
+() N
+(        } ) S
+(else) K
+( {) p n
+() N
+(            ) S
+(struct) k
+( dirent* dp = readdir\(dirp\);        ) p
+(//TODO: errno check?) c n
+() p n
+(            ) S
+(// Iterate over every file in the directory) c n
+(            ) p
+(while) K
+(\(dp != ) p
+(NULL) K
+(\){) p n
+() N
+(                ) S
+(// Determine if the filename matches the command) c n
+(                ) p
+(if) K
+(\(strcmp\(dp->d_name, command\) == 0\){) p n
+(                    closedir\(dirp\);) N
+() N
+(                    ) S
+(// Generate an absolute path for the file that was found) c n
+(                    ) p
+(char) k
+(* full_path = malloc\(strlen\(command\) ) p n
+(                            + strlen\(pl->element\) + 2\);                ) N
+(                    ) S
+(if) K
+(\(full_path == ) p
+(NULL) K
+(\){) p n
+(                        perror\(") S
+(Error in which) str
+("\);) p n
+(util.c) (Page 1/8) (Nov 01, 09 18:47) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(                        ) p
+(return) K
+( ) p
+(NULL) K
+(;) p n
+(                    }) N
+() N
+(                    sprintf\(full_path, ") S
+(%s/%s) str
+(", pl->element, command\);) p n
+() N
+(                    ) S
+(// Check for execute permissions on the file found) c n
+(                    ) p
+(if) K
+(\(access\(full_path, X_OK\) == 0\){) p n
+(                        ) S
+(return) K
+( full_path;) p n
+(                    } ) S
+(else) K
+( {) p n
+(                        ) S
+(//TODO: Verify we don't need a perror here.  This should) c n
+(                        ) p
+(//be silent if an error condition occurs.) c n
+() p n
+(                        ) S
+(// Free the memory if we're not returning it) c n
+(                        free\(full_path\);) p n
+(                    }) N
+(                }) N
+(                dp = readdir\(dirp\);) N
+(            }) N
+(            ) S
+(if) K
+(\(closedir\(dirp\) == -1\){) p n
+(                perror\(") S
+(Error in which) str
+("\);) p n
+(            }) N
+(        }) N
+(        pl = pl->next;) N
+(    }) N
+(    ) S
+(return) K
+( ) p
+(NULL) K
+(;) p n
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Adds a command to the history list.) N
+( * ) N
+( * @param command The command to be added to the list.) N
+( * @param env The global ::kgenv environment object.  Needed to access the) N
+( * global history list.) N
+( */) N
+(void) k
+( add_to_history\() p
+(char) k
+(* command, kgenv* env\){) p n
+() N
+(    ) S
+(//## Add the command to readline's history) c n
+(    add_history\(command\);) p n
+() N
+(    ) S
+(//## Add the command to kgsh history) c n
+(    histList* new_item;) p n
+(    new_item = malloc\() S
+(sizeof) K
+(\(histList\)\);) p n
+(    ) S
+(if) K
+(\(new_item == ) p
+(NULL) K
+(\){) p n
+(        perror\(") S
+(Error adding to history) str
+("\);) p n
+(        ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    new_item->command = \() S
+(char) k
+(*\)malloc\(strlen\(command\) + 1\);) p n
+(    ) S
+(if) K
+(\(new_item->command == ) p
+(NULL) K
+(\){) p n
+(        perror\(") S
+(Error adding to history) str
+("\);) p n
+(        ) S
+(return) K
+(;) p n
+(    }) N
+() N
+(    strcpy\(new_item->command, command\);) N
+(    new_item->next = env->hist;) N
+() N
+(    ) S
+(if) K
+(\(env->hist != ) p
+(NULL) K
+(\){) p n
+(        new_item->num = env->hist->num + 1;) N
+(    } ) S
+(else) K
+( {) p n
+(        new_item->num = 1;) N
+(    }) N
+() N
+(    env->hist = new_item;) N
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Executes a command.) N
+(util.c) (Page 2/8) (Nov 01, 09 18:47) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/util.c) (15/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (3-4) 16
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+( *) c n
+( * Forks the shell process and executes the given command in the child process.) N
+( * Passes all environment variables. ) N
+( * ) N
+( * @param cmd The command to be exectued.) N
+( * @param argv Argument array for the command.) N
+( * @param background True if the job needs to be backgrounded) N
+( * ) N
+( * @return The exit status of the command.) N
+( */) N
+(int) k
+( exec_cmd\() p
+(char) k
+(* cmd, ) p
+(char) k
+(** argv, bool background\){) p n
+() N
+(    ) S
+(//TODO: Print absolute path even if relative is passed?) c n
+(    #ifdef O_VERBOSE_EXE) p n
+() N
+(    ) S
+(// Print out what's being executed and if it is backgrounded) c n
+(    printf\(") p
+(Executing %s%s\\n) str
+(", cmd, \(background ? ") p
+( in background) str
+(":""\)\);) p n
+(    fflush\(stdout\);) N
+(    #endif ) S
+(//O_VERBOSE_EXE) c n
+() p n
+(    pid_t child_pid = fork\(\);) N
+(    ) S
+(int) k
+( child_status;) p n
+() N
+(    ) S
+(if) K
+(\(child_pid == 0\){                        ) p
+(//** Executed in child process) c n
+() p n
+(        execve\(cmd, argv, environ\);) N
+(        ) N
+(        ) S
+(// Exec commands only return if there's an error) c n
+(        perror\(") p
+(Error in exec) str
+("\);        ) p n
+(        ) N
+(        ) S
+(// We exit since the process image will be replaced with itself here and) c n
+(        ) p
+(// we will need to enter "exit" twice to truely exit.) c n
+(        exit\(0\);        ) p n
+() N
+(    } ) S
+(else) K
+( ) p
+(if) K
+(\(child_pid > 0\) {                ) p
+(//** Executed in parent process) c n
+() p n
+(        ) S
+(if) K
+(\(!background\){) p n
+() N
+(            ) S
+(// If the job isn't backgrounded, wait for child process to return) c n
+(            ) p
+(if) K
+(\(!waitpid\(child_pid, &child_status, 0\)\){) p n
+(                perror\(") S
+(Error in waidpid) str
+("\);) p n
+(            }) N
+() N
+(        } ) S
+(else) K
+( {) p n
+() N
+(            ) S
+(// TODO: add signal handler for SIGCHLD) c n
+(            ) p
+(if) K
+(\(waitpid\(child_pid, &child_status, WNOHANG | WNOWAIT\) == -1\){) p n
+(                perror\(") S
+(Error in backgrounding waitpid) str
+("\);) p n
+(            }) N
+() N
+(        }) N
+() N
+(        ) S
+(// Print out the exit status if it is non-zero) c n
+(        ) p
+(if) K
+(\(WEXITSTATUS\(child_status\) != 0\){) p n
+(            printf\(") S
+(Exit %d\\n) str
+(", WEXITSTATUS\(child_status\)\);) p n
+(        }) N
+() N
+(    } ) S
+(else) K
+( {                                ) p
+(//** Didn't fork properly ) c n
+() p n
+(        perror\(") S
+(Fork failed\\n) str
+("\);) p n
+() N
+(    }) N
+() N
+(    ) S
+(return) K
+( child_status;) p n
+(}) N
+() N
+() N
+(/** ) c n
+( * @brief Processes an input command line.) N
+(util.c) (Page 3/8) (Nov 01, 09 18:47) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+( * ) c n
+( * Processes an input command line entered at the shell prompt from tokenizing) N
+( * through execution.  Handles wildcards, aliases, built-in commands, relative) N
+( * and absolute paths, and any other command line syntax.) N
+( *) N
+( * This function is called primarily through the closed prompt loop in ::main.) N
+( * Memory allocation and deallocation of line_in is handled by ::main. ) N
+( *) N
+( * @param line_in The command line entered at the shell prompt.) N
+( * @param global_env The ::kgenv global environment structure.) N
+( * @param deref_alias True if being called on an expanded alias.  False) N
+( * otherwise.  Needed to allow aliases to override commands without causing) N
+( * circular references.) N
+( * ) N
+( * @return The length of the line processed.) N
+( */) N
+(int) k
+( process_command_in\() p
+(char) k
+(* line_in, kgenv* global_env, bool deref_alias,) p n
+(        bool blocking\){ ) N
+() N
+(    ) S
+(int) k
+(    in_argc;             ) p
+(// argc for the command being processed) c n
+(    ) p
+(char) k
+(** in_argv;             ) p
+(// argv for the command being processed) c n
+(    ) p
+(int) k
+(    line_length;         ) p
+(// The length of the input line) c n
+(    bool   background = false;  ) p
+(// True if the command needs to be backgrounded) c n
+(    ) p
+(int) k
+( fid;) p n
+() N
+(    line_length = strlen\(line_in\);) N
+(    ) S
+(if) K
+(\(line_in[line_length - 1] == ') p
+(\\n) str
+('\)      ) p
+(// Remove trailing newline) c n
+(        line_in[line_length -1] = ') p
+(\\0) str
+(';) p n
+() N
+(    ) S
+(//## Capture an EOF with no prefix ) c n
+(    ) p
+(if) K
+(\(feof\(stdin\)\){) p n
+(        ) S
+(//printf\("\\nUse \\"exit\\" to leave kgsh.\\n"\);) c n
+(        ) p
+(//TODO: Fix this feature.) c n
+(    }) p n
+() N
+(    ) S
+(//## Add the line to the history stack) c n
+(    ) p
+(if) K
+(\(line_in[0] != ') p
+(\\0) str
+('        ) p
+(// don't add blank lines) c n
+(            && !deref_alias\){    ) p
+(// don't add the second call for an alias) c n
+(        add_to_history\(line_in, global_env\);) p n
+(    }) N
+(    ) N
+() N
+(    ) S
+(//## Expand wildcards) c n
+(    ) p
+(if) K
+(\(contains_wildcards\(line_in\)\){) p n
+(        ) S
+(char) k
+(* line_in_original = line_in;) p n
+(        line_in = expand_wildcards\(line_in\);) N
+(        free\(line_in_original\);) N
+(    }) N
+() N
+(    ) S
+(//## Process redirection operators) c n
+(    ) p
+(char) k
+(* command_line = ) p
+(NULL) K
+(;) p n
+(    ) S
+(char) k
+(* redirect_file = ) p
+(NULL) K
+(;) p n
+(    ) S
+(int) k
+( redirection_type = parse_redirection\(&command_line, &redirect_file, ) p n
+(            line_in\);) N
+() N
+(    ) S
+(//TODO: free redirect_file) c n
+(    ) p
+(if) K
+(\(redirection_type >= 0\){) p n
+(        ) S
+(// Appending or clobbering, or file doesn't exist) c n
+(        ) p
+(if) K
+(\(!global_env->noclobber || redirection_type == RD_ALL_APPEND || ) p n
+(                redirection_type == RD_STDOUT_APPEND || ) N
+(                redirection_type == RD_STDIN || ) N
+(                access\(redirect_file, F_OK\) == -1 \){) N
+() N
+(            perform_redirection\(&fid, redirect_file, redirection_type\);) N
+() N
+(        ) S
+(// File exists and not appending or clobbering    ) c n
+(        } ) p
+(else) K
+( {) p n
+(            printf\(") S
+(File %s exists.  Overwrite? \(y/n\) ) str
+(", redirect_file\);) p n
+(            ) S
+(char) k
+( c = getchar\(\);) p n
+(util.c) (Page 4/8) (Nov 01, 09 18:47) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/util.c) (16/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (5-6) 17
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(            getchar\(\);) p n
+(            ) S
+(if) K
+(\(c == ') p
+(y) str
+(' || c == ') p
+(Y) str
+('\){) p n
+(                ) S
+(if) K
+(\(remove\(redirect_file\) == -1\){) p n
+(                    perror\(") S
+(Error removing existing redirect file) str
+("\);) p n
+(                }) N
+(                perform_redirection\(&fid, redirect_file, redirection_type\);) N
+(            } ) S
+(else) K
+( {) p n
+(                ) S
+(return) K
+( line_length;) p n
+(            }) N
+(        }) N
+() N
+(        ) S
+(// Remove the redirection part of the command before continuing) c n
+(        ) p
+(char) k
+(* line_in_original = line_in;) p n
+(        line_in = command_line;) N
+(        free\(line_in_original\);) N
+(    }) N
+() N
+(    ) S
+(//## Process IPC) c n
+(    ) p
+(if) K
+(\(contains_ipc\(line_in\)\){) p n
+(        ) S
+(char) k
+( *left, *right;) p n
+(        ) S
+(enum) k
+( ipc_opcodes ipc_type;) p n
+(        ipc_type = parse_ipc_line\(&left, &right, line_in\);) N
+() N
+(        ) S
+(//printf\("Piping '%s' to '%s'\\n", left, right\);) c n
+(        perform_ipc\(left, right, ipc_type, global_env\);) p n
+() N
+(        free\(left\);) N
+(        free\(right\);) N
+(        ) S
+(return) K
+( 0;) p n
+() N
+(    }) N
+() N
+(    ) S
+(//## Tokenize the line) c n
+(    ) p
+(//TODO: free in_argv) c n
+(    in_argv = \() p
+(char) k
+(**\)calloc\(MAX_TOKENS_PER_LINE, ) p
+(sizeof) K
+(\() p
+(char) k
+(*\)\);) p n
+(    ) S
+(if) K
+(\(in_argv == ) p
+(NULL) K
+(\){) p n
+(        perror\(") S
+(Error processing command) str
+("\);) p n
+(        ) S
+(return) K
+( 0;) p n
+(    }) N
+() N
+(    ) S
+(if) K
+(\(!parse_line\(&in_argc, &in_argv, &background, line_in\)\){) p n
+(        reset_redirection\(&fid, redirection_type\);) N
+(        free\(in_argv\);) N
+(        free\(line_in\);) N
+(        ) S
+(return) K
+( line_length;        ) p
+(// continue if the line is blank) c n
+(    }) p n
+() N
+(    ) S
+(//## Check for aliases \(Do before builtins to allow for aliasing) c n
+(    ) p
+(//## builtin commands.) c n
+(    ) p
+(if) K
+(\(!deref_alias\){) p n
+(        aliasList* alias_ptr = is_alias\(global_env, in_argv[0]\);) N
+(        ) S
+(if) K
+(\(alias_ptr\){) p n
+(            ) S
+(char) k
+(* new_line_in = \() p
+(char) k
+(*\)malloc\(strlen\(alias_ptr->string\) + 1\);) p n
+(            strcpy\(new_line_in, alias_ptr->string\);) N
+() N
+(            ) S
+(int) k
+( length = process_command_in\(new_line_in, global_env, true, ) p n
+(                    blocking\);) N
+(            detokenize\(alias_ptr->string, length\);) N
+() N
+(            reset_redirection\(&fid, redirection_type\);) N
+(            free\(in_argv\);) N
+(            free\(line_in\);) N
+(            ) S
+(return) K
+( line_length;) p n
+(        }) N
+(    }) N
+() N
+() N
+(    ) S
+(//## Process built in commands) c n
+(    ) p
+(int) k
+( builtin_code = is_builtin\(in_argv[0]\);) p n
+(util.c) (Page 5/8) (Nov 01, 09 18:47) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(    ) p
+(if) K
+(\(builtin_code\){) p n
+(        #ifdef O_VERBOSE_EXE) N
+(        printf\(") S
+(Executing builtin %s\\n) str
+(", in_argv[0]\);) p n
+(        #endif ) S
+(//O_VERBOSE_EXE) c n
+(        \(*BUILT_IN_FUNCS[--builtin_code]\)\(global_env, in_argc, in_argv\);) p n
+() N
+(        reset_redirection\(&fid, redirection_type\);) N
+(        free\(in_argv\);) N
+(        free\(line_in\);) N
+(        ) S
+(return) K
+( line_length;) p n
+(    }) N
+() N
+(    ) S
+(//## Process absolute and relative paths) c n
+(    ) p
+(// TODO: cleanup this logic) c n
+(    ) p
+(if) K
+(\( \(in_argv[0][0] == ') p
+(/) str
+('\) ||) p n
+(        \(\(in_argv[0][0] == ') S
+(.) str
+('\) && \(\(in_argv[0][1] == ') p
+(/) str
+('\) ||) p n
+(             \(in_argv[0][1] == ') S
+(.) str
+('\) && \(in_argv[0][2] == ') p
+(/) str
+('\)\)\)\){) p n
+() N
+(        ) S
+(// Execute the file if it's executable) c n
+(        ) p
+(if) K
+(\(access\(in_argv[0], X_OK\) == 0\){) p n
+(            exec_cmd\(in_argv[0], in_argv, background || !blocking\);) N
+() N
+(            reset_redirection\(&fid, redirection_type\);) N
+(            free\(in_argv\);) N
+(            free\(line_in\);) N
+(            ) S
+(return) K
+( line_length;) p n
+(        }) N
+(    }) N
+() N
+() N
+(    ) S
+(//## Process commands in the path) c n
+(    ) p
+(char) k
+(* exe_path = which\(in_argv[0], global_env->path\);) p n
+(    ) S
+(if) K
+(\(exe_path != ) p
+(NULL) K
+(\){) p n
+() N
+(        exec_cmd\(exe_path, in_argv, background || !blocking\);) N
+() N
+(        reset_redirection\(&fid, redirection_type\);) N
+(        free\(in_argv\);) N
+(        free\(line_in\);) N
+(        free\(exe_path\);) N
+(        ) S
+(return) K
+( line_length;) p n
+() N
+(    }) N
+() N
+(    ) S
+(//## Command not found) c n
+(    fprintf\(stderr, ") p
+(%s: Command not found.\\n) str
+(", in_argv[0]\);) p n
+() N
+(    reset_redirection\(&fid, redirection_type\);) N
+(    free\(in_argv\);) N
+(    free\(line_in\);) N
+(    ) S
+(return) K
+( line_length;) p n
+(}) N
+() N
+(/** ) c n
+( * @brief Parses a command line into an argument \(argv\) array.) N
+( * ) N
+( * @param argc Will be set to the number of arguments in the command string.) N
+( * @param argv Will be set to point to the array of arguments in the command ) N
+( * string.  This argument should be preallocated to be an array of pointers.) N
+( * The returned array will point to memory locations inside of line, so it's) N
+( * important that line is not deleted before appropriate action is taken.) N
+( * @param background Will be set to true if the job needs to be backgrounded) N
+( * \(i.e. if an & is the last character on the line\).) N
+( * @param line The input line to parse.) N
+( * ) N
+( * @return 1 if the command was successfully parsed, and 0 if the line is blank.) N
+( */) N
+(int) k
+( parse_line\() p
+(int) k
+(* argc, ) p
+(char) k
+(*** argv, bool* background, ) p
+(char) k
+(* line\){) p n
+(    ) S
+(int) k
+( line_length = strlen\(line\);) p n
+(util.c) (Page 6/8) (Nov 01, 09 18:47) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/util.c) (17/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (7-8) 18
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+() p n
+(    ) S
+(//## Check if job needs to be backgrounded) c n
+(    ) p
+(if) K
+(\(line[line_length - 1] == ') p
+(&) str
+('\){) p n
+(        line[line_length - 1] = ') S
+(\\0) str
+(';        ) p
+(// Remove the '&' character) c n
+(        *background = true;) p n
+(    } ) S
+(else) K
+( {) p n
+(        *background = false;) N
+(    }) N
+() N
+(    ) S
+(//## Tokenize the command into the argv array) c n
+(    ) p
+(char) k
+(* strtok_ptr = ) p
+(NULL) K
+(;) p n
+(    ) S
+(char) k
+(* token = strtok_r\(line, ") p
+( \\n) str
+(", &strtok_ptr\);) p n
+() N
+() N
+(    ) S
+(// If the line is blank, the first token will be the null string.) c n
+(    ) p
+(if) K
+(\(token == ') p
+(\\0) str
+('\)) p n
+(        ) S
+(return) K
+( 0;        ) p n
+() N
+(    *argv[0] = token;        ) S
+(// argv[0] is the command name) c n
+() p n
+(    ) S
+(for) K
+(\() p
+(int) k
+( i = 1; token != ) p
+(NULL) K
+( && i < MAX_TOKENS_PER_LINE; i++\){) p n
+(        token = strtok_r\() S
+(NULL) K
+(, ") p
+( \\t) str
+(", &strtok_ptr\);) p n
+(        \(*argv\)[i] = token;) N
+(        *argc = i;) N
+(    }) N
+() N
+(    ) S
+(return) K
+( 1;) p n
+(}) N
+() N
+(/** ) c n
+( * @brief Detokenizes a string that was tokenized using ::strtok.) N
+( *) N
+( * Used primarily by alias functions to detokenize the alias string before ) N
+( * storing it in the alias linked list.  For this function to work, all tokens) N
+( * must still be stored sequentially in memory as they are after a call to) N
+( * ::strtok.) N
+( * ) N
+( * @param str Pointer to the start of the string.) N
+( * @param length The length of the string in characters.) N
+( */) N
+(void) k
+( detokenize\() p
+(char) k
+(* str, ) p
+(int) k
+( length\){) p n
+(    ) S
+(for) K
+(\() p
+(int) k
+( i=0; i < length - 1; i++\){) p n
+(        ) S
+(if) K
+(\(str[i] == ') p
+(\\0) str
+('\){) p n
+(            str[i] = ') S
+( ) str
+(';) p n
+(        }) N
+(    }) N
+(}) N
+() N
+(/** ) c n
+( * @brief Sets an environment variable.) N
+( * ) N
+( * Sets an environment variable in the ::kgenv global environment structure's) N
+( * internal environment string.  Special action is taken if either the HOME or) N
+( * PATH environment variables change since other data structres need to be) N
+( * updated.) N
+( *) N
+( * @param env The global ::kgenv environment structure.) N
+( * @param name The name of the environment variable to set.) N
+( * @param value The value \(string\) to set the environment variable to.) N
+( */) N
+(void) k
+( set_environment\(kgenv* env, ) p
+(char) k
+(* name, ) p
+(char) k
+(* value\){) p n
+() N
+(    ) S
+(// Store the new environment variable) c n
+(    ) p
+(char) k
+(* str = malloc\(strlen\(name\) + strlen\(value\) + 2\);) p n
+(    sprintf\(str, ") S
+(%s=%s) str
+(", name, value\);) p n
+(    putenv\(str\);) N
+() N
+(    ) S
+(// Handle a change to HOME) c n
+(    ) p
+(if) K
+(\(strcmp\(name, ") p
+(HOME) str
+("\) == 0\){) p n
+(util.c) (Page 7/8) (Nov 01, 09 18:47) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(        ) p
+(//TODO: improve?) c n
+(        env->homedir = str + 5;) p n
+(    }) N
+() N
+(    ) S
+(// Handle a change to PATH) c n
+(    ) p
+(else) K
+( ) p
+(if) K
+(\(strcmp\(name, ") p
+(PATH) str
+("\) == 0\){) p n
+(        ) S
+(//TODO: check for memory leaks here) c n
+(        pathList* p = env->path;) p n
+(        pathList* old;) N
+() N
+(        ) S
+(// Only free the first one since they are malloced together.) c n
+(        free\(p->element\);) p n
+(        ) S
+(while) K
+(\(p != ) p
+(NULL) K
+(\){) p n
+(            old = p;) N
+(            p = p->next;) N
+(            free\(old\);) N
+(        }) N
+() N
+(        env->path = get_path\(\);) N
+(    }) N
+(}) N
+(util.c) (Page 8/8) (Nov 01, 09 18:47) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/util.c) (18/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1-2) 19
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/** ) c n
+( * @file watchmail.c) N
+( * @brief Contains functions to provide functionality for watchmail builtin) N
+( * @author Kevin Graney) N
+( * @version v0.1) N
+( * @date 2009-09-29) N
+( */) N
+(#include) K
+( ") p
+(types.h) str
+(") p n
+(#include) K
+( ") p
+(watchmail.h) str
+(") p n
+() N
+(#include) K
+( <fcntl.h>) p n
+(#include) K
+( <sys/types.h>) p n
+(#include) K
+( <sys/stat.h>) p n
+() N
+(#include) K
+( <pthread.h>) p n
+() N
+(/** ) c n
+(* @brief Enables and disables watchmail threads.) N
+(* ) N
+(* @param file The filename to control the thread for.) N
+(* @param disable If true disables the thread, and if false creates a new thread.) N
+(* @param env The global ::kgenv environment object.) N
+(* ) N
+(* @return 0) N
+(*/) N
+(int) k
+( control_watchmail\() p
+(char) k
+(* file, bool disable, kgenv* env\){) p n
+() N
+(    ) S
+(//TODO: error checking) c n
+(    ) p
+(if) K
+(\(!disable\){) p n
+() N
+() N
+() N
+(        ) S
+(// Create a new node in the watchmails linked list) c n
+(        watchmailList* new_node = \(watchmailList*\)malloc\() p
+(sizeof) K
+(\(watchmailList\)\);) p n
+(        new_node->filename = file; ) N
+(        new_node->next = env->watchmails;) N
+(        env->watchmails = new_node;) N
+() N
+(        ) S
+(// Spawn a thread to monitor the new file) c n
+(        pthread_create\(&\(new_node->thread\), ) p
+(NULL) K
+(, watchmail_thread, ) p n
+(                \() S
+(void) k
+(*\)\(new_node->filename\)\);) p n
+() N
+(    } ) S
+(else) K
+( {) p n
+(        ) N
+(        ) S
+(// Loop through watchmail linked list to find the pthread_t record) c n
+(        watchmailList* prev = ) p
+(NULL) K
+(;) p n
+(        watchmailList* curr = env->watchmails;) N
+() N
+(        ) S
+(while) K
+(\(curr != ) p
+(NULL) K
+(\){) p n
+(            ) S
+(if) K
+(\(!strcmp\(curr->filename, file\)\){) p n
+(                ) S
+(break) K
+(;) p n
+(            }) N
+() N
+(            prev = curr;) N
+(            curr = curr->next;) N
+(        }) N
+() N
+(        ) S
+(// Case where a thread doesn't exist for the file) c n
+(        ) p
+(if) K
+(\(curr == ) p
+(NULL) K
+(\){) p n
+(            fprintf\(stderr, ") S
+(No watchmail thread for %s exists!\\n) str
+(", file\);) p n
+(            ) S
+(return) K
+( -1;) p n
+(watchmail.c) (Page 1/2) (Oct 27, 09 17:15) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(        }) p n
+() N
+(        pthread_cancel\(curr->thread\);) N
+() N
+(        ) S
+(// Delete the node from the watchmails linked list) c n
+(        ) p
+(if) K
+(\(prev != ) p
+(NULL) K
+(\){) p n
+(            prev->next = curr->next;) N
+(        } ) S
+(else) K
+( {) p n
+(            env->watchmails = curr->next;) N
+(        }) N
+() N
+(        ) S
+(// Free the memory allocated for the node in the linked list) c n
+(        free\(curr->filename\);) p n
+(        free\(curr\);) N
+(            ) N
+(    }) N
+() N
+() N
+(    ) S
+(return) K
+( 0;) p n
+(}) N
+() N
+() N
+(/** ) c n
+(* @brief The pthread function executing for each watchmail thread. ) N
+(* ) N
+(* @param param A pointer to a char[] containing the filename to watch for new ) N
+(* mail in) N
+(* ) N
+(* @return NULL) N
+(*/) N
+(void) k
+(* watchmail_thread\() p
+(void) k
+(* param\){) p n
+() N
+(    ) S
+(char) k
+(* filename = \() p
+(char) k
+(*\)param;) p n
+() N
+(    ) S
+(struct) k
+( stat stat_info;) p n
+(    off_t last_size;          ) S
+(///< The file size from the last iteration) c n
+() p n
+(    stat\(filename, &stat_info\);) N
+(    last_size = stat_info.st_size;) N
+() N
+(    ) S
+(// Closed loop to monitor file) c n
+(    ) p
+(while) K
+(\(1\) {) p n
+(        stat\(filename, &stat_info\);) N
+() N
+(        ) S
+(if) K
+(\(stat_info.st_size > last_size\){) p n
+() N
+(            ) S
+(struct) k
+( timeval tp;) p n
+(            gettimeofday\(&tp, ) S
+(NULL) K
+(\);) p n
+() N
+(            printf\(") S
+(\\n\\aYou have new mail in %s at %s\\n) str
+(", filename, ) p n
+(                    ctime\(&\(tp.tv_sec\)\)\);) N
+() N
+(        }) N
+() N
+(        last_size = stat_info.st_size;) N
+(        sleep\(1\);) N
+(    }) N
+() N
+(    ) S
+(return) K
+( ) p
+(NULL) K
+(;) p n
+(}) N
+(watchmail.c) (Page 2/2) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/watchmail.c) (19/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1-2) 20
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/** ) c n
+( * @file wildcard.c) N
+( * @brief Definitions of wildcard functions.) N
+( * @author Kevin Graney) N
+( * @version v0.1) N
+( * @date 2009-08-02) N
+( */) N
+(#include) K
+( ") p
+(util.h) str
+(") p n
+(#include) K
+( ") p
+(wildcard.h) str
+(") p n
+() N
+() N
+(/** ) c n
+( * @brief Determines if an input string contains a wildcard.) N
+( *) N
+( * Used in process_command_in\(\) to determine if wildcard processing can be ) N
+( * bypassed or not.  Wildcards checked for are defined in ::WILDCARD_CHARS.) N
+( * ) N
+( * @param line The input command line to check for a wildcard in.) N
+( * ) N
+( * @return True if a wildcard is present.  False otherwise.) N
+( */) N
+(bool contains_wildcards\() p
+(char) k
+(* line\){) p n
+() N
+(    ) S
+(//## Search the line for any of the wildcard characters.  Return true at the) c n
+(    ) p
+(//## first match.) c n
+(    ) p
+(for) K
+(\() p
+(int) k
+( i=0; WILDCARD_CHARS[i] != ') p
+(\\0) str
+('; i++\){) p n
+(        ) S
+(if) K
+(\(strchr\(line, WILDCARD_CHARS[i]\) != ) p
+(NULL) K
+(\){) p n
+(            ) S
+(return) K
+( true;) p n
+(        }) N
+(    }) S 8 T () N
+() N
+(    ) S
+(return) K
+( false;) p 24 T () S
+(// We didn't find any wildcards.) c n
+(}) p n
+() N
+() N
+(/** ) c n
+( * @brief Expands the wildcards present in an input string.) N
+( *) N
+( * Expands all the wildcards present in the input string based on the current) N
+( * working directory.  First the line is parsed into an argv array and each) N
+( * argument is expanded individually using glob\(3C\).  Next the expanded) N
+( * arguments are combined back in order to form a single expanded string.) N
+( *) N
+( * \\note The return value from this function is a pointer to the heap.  The) N
+( * returned pointer should be freed when not needed anymore.) N
+( *) N
+( * @param line The line to expand.) N
+( * ) N
+( * @return The expanded version of line.) N
+( */) N
+(char) k
+(* expand_wildcards\() p
+(char) k
+(* line\){) p n
+() N
+(    ) S
+(//## Parse the line into arguments) c n
+(    ) p
+(int) k
+(    argc;) p n
+(    ) S
+(char) k
+(** argv;) p n
+(    bool   background;) N
+() N
+(    argv = \() S
+(char) k
+(**\)calloc\(MAX_TOKENS_PER_LINE, ) p
+(sizeof) K
+(\() p
+(char) k
+(*\)\);) p n
+(    ) S
+(if) K
+(\(argv == ) p
+(NULL) K
+(\){) p n
+() S 8 T (perror\(") S
+(Error while expanding wilcards) str
+("\);) p n
+() S 8 T () S
+(return) K
+( ) p
+(NULL) K
+(;) p n
+(wildcard.c) (Page 1/3) (Oct 27, 09 17:15) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(    }) p n
+(    parse_line\(&argc, &argv, &background, line\);) N
+() N
+(    ) S
+(//## Expand all the arguments individually) c n
+(    ) p
+(char) k
+(** expanded_argv = \() p
+(char) k
+(**\)calloc\(argc, ) p
+(sizeof) K
+(\() p
+(char) k
+(*\)\);) p n
+(    ) S
+(if) K
+(\(expanded_argv == ) p
+(NULL) K
+(\){) p n
+() S 8 T (perror\(") S
+(Error while expanding wilcards) str
+("\);) p n
+() S 8 T () S
+(return) K
+( ) p
+(NULL) K
+(;) p n
+(    }) N
+() N
+(    ) S
+(for) K
+(\() p
+(int) k
+( i=0; i < argc; i++\){) p n
+(        expanded_argv[i] = expand_argument\(argv[i]\);) N
+(    }) N
+() N
+(    ) S
+(//## Find the total length the expanded line will be) c n
+(    ) p
+(int) k
+( length = 0;) p n
+(    ) S
+(for) K
+(\() p
+(int) k
+( i=0; i < argc; i++\){) p n
+(        length += strlen\(expanded_argv[i]\) + 1;) N
+(    }) N
+() N
+(    ) S
+(//## Form expanded line by concatenating all the expanded arguments) c n
+(    ) p
+(char) k
+(* expanded = calloc\(length, ) p
+(sizeof) K
+(\() p
+(char) k
+(\)\);) p n
+(    ) S
+(if) K
+(\(expanded == ) p
+(NULL) K
+(\){) p n
+() S 8 T (perror\(") S
+(Error while expanding wilcards) str
+("\);) p n
+() S 8 T () S
+(return) K
+( ) p
+(NULL) K
+(;) p n
+(    }) N
+() N
+(    ) S
+(for) K
+(\() p
+(int) k
+( i=0; i < argc; i++\){) p n
+(        strcat\(expanded, ") S
+( ) str
+("\);) p n
+(        strcat\(expanded, expanded_argv[i]\);) N
+(        free\(expanded_argv[i]\);) N
+(    }) N
+() N
+(    ) S
+(//## Free up memory) c n
+(    free\(expanded_argv\);) p n
+(    free\(argv\);) N
+() N
+(    ) S
+(return) K
+( expanded;) p n
+(}) N
+() N
+() N
+() N
+(/** ) c n
+( * @brief Expands wildcards in a single argument string.) N
+( *) N
+( * Called by expand_wildcards\(\), this function expands a single argument in the) N
+( * argv array by calling glob\(3C\).) N
+( *) N
+( * \\note This function returns a pointer to the heap, therefore the pointer must) N
+( * be freed after use.  A copy of the input argument is returned if no wildcards) N
+( * are present to prevent issues with deallocating memory that is allocated) N
+( * outside this function.) N
+( * ) N
+( * @param argument The argument string to be expanded.) N
+( * ) N
+( * @return The expanded argument.  If no wildcards are present in the string a) N
+( * copy of the argument parameter is returned.) N
+( */) N
+(char) k
+(* expand_argument\() p
+(char) k
+(* argument\){) p n
+() N
+(    glob_t pglob;) N
+() N
+(    ) S
+(if) K
+(\(glob\(argument, 0, ) p
+(NULL) K
+(, &pglob\) == 0\){) p 48 T () S
+(//TODO: errno handling) c n
+() p n
+(        ) S
+(//## If no wildcard in the argument return a copy of itself) c n
+(        ) p
+(if) K
+(\(pglob.gl_pathc == 0\){) p n
+(            ) S
+(char) k
+(* argument_copy = malloc\(strlen\(argument\) + 1\);) p n
+() S 8 T (    ) S
+(if) K
+(\(argument_copy == ) p
+(NULL) K
+(\){) p n
+() S 8 T () S 16 T (perror\(") S
+(Error expanding argument) str
+("\);) p n
+(wildcard.c) (Page 2/3) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/wildcard.c) (20/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (3) 21
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+() p 8 T () S 16 T (globfree\(&pglob\);) N
+() S 8 T () S 16 T () S
+(return) K
+( ) p
+(NULL) K
+(;) p n
+() S 8 T (    }) N
+() N
+(            strcpy\(argument_copy, argument\);) N
+() S 8 T (    globfree\(&pglob\);) S 32 T () S 40 T () S
+(// Free up memory) c n
+(            ) p
+(return) K
+( argument_copy;) p n
+(        }) N
+() N
+(        ) S
+(//## Determine total length of expanded argument) c n
+(        ) p
+(int) k
+( length = 0;) p n
+(        ) S
+(for) K
+(\() p
+(int) k
+( i=0; i < pglob.gl_pathc; i++\){) p n
+(            length += strlen\(pglob.gl_pathv[i]\) + 1;) N
+(        }) N
+() N
+(        ) S
+(//## Allocate new space for the expanded argument) c n
+(        ) p
+(char) k
+(* expanded_arg = calloc\(length, ) p
+(sizeof) K
+(\() p
+(char) k
+(\)\);) p n
+() S 8 T () S
+(if) K
+(\(expanded_arg == ) p
+(NULL) K
+(\){) p n
+() S 8 T (    perror\(") S
+(Error expanding argument) str
+("\);) p n
+() S 8 T (    globfree\(&pglob\);) N
+() S 8 T (    ) S
+(return) K
+( ) p
+(NULL) K
+(;) p n
+() S 8 T (}) N
+() N
+(        ) S
+(//## Form expanded argument string) c n
+(        ) p
+(for) K
+(\() p
+(int) k
+( i=0; i < pglob.gl_pathc; i++\){) p n
+(            strcat\(expanded_arg, ") S
+( ) str
+("\);) p n
+(            strcat\(expanded_arg, pglob.gl_pathv[i]\);) N
+(        } ) N
+() N
+(        ) S
+(//## Free up memory ) c n
+(        globfree\(&pglob\);) p n
+() N
+(        ) S
+(return) K
+( expanded_arg;) p n
+() N
+(    } ) S
+(else) K
+( {) p n
+() N
+(        ) S
+(//## Make a copy of the argument and return) c n
+(        ) p
+(char) k
+(* argument_copy = malloc\(strlen\(argument\) + 1\);) p n
+(        ) S
+(if) K
+(\(argument_copy == ) p
+(NULL) K
+(\){) p n
+() S 8 T (    perror\(") S
+(Error expanding argument) str
+("\);) p n
+() S 8 T (    globfree\(&pglob\);) N
+() S 8 T (    ) S
+(return) K
+( ) p
+(NULL) K
+(;) p n
+() S 8 T (}) N
+() N
+() S 8 T () S
+(//## Free up memory) c n
+(        globfree\(&pglob\);) p n
+() N
+(        strcpy\(argument_copy, argument\);) N
+(        ) S
+(return) K
+( argument_copy;) p n
+(    }) N
+(}) N
+(wildcard.c) (Page 3/3) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/wildcard.c) (21/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1) 22
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/** ) c n
+( * @file alias.h) N
+( * @brief Definition of alias functions.) N
+( * @author Kevin Graney) N
+( * @version v0.1) N
+( * @date 2009-08-02) N
+( */) N
+(#ifndef) K
+( _ALIAS_INC) p n
+(#define) K
+( _ALIAS_INC) p n
+() N
+(#include) K
+( <errno.h>) p n
+(#include) K
+( ") p
+(types.h) str
+(") p n
+() N
+(void) k
+( add_alias\(kgenv* env, ) p
+(char) k
+(* name, ) p
+(int) k
+( cmd_argc, ) p
+(char) k
+(* cmd_argv[]\);) p n
+() N
+(bool remove_alias\(kgenv* env, ) S
+(char) k
+(* name\);) p n
+() N
+(aliasList* is_alias\(kgenv* env, ) S
+(char) k
+(* name\);) p n
+() N
+(#endif) K
+( ) p
+(//_ALIAS_INC) c n
+(alias.h) (Page 1/1) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/alias.h) (22/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1-2) 23
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/** ) c n
+( * @file builtins.h) N
+( * @brief Declarations of builtin functions and constant members.) N
+( * @author Kevin Graney) N
+( * @version v0.1) N
+( * @date 2009-08-02) N
+( */) N
+(#ifndef) K
+( _BUILTINS_INC) p n
+(#define) K
+( _BUILTINS_INC) p n
+() N
+(#include) K
+( <stdio.h>) p n
+(#include) K
+( <stdlib.h>) p n
+(#include) K
+( <string.h>) p n
+(#include) K
+( <errno.h>) p 24 T () S
+(// for perror) c n
+() p n
+(#include) K
+( <sys/types.h>  ) p
+(// for readdir and opendir) c n
+(#include) K
+( <dirent.h>) p 24 T () S
+(// for readdir and opendir) c n
+() p n
+(#include) K
+( <signal.h>) p 24 T () S
+(// for sigsend) c n
+() p n
+(#include) K
+( ") p
+(util.h) str
+(") p n
+(#include) K
+( ") p
+(types.h) str
+(") p n
+() N
+(//-- Constants to define how many builtins we have) c n
+(#ifdef) K
+( DEBUG) p n
+(#define) K
+( NUM_BUILTINS 25) p 24 T () S 32 T () S
+(// Total number of commands, including debug) c n
+(#else) K n
+(#define) S
+( NUM_BUILTINS 19) p 24 T () S 32 T () S
+(// Total number of commands, excluding debug) c n
+(#endif) K
+( ) p
+(//DEBUG) c n
+() p n
+(short) k
+( ) p
+(int) k
+( is_builtin\() p
+(char) k
+(* command\);) p n
+() N
+(void) k
+( \(*BUILT_IN_FUNCS[NUM_BUILTINS]\)\(kgenv*, ) p
+(int) k
+(, ) p
+(char) k
+(**\);) p n
+() N
+(//------------------------------------------------------------------------------) c n
+(//-- The following are functions that define each built in command.  Each) N
+(//-- function takes a pointer to the shell's environment structure followed by) N
+(//-- an argc and argv passed on from the shell. Functions are named such that a ) N
+(//-- function bic_foo is run when the foo command is issued. ) N
+(//------------------------------------------------------------------------------) N
+(void) k
+( bic_exit\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_which\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_where\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_cd\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_pwd\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_list\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_pid\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_kill\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_prompt\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_printenv\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_alias\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+(builtins.h) (Page 1/2) (Oct 28, 09 7:53) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+() p n
+(void) k
+( bic_unalias\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_history\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_setenv\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_lsbuiltins\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_watchmail\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_noclobber\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_vimode\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( bic_emacsmode\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(//------------------------------------------------------------------------------) c n
+(//-- The following are functions associated with debugging commands and are) N
+(//-- intended for development use only.  Compile with -DDEBUG for use.) N
+(//------------------------------------------------------------------------------) N
+(#ifdef) K
+( DEBUG) p n
+(void) k
+( _db_tokenizer\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( _db_kgenv\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( _db_path\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( _db_history\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( _db_wc_contains\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+() N
+(void) k
+( _db_wc_expand\(kgenv* env, ) p
+(int) k
+( argc, ) p
+(char) k
+(* argv[]\);) p n
+(#endif) K
+( ) p
+(//DEBUG) c n
+() p n
+(#endif) K
+( ) p
+(//_BUILTINS_INC) c n
+(builtins.h) (Page 2/2) (Oct 28, 09 7:53) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/builtins.h) (23/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1) 24
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/* ) c n
+(  get_path.h) N
+(  Ben Miller) N
+() N
+(*/) N
+(#ifndef) K
+( _GET_PATH_INC) p n
+(#define) K
+( _GET_PATH_INC) p n
+() N
+(#include) K
+( <stdio.h>) p n
+(#include) K
+( <unistd.h>) p n
+(#include) K
+( <stdlib.h>) p n
+(#include) K
+( <string.h>) p n
+() N
+(/* function prototype.  It returns a pointer to a linked list for the path) c n
+(   elements. */) N
+(struct) k
+( pathelement *get_path\(\);) p n
+() N
+(struct) k
+( pathelement) p n
+({) N
+(  ) S
+(char) k
+( *element;) p 24 T () S 32 T () S 40 T () S
+(/* a dir in the path */) c n
+(  ) p
+(struct) k
+( pathelement *next;) p 32 T () S 40 T () S
+(/* pointer to next node */) c n
+(};) p n
+() N
+() N
+(#endif) K
+( ) p
+(//_GET_PATH_INC) c n
+(get_path.h) (Page 1/1) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/get_path.h) (24/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1) 25
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/** ) c n
+( * @file ipc.c ) N
+( * @brief Definitions of IPC functions.) N
+( * @author Kevin Graney) N
+( * @version v0.1) N
+( * @date 2009-10-25) N
+( */) N
+(#ifndef) K
+( _IPC_INC) p n
+(#define) K
+( _IPC_INC) p n
+() N
+(#include) K
+( ") p
+(types.h) str
+(") p n
+(#include) K
+( <string.h>) p n
+() N
+(enum) k
+( ipc_opcodes {) p n
+(    IPC_ALL,         ) S
+(// The |&  operator) c n
+(    IPC_STDOUT       ) p
+(// The | operator) c n
+(};) p n
+() N
+(bool contains_ipc\() S
+(char) k
+(* line\);) p n
+() N
+(enum) k
+( ipc_opcodes parse_ipc_line\() p
+(char) k
+(** left, ) p
+(char) k
+(** right, ) p
+(char) k
+(* line\);) p n
+() N
+(void) k
+( perform_ipc\() p
+(char) k
+(* left, ) p
+(char) k
+(* right, ) p
+(enum) k
+( ipc_opcodes ipc_type, ) p n
+(        kgenv* global_env\);) N
+() N
+(#endif) K
+( ) p
+(//_IPC_INC) c n
+(ipc.h) (Page 1/1) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/ipc.h) (25/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1) 26
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(#ifndef) K
+( REDIRECTION_H) p n
+(#define) K
+( REDIRECTION_H) p n
+() N
+(#include) K
+( <sys/types.h>) p n
+(#include) K
+( <sys/stat.h>) p n
+(#include) K
+( <fcntl.h>) p n
+(#include) K
+( <unistd.h>) p n
+() N
+(enum) k
+( redirect_opcodes {) p n
+(    RD_ALL_APPEND,      ) S
+(// The >>& operator) c n
+(    RD_STDOUT_APPEND,   ) p
+(// The >>  operator) c n
+(    RD_ALL,             ) p
+(// The >&  operator) c n
+(    RD_STDOUT,          ) p
+(// The >   operator) c n
+(    RD_STDIN,           ) p
+(// The <   operator) c n
+(    RD_NONE = -1        ) p
+(// No redirect operator) c n
+(};) p n
+() N
+(enum) k
+( redirect_opcodes parse_redirection\() p
+(char) k
+(** command, ) p
+(char) k
+(** file, ) p n
+(        ) S
+(char) k
+(* line\);) p n
+() N
+(void) k
+( perform_redirection\() p
+(int) k
+(* fid, ) p
+(char) k
+(* redirect_file, ) p n
+(        ) S
+(enum) k
+( redirect_opcodes redirection_type\);) p n
+() N
+(void) k
+( reset_redirection\() p
+(int) k
+(* fid, ) p
+(enum) k
+( redirect_opcodes redirection_type\);) p n
+() N
+(#endif) K
+( ) p
+(//REDIRECTION_H) c n
+(redirection.h) (Page 1/1) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/redirection.h) (26/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1-2) 27
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/** ) c n
+( * @file types.h) N
+( * @brief Type declarations.) N
+( * @author Kevin Graney) N
+( * @version v0.1) N
+( * @date 2009-08-02) N
+( */) N
+(#ifndef) K
+( _TYPES_INC) p n
+(#define) K
+( _TYPES_INC) p n
+() N
+(#include) K
+( ") p
+(get_path.h) str
+(") p n
+() N
+(#define) K
+( false 0     ) p
+(///< C++ style false keyword) c n
+(#define) K
+( true  1     ) p
+(///< C++ style true keyword) c n
+(typedef) K
+( ) p
+(char) k
+( bool;  ) p
+(///< Fake boolean in C++ style) c n
+() p n
+() N
+(//------------------------------------------------------------------------------) c n
+(//-- Linked List Types) N
+(//------------------------------------------------------------------------------) N
+() p n
+() N
+(/** ) c n
+( * @brief Struct to represent each node in the history linked list.) N
+( */) N
+(struct) k
+( histelement {) p n
+(    ) S
+(int) k
+() p 8 T (   num;) S 16 T () S 24 T () S 32 T () S
+(///< Command number) c n
+(    ) p
+(char) k
+(*  command;) p 24 T () S 32 T () S
+(///< Command string) c n
+(    ) p
+(struct) k
+( histelement* next;) p 32 T () S
+(///< Pointer to next node \(previous command\)) c n
+(};) p n
+() N
+(/** ) c n
+( * @brief Typedef to refer to the history linked list. ) N
+( */) N
+(typedef) K
+( ) p
+(struct) k
+( histelement histList;) p n
+() N
+(/** ) c n
+( * @brief Structure to represent each node in the aliases linked list.  Take) N
+( * note that the commands are stored in their unparsed condition to make) N
+( * the code cleaner.) N
+( */) N
+(struct) k
+( aliaselement {) p n
+(    ) S
+(char) k
+(*  name;) p 24 T () S 32 T () S
+(///< The name of the alias) c n
+(    ) p
+(char) k
+(*  string;) p 24 T () S 32 T () S
+(///< Command string alias refers to) c n
+(    ) p
+(struct) k
+( aliaselement* next;) p 32 T () S
+(///< Pointer to next node) c n
+(};) p n
+() N
+(/**) c n
+( * @brief Typedef to refer to the alias linked list.) N
+( */) N
+(typedef) K
+( ) p
+(struct) k
+( aliaselement aliasList;) p n
+() N
+(/** ) c n
+( * @brief List of files and pthread_t structures that are currently being) N
+( * watched by the ::watchmail builtin.) N
+( */) N
+(struct) k
+( watchmailelement {) p n
+(    ) S
+(char) k
+(* filename;             ) p
+(///< Path to the file being watched) c n
+(    pthread_t thread;           ) p
+(///< ::thread_t structure for ::watchmail_thread) c n
+(    ) p
+(struct) k
+( watchmailelement* next; ) p
+(///< Pointer to next node) c n
+(};) p n
+(types.h) (Page 1/2) (Oct 27, 09 17:15) title
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+() p n
+(/**) c n
+( * @brief Typedef to refer to the watchmail linked list.) N
+( */) N
+() p n
+(typedef) K
+( ) p
+(struct) k
+( watchmailelement watchmailList;) p n
+(/** ) c n
+( * @brief A typedef is defined for the ::pathelement struct to be consistent) N
+( * with the other linked lists.) N
+( */) N
+(typedef) K
+( ) p
+(struct) k
+( pathelement pathList;) p n
+() N
+() N
+(//------------------------------------------------------------------------------) c n
+(//-- Environment Types) N
+(//------------------------------------------------------------------------------) N
+() p n
+() N
+(/** ) c n
+( * @brief Global environment structure.) N
+( *) N
+( * The kgenv type will contain our current environment.  If this were being done) N
+( * in C++ it would be a singleton class since we only ever create one variable ) N
+( * of this type.  Basically, we're encapsulating all our would be global ) N
+( * variables into a nice neat structure.) N
+( */) N
+(typedef) K
+( ) p
+(struct) k
+( {) p n
+(    ) S
+(int) k
+( uid;) p 16 T () S 24 T () S 32 T (        ) S
+(///< User ID ) c n
+(    ) p
+(char) k
+(* homedir;) p 24 T () S 32 T (        ) S
+(///< Home directory path) c n
+(    ) p
+(struct) k
+( passwd *pword_entry;) p 32 T () S 40 T () S
+(///< Passwd entry info \(not needed?\)) c n
+() p n
+(    ) S
+(char) k
+(* cwd;) p 16 T (  ) S 24 T () S 32 T (        ) S
+(///< Current working directory) c n
+(    ) p
+(char) k
+(* pwd;    ) p 24 T () S 32 T (        ) S
+(///< Prior working directory) c n
+() p n
+(    bool  noclobber;            ) S
+(///< Clobber variable for file redirection) c n
+() p n
+(    ) S
+(char) k
+(* prompt; ) p 24 T () S 32 T (        ) S
+(///< Prompt prefix string) c n
+(    pathList* path;) p 24 T () S 32 T (        ) S
+(///< Path list pointer) c n
+(    histList* hist;) p 24 T () S 32 T (        ) S
+(///< History list pointer) c n
+(    aliasList* aliases;) p 24 T () S 32 T (   ) S 40 T () S
+(///< Alias list pointer) c n
+(    watchmailList* watchmails; ) p 32 T () S
+(///< Watchmail list pointer) c n
+(} kgenv;) p n
+() N
+() N
+(//------------------------------------------------------------------------------) c n
+(//-- Function Types) N
+(//------------------------------------------------------------------------------) N
+() p n
+(/**) c n
+( * @brief This is the generic function type for a built in function.  It's used ) N
+( * to setup the function pointer arrays.) N
+( */) N
+(typedef) K
+( ) p
+(void) k
+( \(*bicfunc\)\(kgenv*, ) p
+(int) k
+(, ) p
+(char) k
+(*\);) p n
+() N
+(#endif) K
+( ) p
+(//_TYPES_INC) c n
+(types.h) (Page 2/2) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/types.h) (27/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1) 28
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/** ) c n
+( * @file util.h) N
+( * @brief Definitions of utility functions.) N
+( * @author Kevin Graney) N
+( * @version v0.1) N
+( * @date 2009-08-02) N
+( */) N
+(#ifndef) K
+( _UTIL_INC) p n
+(#define) K
+( _UTIL_INC) p n
+() N
+(#include) K
+( <stdio.h>) p n
+(#include) K
+( <stdlib.h>) p n
+() N
+(#include) K
+( <sys/wait.h>) p 24 T () S
+(// for waitpid and WEXITSTATUS) c n
+(#include) K
+( <sys/types.h>  ) p
+(// for readdir and opendir) c n
+(#include) K
+( <dirent.h>) p 24 T () S
+(// for readdir and opendir) c n
+() p n
+(#include) K
+( <string.h>) p n
+() N
+(#include) K
+( ") p
+(types.h) str
+(") p n
+(#include) K
+( ") p
+(get_path.h) str
+(") p n
+() N
+() N
+(//#define  O_VERBOSE_EXE) c 32 T (// Enable the "Executing ..." messages) N
+() p n
+(#define) K
+( CWD_BUFFER_SIZE ) p 32 T (1024) N
+(#define) K
+( LINE_BUFFER_SIZE ) p 32 T (1024) N
+(#define) K
+( MAX_TOKENS_PER_LINE 512) p n
+(#define) K
+( HISTORY_SIZE ) p 24 T () S 32 T (1024) N
+() N
+() N
+(/** ) c n
+( * @brief The external environment variable list from the calling shell.) N
+( */) N
+(extern) K
+( ) p
+(char) k
+(** environ;) p n
+() N
+(char) k
+(* which\() p
+(const) K
+( ) p
+(char) k
+( *command, pathList* pathlist\);) p n
+() N
+(void) k
+( add_to_history\() p
+(char) k
+(* command, kgenv* env\);) p n
+() N
+(int) k
+( exec_cmd\() p
+(char) k
+(* cmd, ) p
+(char) k
+(** argv, bool background\);) p n
+() N
+(int) k
+( process_command_in\() p
+(char) k
+(* line_in, kgenv* global_env, bool deref_alias,) p n
+(        bool blocking\);) N
+() N
+(int) k
+( parse_line\() p
+(int) k
+(* argc, ) p
+(char) k
+(*** argv, bool* background, ) p
+(char) k
+(* line\);) p n
+() N
+(void) k
+( detokenize\() p
+(char) k
+(* str, ) p
+(int) k
+( length\);) p n
+() N
+(void) k
+( set_environment\(kgenv* env, ) p
+(char) k
+(* name, ) p
+(char) k
+(* value\);) p n
+() N
+(#endif) K
+( ) p
+(//_UTIL_INC) c n
+(util.h) (Page 1/1) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/util.h) (28/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1) 29
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/** ) c n
+( * @file watchmail.h) N
+( * @brief Contains prototypes for watchmail builtin functions) N
+( * @author Kevin Graney) N
+( * @version v0.1) N
+( * @date 2009-09-29) N
+( */) N
+(#ifndef) K
+( _WATCHMAIL_INC) p n
+(#define) K
+( _WATCHMAIL_INC) p n
+() N
+(int) k
+( control_watchmail\() p
+(char) k
+(* file, bool disable, kgenv* env\);) p n
+() N
+(void) k
+(* watchmail_thread\() p
+(void) k
+(*\);) p n
+() N
+(#endif) K
+( ) p
+(//_BUILTINS_INC) c n
+(watchmail.h) (Page 1/1) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/watchmail.h) (29/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (1) 30
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(/*) c n
+( * CISC361: Operating Systems \(Fall 2009\)) N
+( * Instructor: Ben Miller) N
+( *) N
+( * Project 2) N
+( * Kevin Graney) N
+( */) N
+() p n
+(/** ) c n
+( * @file wildcard.h) N
+( * @brief Declarations of wildcard functions and constant members.) N
+( * @author Kevin Graney) N
+( * @version v0.1) N
+( * @date 2009-08-02) N
+( */) N
+(#ifndef) K
+( _WILDCARD_H) p n
+(#define) K
+( _WILDCARD_H) p n
+() N
+(#include) K
+( <string.h>) p n
+(#include) K
+( <glob.h>) p n
+(#include) K
+( <errno.h>) p n
+(#include) K
+( ") p
+(types.h) str
+(") p n
+() N
+(#define) K
+( MAX_WILDCARDS) p 24 T () S 32 T (512) N
+(#define) K
+( WILDCARD_CHARS ) p 24 T () S 32 T (") S
+(*?) str
+(") p n
+() N
+(bool contains_wildcards\() S
+(char) k
+(* line\);) p n
+() N
+(char) k
+(* expand_wildcards\() p
+(char) k
+(* line\);) p n
+() N
+(char) k
+(* expand_argument\() p
+(char) k
+(* argument\);) p n
+() N
+(#endif) K
+( ) p
+(//_WILDCARD_H) c n
+(wildcard.h) (Page 1/1) (Oct 27, 09 17:15) title
+grestore
+(Printed by Kevin Graney) rhead
+(src/wildcard.h) (30/30) (Sunday November 01, 2009) footer
+end % of iso1dict
+pagesave restore
+showpage
+
+%%Trailer
+end
+%%EOF

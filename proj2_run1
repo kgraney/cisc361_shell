@@ -1,0 +1,268 @@
+Script started on Tue Oct 27 12:01:54 2009
+[1mbern[m[~/shell]% tgt-sun4u/kgsh
+ /export/home/kgraney/shell> pwd
+/export/home/kgraney/shell
+ /export/home/kgraney/shell> ls &
+Doxyfile         proj2_run1       test             tgt-sun4u
+Makefile         proj2_testcases  test-1+2
+doc              src              test-1+2.c
+ /export/home/kgraney/shell> ls -l &
+total 38
+ /export/home/kgraney/shell> -rw-r--r--   1 kgraney  user         308 Sep 30 22:51 Doxyfile
+-rw-r--r--   1 kgraney  user         577 Oct 26 11:29 Makefile
+drwxr-xr-x   2 kgraney  user         512 Oct 27 12:00 doc
+-rw-r--r--   1 kgraney  user           0 Oct 27 12:01 proj2_run1
+-rw-r--r--   1 kgraney  user        1256 Oct 22 13:33 proj2_testcases
+drwxr-xr-x   2 kgraney  user         512 Oct 26 11:47 src
+-rw-r--r--   1 kgraney  user         744 Oct 25 10:06 test
+-rwxr-xr-x   1 kgraney  user        9464 Oct 22 12:26 test-1+2
+-rw-r--r--   1 kgraney  user         254 Mar 18  2008 test-1+2.c
+drwxr-xr-x   2 kgraney  user         512 Oct 27 12:00 tgt-sun4u
+
+ /export/home/kgraney/shell> sleep 20 &
+ /export/home/kgraney/shell> ls &
+ /export/home/kgraney/shell> Doxyfile         proj2_run1       test             tgt-sun4u
+Makefile         proj2_testcases  test-1+2
+doc              src              test-1+2.c
+
+ /export/home/kgraney/shell> pid
+11909
+ /export/home/kgraney/shell> tty
+/dev/pts/6
+ /export/home/kgraney/shell> /bin/ps -lfu kgraney
+ F S      UID   PID  PPID   C PRI NI     ADDR     SZ    WCHAN    STIME TTY         TIME CMD
+ 0 S  kgraney  9697  9695   0  40 20        ?   9872        ? 07:12:35 pts/2       0:02 /usr/bin/gnome-session
+ 0 S  kgraney  9741     1   0  40 20        ?   8875        ? 07:12:44 ?           0:01 gnome-volcheck -i 30 -z 3 -m cdrom,
+ 0 S  kgraney  9709     1   0  40 20        ?    417        ? 07:12:36 pts/2       0:00 /usr/bin/gnome-keyring-daemon
+ 0 S  kgraney  3271     1   0  40 20        ?    203        ?   Oct 25 ?           0:00 grep doc
+ 0 S  kgraney  9750     1   0  50 20        ?   9106        ? 07:12:53 ?           0:08 /usr/lib/clock-applet --oaf-activat
+ 0 S  kgraney  9947  9946   0  40 20        ?    395        ? 07:27:45 ?           0:00 gnome-pty-helper
+ 0 S  kgraney  3269     1   0  40 20        ?    203        ?   Oct 25 ?           0:00 grep doc
+ 0 S  kgraney  9716     1   0  40 20        ?   9027        ? 07:12:38 ?           0:01 /usr/lib/gnome-settings-daemon --oa
+ 0 S  kgraney  9733     1   0  40 20        ?   8415        ? 07:12:42 ?           0:03 /bin/metacity --sm-client-id=defaul
+ 0 S  kgraney  9683     1   0  40 20        ?    459        ? 07:12:34 ?           0:00 /usr/dt/bin/dsdm
+ 0 S  kgraney  3274     1   0  40 20        ?    203        ?   Oct 25 ?           0:00 grep tgt
+ 0 S  kgraney  4599   750   0  40 20        ?   7283        ?   Oct 26 ?           6:40 /usr/openwin/bin/Xsun :0 -defdepth 
+ 0 S  kgraney  3295     1   0  40 20        ?    203        ?   Oct 25 ?           0:00 grep doc
+ 0 R  kgraney  9805     1   0  50 20        ?  12862          07:13:01 ?           4:56 /usr/jdk/latest/bin/java -version:1
+ 0 S  kgraney  9731     1   0  40 20        ?   1492        ? 07:12:41 ?           0:01 gnome-smproxy --sm-client-id defaul
+ 0 S  kgraney  3343     1   0  40 20        ?    202        ?   Oct 25 ?           0:00 grep doc
+ 0 S  kgraney  9787     1   0  50 20        ?   8963        ? 07:12:59 ?           0:53 /usr/lib/mixer_applet2 --oaf-activa
+ 0 S  kgraney 11907 11906   0  40 20        ?    428        ? 12:01:54 pts/6       0:00 sh -i
+ 0 S  kgraney  9777     1   1  50 20        ?   9027        ? 07:12:57 ?           2:10 /usr/lib/gnome-netstatus-applet --o
+ 0 S  kgraney  3291     1   0  40 20        ?    203        ?   Oct 25 ?           0:00 grep doc
+ 0 S  kgraney 11912 11909   0  40 20        ?    197        ? 12:02:15 pts/6       0:00 sleep 20
+ 0 S  kgraney  9748     1   0  40 20        ?    384        ? 07:12:49 ?           0:02 /usr/lib/mapping-daemon
+ 0 S  kgraney  9681  9616   0  40 20        ?    668        ? 07:12:34 pts/2       0:00 /usr/dt/bin/sdt_shell -c unsetenv _
+ 0 S  kgraney  9744     1   0  40 20        ?   1270        ? 07:12:48 ?           0:07 /usr/lib/gnome-vfs-daemon --oaf-act
+ 0 Z  kgraney 11911 11909   0   0  -        -      0        -        - ?           0:00 <defunct>
+ 0 Z  kgraney 11913 11909   0   0  -        -      0        -        - ?           0:00 <defunct>
+ 0 S  kgraney  9711     1   0  40 20        ?   1018        ? 07:12:36 pts/2       0:05 xscreensaver -nosplash
+ 0 S  kgraney  9797     1   0  50 20        ?   8877        ? 07:13:00 ?           0:01 /usr/lib/notification-area-applet -
+ 0 S  kgraney  9757     1   0  50 20        ?   9288        ? 07:12:55 ?           0:04 /usr/lib/wnck-applet --oaf-activate
+ 0 S  kgraney 11837 11831   0  40 20        ?    516        ? 11:57:30 pts/5       0:00 -tcsh
+ 0 S  kgraney  3324     1   0  40 20        ?    203        ?   Oct 25 ?           0:00 grep doc
+ 0 S  kgraney  3410     1   0  40 20        ?    203        ?   Oct 25 ?           0:00 grep test
+ 0 S  kgraney 11906 11905   0  40 20        ?    207        ? 12:01:54 pts/5       0:00 script proj2_run1
+ 0 S  kgraney  9742  9741   0  40 20        ?   8782        ? 07:12:47 ?           0:00 gnome-volcheck -i 30 -z 3 -m cdrom,
+ 0 S  kgraney  9739     1   0  40 20        ?  10164        ? 07:12:43 ?           0:10 nautilus --no-default-window --sm-c
+ 0 S  kgraney  9713     1   0  40 20        ?   1000        ? 07:12:36 ?           0:01 /usr/lib/bonobo-activation-server -
+ 0 S  kgraney  9950  9946   0  40 20        ?    436        ? 07:27:45 pts/4       0:00 tcsh
+ 0 S  kgraney  9737     1   0  40 20        ?  10013        ? 07:12:43 ?           0:56 gnome-panel --sm-client-id default2
+ 0 S  kgraney  9616  4623   0  40 20        ?    235        ? 07:12:33 ?           0:00 /bin/ksh /usr/dt/bin/Xsession
+ 0 S  kgraney  9946     1   0  40 20        ?  10533        ? 07:27:42 ?           0:29 gnome-terminal
+ 0 S  kgraney 11909 11907   0  50 20        ?    232        ? 12:02:01 pts/6       0:00 tgt-sun4u/kgsh
+ 0 S  kgraney  9695  9685   0  40 20        ?    224        ? 07:12:35 pts/2       0:00 /bin/ksh /usr/dt/config/Xsession2.j
+ 0 S  kgraney 11905 11837   0  40 20        ?    197        ? 12:01:54 pts/5       0:00 script proj2_run1
+ 0 S  kgraney  9706     1   0  40 20        ?   1937        ? 07:12:35 pts/2       0:06 /usr/lib/gconfd-2 15
+ 0 S  kgraney  9685  9681   0  40 20        ?    410        ? 07:12:34 pts/2       0:00 tcsh -c unsetenv _ PWD;     ;      
+ 0 S  kgraney 11831 11830   1  50 20        ?    935        ? 11:57:17 ?           0:02 /usr/lib/ssh/sshd
+ 0 O  kgraney 11915 11909   1  60 20        ?    232          12:02:32 pts/6       0:00 /bin/ps -lfu kgraney
+ /export/home/kgraney/shell> cd
+ /export/home/kgraney> c mkdir shell/test
+mkdir: Failed to make directory "shell/test"; File exists
+Exit 2
+ /export/home/kgraney> cd    mkdir shell/tests
+ /export/home/kgraney> cd shell/tests
+ /export/home/kgraney/shell/tests> pwd
+/export/home/kgraney/shell/tests
+ /export/home/kgraney/shell/tests> ls -l
+total 0
+ /export/home/kgraney/shell/tests> rm -r mail1 mail2
+mail1: No such file or directory
+mail2: No such file or directory
+Exit 2
+ /export/home/kgraney/shell/tests> touch mail1
+ /export/home/kgraney/shell/tests> watchmail mail1
+Starting watchmail for mail1
+ /export/home/kgraney/shell/tests> echo hi >> mail1
+ /export/home/kgraney/shell/tests> 
+You have new mail in mail1 at Tue Oct 27 12:03:30 2009
+
+
+ /export/home/kgraney/shell/tests> echo HiThere > mail2
+ /export/home/kgraney/shell/tests> watchmail mail2
+Starting watchmail for mail2
+ /export/home/kgraney/shell/tests> echo there >> mail1
+ /export/home/kgraney/shell/tests> 
+You have new mail in mail1 at Tue Oct 27 12:03:52 2009
+
+
+ /export/home/kgraney/shell/tests> echo Subject: >> mail2
+ /export/home/kgraney/shell/tests> 
+You have new mail in mail2 at Tue Oct 27 12:04:04 2009
+
+
+ /export/home/kgraney/shell/tests> cat mail1
+hi
+there
+ /export/home/kgraney/shell/tests> cat mail 2  2
+HiThere
+Subject:
+ /export/home/kgraney/shell/tests> ./tes    ./test-1+2 > test1
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 >> test  2
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 >& test3
+ /export/home/kgraney/shell/tests> ../test-1+2 >>& test4
+ /export/home/kgraney/shell/tests> cat test1 test2 test3 test4
+This is to standard output
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+ /export/home/kgraney/shell/tests> ../test-1+2 > test1
+File test1 exists.  Overwrite? (y/n) y
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 >> test2
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 >& test3
+File test3 exists.  Overwrite? (y/n) y
+ /export/home/kgraney/shell/tests> ../test-1+2 >>& test4
+ /export/home/kgraney/shell/tests> cat test 1  1 test2 test4 3 test4
+This is to standard output
+This is to standard output
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+ /export/home/kgraney/shell/tests> noclobber
+Clobbering is now on. (value is 0)
+ /export/home/kgraney/shell/tests> ../test-1+2 > test5
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 >> test6
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 >> & test7
+ /export/home/kgraney/shell/tests> ../test-1+2 >>& test8
+ /export/home/kgraney/shell/tests> cat test5 test6 test7 test8
+This is to standard output
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+ /export/home/kgraney/shell/tests> ../test-1+2 > test6 5
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 >> test6
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 >& test7
+ /export/home/kgraney/shell/tests> ../test-1+2 >>& test8
+ /export/home/kgraney/shell/tests> cat test6 test7 test8 test    ^[[D                  5 test6 test7 test8
+This is to standard output
+This is to standard output
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+This is to standard error
+This is to standard output
+ /export/home/kgraney/shell/tests> grep hellp < test7
+Exit 1
+ /export/home/kgraney/shell/tests> grep error < test            hello < test7
+Exit 1
+ /export/home/kgraney/shell/tests> grep error < test7
+This is to standard error
+ /export/home/kgraney/shell/tests> cat test7
+This is to standard error
+This is to standard output
+ /export/home/kgraney/shell/tests> rm -f test9 test 10   10 test11 test12
+ /export/home/kgraney/shell/tests> noclobber
+Clobbering is now off. (value is 1)
+ /export/home/kgraney/shell/tests> ./test-1+2 > test9
+./test-1+2: Command not found.
+ /export/home/kgraney/shell/tests> ./test-1+2 >> test10
+./test-1+2: Command not found.
+ /export/home/kgraney/shell/tests> ./test-1+2 >& test  11
+ /export/home/kgraney/shell/tests> ./test-1+2 >>& test12
+ /export/home/kgraney/shell/tests> cat test9 test10 test11 test12
+./test-1+2: Command not found.
+./test-1+2: Command not found.
+ /export/home/kgraney/shell/tests>  cat test9 test10 test11 test12
+./test-1+2: Command not found.
+./test-1+2: Command not found.
+ /export/home/kgraney/shell/tests> ^[[A    cat test9
+ /export/home/kgraney/shell/tests> cat test10
+ /export/home/kgraney/shell/tests> cat test11
+./test-1+2: Command not found.
+ /export/home/kgraney/shell/tests> cat test12
+./test-1+2: Command not found.
+ /export/home/kgraney/shell/tests> ../test-1+2 > test9
+File test9 exists.  Overwrite? (y/n) y
+This is to standard error
+ /export/home/kgraney/shell/tests> c ../test-1+@ 2 >> test10
+This is to standard error
+ /export/home/kgraney/shell/tests> ../test-1+2 >& test11
+File test11 exists.  Overwrite? (y/n) ./te    y
+ /export/home/kgraney/shell/tests> ../test-1+2 >>& test12
+ /export/home/kgraney/shell/tests> cat test9 test10 test11 test12
+This is to standard output
+This is to standard output
+This is to standard error
+This is to standard output
+./test-1+2: Command not found.
+This is to standard error
+This is to standard output
+ /export/home/kgraney/shell/tests> ls | grep test
+test1
+test10
+test11
+test12
+test2
+test3
+test4
+test5
+test6
+test7
+test8
+test9
+ /export/home/kgraney/shell/tests> ./ ./test-1+2 | grep hello
+This is to standard error
+Exit 1
+ /export/home/kgraney/shell/tests> ../test-1+2 |& grep hello
+Exit 1
+ /export/home/kgraney/shell/tests> ../test-1+2 | grep output
+This is to standard error
+This is to standard output
+ /export/home/kgraney/shell/tests> ../test-1}2    +2 |& grep output
+This is to standard output
+ /export/home/kgraney/shell/tests> ../test-1+2 |  & grep error
+This is to standard error
+ /export/home/kgraney/shell/tests> pid
+11909
+ /export/home/kgraney/shell/tests> /bin//ps -     ps -fu kg     lfu kgraney | grep defunct
+ 0 Z  kgraney 11912 11909   0   0  -        -      0        -        - ?           0:00 <defunct>
+ 0 Z  kgraney 11911 11909   0   0  -        -      0        -        - ?           0:00 <defunct>
+ 0 Z  kgraney 11913 11909   0   0  -        -      0        -        - ?           0:00 <defunct>
+ 0 Z  kgraney 11967 11909   0   0  -        -      0        -        - ?           0:00 <defunct>
+ 0 Z  kgraney 11965 11909   0   0  -        -      0        -        - ?           0:00 <defunct>
+ 0 Z  kgraney 11969 11909   0   0  -        -      0        -        - ?           0:00 <defunct>
+ 0 Z  kgraney 11971 11909   0   0  -        -      0        -        - ?           0:00 <defunct>
+ 0 Z  kgraney 11973 11909   0   0  -        -      0        -        - ?           0:00 <defunct>
+ /export/home/kgraney/shell/tests> exit
+[1mbern[m[~/shell]% exit
+script done on Tue Oct 27 12:11:01 2009
